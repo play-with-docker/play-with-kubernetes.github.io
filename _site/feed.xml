@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Play with Kubernetes classroom</title>
+    <description>Play with Kubernetes tutorials
+</description>
+    <link>http://0.0.0.0:4000/</link>
+    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 11 Dec 2017 12:36:24 -0600</pubDate>
+    <lastBuildDate>Mon, 11 Dec 2017 12:36:24 -0600</lastBuildDate>
+    <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Kubernetes for Beginners</title>
+        <description>&lt;p&gt;In this lab, you will get a hands-on overview of Kubernetes concepts and functionality. In the right pane, you will see two command line terminals, representing two different nodes.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Difficulty&lt;/strong&gt;: Beginner (assumes basic familiarity with Docker concepts)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Tasks&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#Task_0&quot;&gt;Task 0: Prerequisites&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#Task_1&quot;&gt;Task 1: Run some simple Docker containers&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#Task_2&quot;&gt;Task 2: Package and run a custom app using Docker&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#Task_3&quot;&gt;Task 3: Modify a Running Website&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;task-0-prerequisites&quot;&gt;&lt;a name=&quot;task0&quot;&gt;&lt;/a&gt;Task 0: Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Basic familiarity with Docker. &lt;code class=&quot;highlighter-rouge&quot;&gt;docker run&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;docker ps&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;docker build&lt;/code&gt; etc. ideally, you know how to write a Dockerfile and build it. If you aren’t familiar with Docker at all, check out the &lt;a href=&quot;training.play-with-docker.com/beginner-linux/&quot;&gt;beginner tutorial&lt;/a&gt; on the Play with Docker site.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Basic familiarity with the Linux commandline, navigating directories, editing files, basic bash knowledge.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;notes&quot;&gt;Notes&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;We will run almost all the commands on the first node, node1&lt;/li&gt;
+  &lt;li&gt;If a command is highlighted in gray, you can click on it and it will autopopulate in the appropriate terminal. For instance:
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl --help
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;brand-new-versions&quot;&gt;Brand new versions!&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Kubernetes 1.8&lt;/li&gt;
+  &lt;li&gt;Docker Engine 17.11&lt;/li&gt;
+  &lt;li&gt;Docker Compose 1.17&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check all installed versions:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl version
+docker version
+docker-compose &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;h1 id=&quot;sample-application&quot;&gt;Sample application&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Visit the GitHub repository with all the materials of this workshop:
+&lt;br /&gt;https://github.com/jpetazzo/container.training&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The application is in the &lt;a href=&quot;https://github.com/jpetazzo/container.training/tree/master/dockercoins&quot;&gt;dockercoins&lt;/a&gt;
+subdirectory&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s look at the general layout of the source code:&lt;/p&gt;
+
+    &lt;p&gt;there is a Compose file &lt;a href=&quot;https://github.com/jpetazzo/container.training/blob/master/dockercoins/docker-compose.yml&quot;&gt;docker-compose.yml&lt;/a&gt; …&lt;/p&gt;
+
+    &lt;p&gt;… and 4 other services, each in its own directory:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; = web service generating random bytes&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt; = web service computing hash of POSTed data&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; = background process using &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; = web interface to watch progress&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;compose-file-format-version&quot;&gt;Compose file format version&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Particularly relevant if you have used Compose before…&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Compose 1.6 introduced support for a new Compose file format (aka “v2”)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Services are no longer at the top level, but under a &lt;code class=&quot;highlighter-rouge&quot;&gt;services&lt;/code&gt; section&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;There has to be a &lt;code class=&quot;highlighter-rouge&quot;&gt;version&lt;/code&gt; key at the top level, with value &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;2&quot;&lt;/code&gt; (as a string, not an integer)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Containers are placed on a dedicated network, making links unnecessary&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;There are other minor differences, but upgrade is easy and straightforward&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;links-naming-and-service-discovery&quot;&gt;Links, naming, and service discovery&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Containers can have network aliases (resolvable through DNS)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Compose file version 2+ makes each container reachable through its service name&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Compose file version 1 did require “links” sections&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Our code can connect to services using their short name&lt;/p&gt;
+
+    &lt;p&gt;(instead of e.g. IP address or FQDN)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Network aliases are automatically namespaced&lt;/p&gt;
+
+    &lt;p&gt;(i.e. you can have multiple apps declaring and using a service named &lt;code class=&quot;highlighter-rouge&quot;&gt;database&lt;/code&gt;)&lt;/p&gt;
+
+    &lt;h2 id=&quot;example-in-workerworkerpy&quot;&gt;Example in &lt;code class=&quot;highlighter-rouge&quot;&gt;worker/worker.py&lt;/code&gt;&lt;/h2&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;redis&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Redis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;`redis`&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_random_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://`rng`/32&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hash_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://`hasher`/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                      &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                      &lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Content-Type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;application/octet-stream&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;(Full source code available &lt;a href=&quot;https://github.com/jpetazzo/container.training/blob/8279a3bce9398f7c1a53bdd95187c53eda4e6435/dockercoins/worker/worker.py#L17&quot;&gt;here&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-this-application&quot;&gt;What’s this application?&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;It is a DockerCoin miner! .emoji[💰🐳📦🚢]&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;No, you can’t buy coffee with DockerCoins&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How DockerCoins works:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; asks to &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; to generate a few random bytes&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; feeds these bytes into &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;and repeat forever!&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;every second, &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; updates &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt; to indicate how many loops were done&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; queries &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt;, and computes and exposes “hashing speed” in your browser&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;getting-the-application-source-code&quot;&gt;Getting the application source code&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We will clone the GitHub repository&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The repository also contains scripts and tools that we will use through the workshop&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;!--
+```bash
+if [ -d container.training ]; then
+  mv container.training container.training.$$
+fi
+```
+--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Clone the repository on &lt;code class=&quot;highlighter-rouge&quot;&gt;node1&lt;/code&gt;:
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;git clone git://github.com/jpetazzo/container.training
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;p&gt;(You can also fork the repository on GitHub and clone your fork if you prefer that.)&lt;/p&gt;
+
+&lt;h1 id=&quot;running-the-application&quot;&gt;Running the application&lt;/h1&gt;
+
+&lt;p&gt;Without further ado, let’s start our application.&lt;/p&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Go to the &lt;code class=&quot;highlighter-rouge&quot;&gt;dockercoins&lt;/code&gt; directory, in the cloned repo:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/container.training/dockercoins
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Use Compose to build and run all containers:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--
+```longwait units of work done```
+```keys ^C```
+--&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;p&gt;Compose tells Docker to build all container images (pulling
+the corresponding base images), then starts all containers,
+and displays aggregated logs.&lt;/p&gt;
+
+&lt;h2 id=&quot;lots-of-logs&quot;&gt;Lots of logs&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The application continuously generates logs&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We can see the &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; service making requests to &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s put that in the background&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Stop the application by hitting &lt;code class=&quot;highlighter-rouge&quot;&gt;^C&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;^C&lt;/code&gt; stops all containers by sending them the &lt;code class=&quot;highlighter-rouge&quot;&gt;TERM&lt;/code&gt; signal&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Some containers exit immediately, others take longer
+&lt;br /&gt;(because they don’t handle &lt;code class=&quot;highlighter-rouge&quot;&gt;SIGTERM&lt;/code&gt; and end up being killed after a 10s timeout)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;restarting-in-the-background&quot;&gt;Restarting in the background&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Many flags and commands of Compose are modeled after those of &lt;code class=&quot;highlighter-rouge&quot;&gt;docker&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Start the app in the background with the &lt;code class=&quot;highlighter-rouge&quot;&gt;-d&lt;/code&gt; option:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Check that our app is running with the &lt;code class=&quot;highlighter-rouge&quot;&gt;ps&lt;/code&gt; command:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose ps
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose ps&lt;/code&gt; also shows the ports exposed by the application.&lt;/p&gt;
+
+&lt;h2 id=&quot;viewing-logs&quot;&gt;Viewing logs&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt; command works like &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;View all logs since container creation and exit when done:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose logs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Stream container logs, starting at the last 10 lines for each container:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose logs &lt;span class=&quot;nt&quot;&gt;--tail&lt;/span&gt; 10 &lt;span class=&quot;nt&quot;&gt;--follow&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--
+```wait units of work done```
+```keys ^C```
+--&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;p&gt;Tip: use &lt;code class=&quot;highlighter-rouge&quot;&gt;^S&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;^Q&lt;/code&gt; to pause/resume log output.&lt;/p&gt;
+
+&lt;h2 id=&quot;upgrading-from-compose-16&quot;&gt;Upgrading from Compose 1.6&lt;/h2&gt;
+
+&lt;p&gt;.warning[The &lt;code class=&quot;highlighter-rouge&quot;&gt;logs&lt;/code&gt; command has changed between Compose 1.6 and 1.7!]&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Up to 1.6&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt; is the equivalent of &lt;code class=&quot;highlighter-rouge&quot;&gt;logs --follow&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt; must be restarted if containers are added&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Since 1.7&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--follow&lt;/code&gt; must be specified explicitly&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;new containers are automatically picked up by &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;connecting-to-the-web-ui&quot;&gt;Connecting to the web UI&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; container exposes a web dashboard; let’s view it&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;With a web browser, connect to &lt;code class=&quot;highlighter-rouge&quot;&gt;node1&lt;/code&gt; on port 8000&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Remember: the &lt;code class=&quot;highlighter-rouge&quot;&gt;nodeX&lt;/code&gt; aliases are valid only on the nodes themselves&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In your browser, you need to enter the IP address of your node&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- ```open http://node1:8000``` --&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;p&gt;A drawing area should show up, and after a few seconds, a blue
+graph will appear.&lt;/p&gt;
+
+&lt;h2 id=&quot;if-the-graph-doesnt-load&quot;&gt;If the graph doesn’t load&lt;/h2&gt;
+
+&lt;p&gt;If you just see a &lt;code class=&quot;highlighter-rouge&quot;&gt;Page not found&lt;/code&gt; error, it might be because your
+Docker Engine is running on a different machine. This can be the case if:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;you are using the Docker Toolbox&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;you are using a VM (local or remote) created with Docker Machine&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;you are controlling a remote Docker Engine&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When you run DockerCoins in development mode, the web UI static files
+are mapped to the container using a volume. Alas, volumes can only
+work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&gt;
+
+&lt;p&gt;How to fix this?&lt;/p&gt;
+
+&lt;p&gt;Edit &lt;code class=&quot;highlighter-rouge&quot;&gt;dockercoins.yml&lt;/code&gt; and comment out the &lt;code class=&quot;highlighter-rouge&quot;&gt;volumes&lt;/code&gt; section, and try again.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-does-the-speed-seem-irregular&quot;&gt;Why does the speed seem irregular?&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;It &lt;em&gt;looks like&lt;/em&gt; the speed is approximately 4 hashes/second&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Or more precisely: 4 hashes/second, with regular dips down to zero&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Why?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The app actually has a constant, steady speed: 3.33 hashes/second
+&lt;br /&gt;
+(which corresponds to 1 hash every 0.3 seconds, for &lt;em&gt;reasons&lt;/em&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Yes, and?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;the-reason-why-this-graph-is-not-awesome&quot;&gt;The reason why this graph is &lt;em&gt;not awesome&lt;/em&gt;&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The worker doesn’t update the counter after every loop, but up to once per second&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The speed is computed by the browser, checking the counter about once per second&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Between two consecutive updates, the counter will increase either by 4, or by 0&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The perceived speed will therefore be 4 - 4 - 4 - 0 - 4 - 4 - 0 etc.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What can we conclude from this?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Jérôme is clearly incapable of writing good frontend code&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;scaling-up-the-application&quot;&gt;Scaling up the application&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Our goal is to make that performance graph go up (without changing a line of code!)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Before trying to scale the application, we’ll figure out if we need more resources&lt;/p&gt;
+
+    &lt;p&gt;(CPU, RAM…)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;For that, we will use good old UNIX tools on our Docker node&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;looking-at-resource-usage&quot;&gt;Looking at resource usage&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Let’s look at CPU, memory, and I/O usage&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;run &lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt; to see CPU and memory usage (you should see idle cycles)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--
+```bash top```
+
+```wait Tasks```
+```keys ^C```
+--&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;run &lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat 1&lt;/code&gt; to see I/O usage (si/so/bi/bo)
+&lt;br /&gt;(the 4 numbers should be almost zero, except &lt;code class=&quot;highlighter-rouge&quot;&gt;bo&lt;/code&gt; for logging)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--
+```bash vmstat 1```
+
+```wait memory```
+```keys ^C```
+--&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;p&gt;We have available resources.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Why?&lt;/li&gt;
+  &lt;li&gt;How can we use them?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;scaling-workers-on-a-single-node&quot;&gt;Scaling workers on a single node&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Docker Compose supports scaling&lt;/li&gt;
+  &lt;li&gt;Let’s scale &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; and see what happens!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Start one more &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; container:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose scale &lt;span class=&quot;nv&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Look at the performance graph (it should show a x2 improvement)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Look at the aggregated logs of our containers (&lt;code class=&quot;highlighter-rouge&quot;&gt;worker_2&lt;/code&gt; should show up)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Look at the impact on CPU load with e.g. top (it should be negligible)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-more-workers&quot;&gt;Adding more workers&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Great, let’s add more workers and call it a day, then!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Start eight more &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; containers:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose scale &lt;span class=&quot;nv&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Look at the performance graph: does it show a x10 improvement?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Look at the aggregated logs of our containers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Look at the impact on CPU load and memory usage&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;h1 id=&quot;identifying-bottlenecks&quot;&gt;Identifying bottlenecks&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;You should have seen a 3x speed bump (not 10x)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Adding workers didn’t result in linear improvement&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Something else&lt;/em&gt; is slowing us down&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;… But what?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The code doesn’t have instrumentation&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s use state-of-the-art HTTP performance analysis!
+&lt;br /&gt;(i.e. good old tools like &lt;code class=&quot;highlighter-rouge&quot;&gt;ab&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;httping&lt;/code&gt;…)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;accessing-internal-services&quot;&gt;Accessing internal services&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt; are exposed on ports 8001 and 8002&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;This is declared in the Compose file:&lt;/p&gt;
+
+    &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;rng&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;rng&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8001:80&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;hasher&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;hasher&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8002:80&quot;&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;measuring-latency-under-load&quot;&gt;Measuring latency under load&lt;/h2&gt;
+
+&lt;p&gt;We will use &lt;code class=&quot;highlighter-rouge&quot;&gt;httping&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check the latency of &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt;:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;httping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 10 localhost:8001
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Check the latency of &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;httping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 10 localhost:8002
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; has a much higher latency than &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;lets-draw-hasty-conclusions&quot;&gt;Let’s draw hasty conclusions&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The bottleneck seems to be &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;What if&lt;/em&gt; we don’t have enough entropy and can’t generate enough random numbers?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We need to scale out the &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; service on multiple machines!&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: this is a fiction! We have enough entropy. But we need a pretext to scale out.&lt;/p&gt;
+
+&lt;p&gt;(In fact, the code of &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; uses &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/urandom&lt;/code&gt;, which never runs out of entropy…
+&lt;br /&gt;
+…and is &lt;a href=&quot;http://www.slideshare.net/PacSecJP/filippo-plain-simple-reality-of-entropy&quot;&gt;just as good as &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/random&lt;/code&gt;&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;h2 id=&quot;clean-up&quot;&gt;Clean up&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Before moving on, let’s remove those containers&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.exercise[&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tell Compose to remove everything:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose down
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;]&lt;/p&gt;
+&lt;h1 id=&quot;kubernetes-concepts&quot;&gt;Kubernetes concepts&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kubernetes is a container management system&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It runs and manages containerized applications on a cluster&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What does that really mean?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;basic-things-we-can-ask-kubernetes-to-do&quot;&gt;Basic things we can ask Kubernetes to do&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Start 5 containers using image &lt;code class=&quot;highlighter-rouge&quot;&gt;atseashop/api:v1.3&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Place an internal load balancer in front of these containers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Start 10 containers using image &lt;code class=&quot;highlighter-rouge&quot;&gt;atseashop/webfront:v1.3&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Place a public load balancer in front of these containers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It’s Black Friday (or Christmas), traffic spikes, grow our cluster and add containers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;New release! Replace my containers with the new image &lt;code class=&quot;highlighter-rouge&quot;&gt;atseashop/webfront:v1.4&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Keep processing requests during the upgrade; update my containers one at a time&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;other-things-that-kubernetes-can-do-for-us&quot;&gt;Other things that Kubernetes can do for us&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Basic autoscaling&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Blue/green deployment, canary deployment&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Long running services, but also batch (one-off) jobs&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Overcommit our cluster and &lt;em&gt;evict&lt;/em&gt; low-priority jobs&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Run services with &lt;em&gt;stateful&lt;/em&gt; data (databases etc.)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fine-grained access control defining &lt;em&gt;what&lt;/em&gt; can be done by &lt;em&gt;whom&lt;/em&gt; on &lt;em&gt;which&lt;/em&gt; resources&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Integrating third party services (&lt;em&gt;service catalog&lt;/em&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Automating complex tasks (&lt;em&gt;operators&lt;/em&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kubernetes-architecture&quot;&gt;Kubernetes architecture&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/k8s-arch1.png&quot; alt=&quot;haha only kidding&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;kubernetes-architecture-1&quot;&gt;Kubernetes architecture&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ha ha ha ha&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;OK, I was trying to scare you, it’s much simpler than that ❤️&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/k8s-arch2.png&quot; alt=&quot;that one is more like the real thing&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;credits&quot;&gt;Credits&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The first schema is a Kubernetes cluster with storage backed by multi-path iSCSI&lt;/p&gt;
+
+    &lt;p&gt;(Courtesy of &lt;a href=&quot;https://www.yongbok.net/blog/&quot;&gt;Yongbok Kim&lt;/a&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The second one is a simplified representation of a Kubernetes cluster&lt;/p&gt;
+
+    &lt;p&gt;(Courtesy of &lt;a href=&quot;https://medium.com/containermind/a-reference-architecture-for-deploying-wso2-middleware-on-kubernetes-d4dee7601e8e&quot;&gt;Imesh Gunaratne&lt;/a&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kubernetes-architecture-the-master&quot;&gt;Kubernetes architecture: the master&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The Kubernetes logic (its “brains”) is a collection of services:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;the API server (our point of entry to everything!)&lt;/li&gt;
+      &lt;li&gt;core services like the scheduler and controller manager&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;etcd&lt;/code&gt; (a highly available key/value store; the “database” of Kubernetes)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Together, these services form what is called the “master”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;These services can run straight on a host, or in containers
+&lt;br /&gt;
+(that’s an implementation detail)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;etcd&lt;/code&gt; can be run on separate machines (first schema) or co-located (second schema)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We need at least one master, but we can have more (for high availability)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kubernetes-architecture-the-nodes&quot;&gt;Kubernetes architecture: the nodes&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The nodes executing our containers run another collection of services:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;a container Engine (typically Docker)&lt;/li&gt;
+      &lt;li&gt;kubelet (the “node agent”)&lt;/li&gt;
+      &lt;li&gt;kube-proxy (a necessary but not sufficient network component)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Nodes were formerly called “minions”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It is customary to &lt;em&gt;not&lt;/em&gt; run apps on the node(s) running master components&lt;/p&gt;
+
+    &lt;p&gt;(Except when using small development clusters)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;do-we-need-to-run-docker-at-all&quot;&gt;Do we need to run Docker at all?&lt;/h2&gt;
+
+&lt;p&gt;No!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;By default, Kubernetes uses the Docker Engine to run containers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We could also use &lt;code class=&quot;highlighter-rouge&quot;&gt;rkt&lt;/code&gt; (“Rocket”) from CoreOS&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Or leverage other pluggable runtimes through the &lt;em&gt;Container Runtime Interface&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;(like CRI-O, or containerd)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;do-we-need-to-run-docker-at-all-1&quot;&gt;Do we need to run Docker at all?&lt;/h2&gt;
+
+&lt;p&gt;Yes!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;In this workshop, we run our app on a single node first&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We will need to build images and ship them around&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We can do these things without Docker
+&lt;br /&gt;
+(and get diagnosed with NIH¹ syndrome)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Docker is still the most stable container engine today
+&lt;br /&gt;
+(but other options are maturing very quickly)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.footnote[¹&lt;a href=&quot;https://en.wikipedia.org/wiki/Not_invented_here&quot;&gt;Not Invented Here&lt;/a&gt;]&lt;/p&gt;
+
+&lt;h2 id=&quot;do-we-need-to-run-docker-at-all-2&quot;&gt;Do we need to run Docker at all?&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;On our development environments, CI pipelines … :&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;Yes, almost certainly&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;On our production servers:&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;Yes (today)&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;Probably not (in the future)&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.footnote[More information about CRI &lt;a href=&quot;http://blog.kubernetes.io/2016/12/container-runtime-interface-cri-in-kubernetes.html&quot;&gt;on the Kubernetes blog&lt;/a&gt;]&lt;/p&gt;
+
+&lt;h2 id=&quot;kubernetes-resources&quot;&gt;Kubernetes resources&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The Kubernetes API defines a lot of objects called &lt;em&gt;resources&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;These resources are organized by type, or &lt;code class=&quot;highlighter-rouge&quot;&gt;Kind&lt;/code&gt; (in the API)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A few common resource types are:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;node (a machine — physical or virtual — in our cluster)&lt;/li&gt;
+      &lt;li&gt;pod (group of containers running together on a node)&lt;/li&gt;
+      &lt;li&gt;service (stable network endpoint to connect to one or multiple containers)&lt;/li&gt;
+      &lt;li&gt;namespace (more-or-less isolated group of things)&lt;/li&gt;
+      &lt;li&gt;secret (bundle of sensitive data to be passed to a container)&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;And much more! (We can see the full list by running &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl get&lt;/code&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/k8s-arch3-thanks-weave.png&quot; alt=&quot;Node, pod, container&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;(Diagram courtesy of Weave Works, used with permission.)&lt;/p&gt;
+
+&lt;h1 id=&quot;declarative-vs-imperative&quot;&gt;Declarative vs imperative&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Our container orchestrator puts a very strong emphasis on being &lt;em&gt;declarative&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Declarative:&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;I would like a cup of tea.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Imperative:&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;Boil some water. Pour it in a teapot. Add tea leaves. Steep for a while. Serve in cup.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Declarative seems simpler at first …&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;… As long as you know how to brew tea&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;declarative-vs-imperative-1&quot;&gt;Declarative vs imperative&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;What declarative would really be:&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;I want a cup of tea, obtained by pouring an infusion¹ of tea leaves in a cup.&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;¹An infusion is obtained by letting the object steep a few minutes in hot² water.&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;²Hot liquid is obtained by pouring it in an appropriate container³ and setting it on a stove.&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;³Ah, finally, containers! Something we know about. Let’s get to work, shall we?&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.footnote[Did you know there was an &lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_3103&quot;&gt;ISO standard&lt;/a&gt;
+specifying how to brew tea?]&lt;/p&gt;
+
+&lt;h2 id=&quot;declarative-vs-imperative-2&quot;&gt;Declarative vs imperative&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Imperative systems:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;simpler&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;if a task is interrupted, we have to restart from scratch&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Declarative systems:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;if a task is interrupted (or if we show up to the party half-way through),
+we can figure out what’s missing and do only what’s necessary&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;we need to be able to &lt;em&gt;observe&lt;/em&gt; the system&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;… and compute a “diff” between &lt;em&gt;what we have&lt;/em&gt; and &lt;em&gt;what we want&lt;/em&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 07 Dec 2017 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/kubernetes-overview/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/kubernetes-overview/</guid>
+        
+        <category>beginner</category>
+        
+        <category>linux</category>
+        
+        <category>operations</category>
+        
+        <category>kubernetes</category>
+        
+        <category>developer</category>
+        
+        
+        <category>beginner</category>
+        
+      </item>
+    
+      <item>
+        <title>Docker for Developers</title>
+        <description>&lt;p&gt;This self-paced learning journey for Developers will help you understand and be able to deploy applications with Docker. We’ve designed three stages.&lt;/p&gt;
+
+&lt;h2 id=&quot;stage-1-the-basics&quot;&gt;&lt;a href=&quot;/dev-stage1&quot;&gt;Stage 1: The Basics&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;This stage will&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Get you familiar with the core concepts of Docker&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Show you how to build and deploy basic applications&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;stage-2-digging-deeper&quot;&gt;&lt;a href=&quot;/dev-stage2&quot;&gt;Stage 2: Digging Deeper&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;This stage show you how to&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create and run Docker image registries&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Use Docker with in a continuous integration environment&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;stage-3-moving-to-staging&quot;&gt;&lt;a href=&quot;/dev-stage3&quot;&gt;Stage 3: Moving to Staging&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;This final stage will help you&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Deploy an application to a staging environment&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Manage your staging environment with Docker Swarm Mode&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Learn how to build a secure application&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h2&gt;
+
+&lt;p&gt;Once you’ve finished the three stages, you can&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docker.com/get-docker&quot;&gt;Download Docker&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://community.docker.com&quot;&gt;Sign up for the Docker Community&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://docs.docker.com&quot;&gt;Explore the Docker documentation&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 20 Jan 2017 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/dev-landing/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/dev-landing/</guid>
+        
+        <category>windows</category>
+        
+        <category>operations</category>
+        
+        <category>developer</category>
+        
+        <category>landing</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,67 @@
+<!-- Remove the comments to compress html
+
+---
+layout: compress
+--- 
+
+-->
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <body>
+
+    {% include header.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+    
+<script async>
+    (function() {
+        var font = document.createElement('link'); 
+        font.type = 'text/css'; 
+        font.rel = 'stylesheet';
+        font.href = '//fonts.googleapis.com/css?family=Raleway:400,700';
+        var s = document.getElementsByTagName('link')[0]; 
+        s.parentNode.insertBefore(font, s);
+      })();
+</script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ {% if site.analytics %}{% include analytics.html %}{% endif %}
+  </body>
+
+{% if site.url == 'http://training.play-with-docker.com' %}
+  <script>
+    var siteUrl = "{{ site.url }}"
+    if ((window.location.protocol + '//' + window.location.hostname) == siteUrl) {
+    !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="4.0.0";
+    analytics.load("GvscnIMX05fG8s2MEZY7PkSV4BTsFvOU");
+    analytics.page();
+    }}();
+    }
+    {% if page.layout != 'post' %}
+    
+    try {
+      pwd.getUserInfo(function(pwduser){
+              user = pwduser;
+              if(user !== undefined){
+                  analytics.identify(user.provider_user_id);
+              } else {
+                  analytics.identify();
+              }
+          });
+    }
+    catch (error) {
+      analytics.identify();
+      }
+    
+     
+      {% endif %}
+    </script>
+{% endif %}
+
+</html>

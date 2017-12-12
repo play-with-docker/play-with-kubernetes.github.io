@@ -1,0 +1,1198 @@
+<!-- Remove the comments to compress html
+
+---
+layout: compress
+--- 
+
+-->
+<!DOCTYPE html>
+<html>
+
+  <head>
+<title>Kubernetes for Beginners</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Kubernetes for Beginners" />
+<meta name="twitter:description" content="Learn docker through online trainings in training.play-with-docker.com" />
+<meta name="twitter:image" content="http://birthday.play-with-docker.com/images/simple-logo.jpg" />
+
+  
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+
+<style>
+          
+          html,body{height:100%}img{max-width:100%}.mt50{margin-top:50px}.mt20{margin-top:20px}.mt10{margin-top:10px}.mb10{margin-bottom:10px}body{display:flex;flex-direction:column}body>*{flex:none}.navbar{border-radius:0px;margin-bottom:0px}.navbar.navbar-inverse{background-color:#1488C6;border-color:#1488C6}.navbar.navbar-inverse a,.navbar.navbar-inverse .navbar-nav li a{color:white}.navbar.navbar-inverse a:hover,.navbar.navbar-inverse .navbar-nav li a:hover{text-decoration:underline}.navbar-brand{font-weight:900}@media screen and (max-width: 600px){.navbar-brand{font-size:1.5em}}.post-meta{color:#828282}div.post-content{max-width:1200px}.panel{border:none;box-shadow:0px 0px 1px #828282}.panel:hover{box-shadow:0px 0px 6px #828282}footer{border-top:1px solid #e8e8e8}.social-share{margin-top:10px;margin-bottom:15px;text-align:center}.social{list-style:none;display:inline;margin-left:10px;padding:5px 8px}.social:hover{opacity:0.7}.social img{width:20px}.quora img{width:17px}.facebook img{width:16px}.recent ul{list-style:none;padding:0;text-align:justify}.recent li{margin:20px}.recent img{display:block;margin:auto}.recent{padding:10px;border:1px solid #e8e8e8}.post-img img{width:100%}.announce{margin-top:10px;margin-bottom:60px;text-align:center}.pack{display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;flex-wrap:wrap;-webkit-flex-wrap:wrap}.banner{display:block;margin:auto}.panel-container{display:flex;flex-direction:row;overflow:hidden;height:100%;flex:1 1 auto;xtouch-action:none}.terminal{font-size:15px}.panel-left{flex:0 0 auto;width:50%;min-width:150px}.content{padding:0 15px;overflow-y:auto}.content{padding:0 15px}.panel-singular{margin:0 auto;max-width:1200}.splitter{flex:0 0 auto;width:18px;background:url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #2fa8c3;min-height:200px;cursor:col-resize}.panel-right{display:flex;flex-direction:column;flex:1 1 auto;width:100%;background:#565656}.panel-right>div{flex:1 1 auto;margin-bottom:15px;overflow-y:auto}.panel-right>div:last-of-type{margin-bottom:0px}.panel-right>div.initialized{background-color:black}.getting-started ul{list-style-type:none;font-size:36px}.card{float:none}code[class*="."]{cursor:pointer}.resize-warning{background-color:black;color:white;text-align:center}.post-tag{display:inline-block;background:rgba(42,122,226,0.15);padding:0 .5rem;margin-right:.5rem;border-radius:4px;color:#2a7ae2;font-family:"Open Sans",serif;font-size:90%}.post-tag:before{content:"\f02b";font-family:FontAwesome;padding-right:.5em}.post-tag:hover{text-decoration:none;background:#2a7ae2;color:#fff}small .post-tag{background:#eee;color:#000}small .post-tag:before{content:none}small .post-tag:hover{text-decoration:none;background:#000;color:#fff;cursor:default}.tags-expo :target:before{content:"";display:block;height:72px;margin:-72px 0 0}@media (min-width: 38em){.tags-expo .tags-expo-list{font-size:2.9rem}.tags-expo .tags-expo-list .post-tag{margin:.2em .3em}}.tags-expo .tags-expo-section{font-family:"Open Sans",serif}.tags-expo .tags-expo-section ul{list-style-type:circle;list-style-position:inside;padding:0}.tags-expo .tags-expo-section ul li{padding:0 1rem}.tags-expo .tags-expo-section ul li:hover{list-style-type:disc}.tags-expo .tags-expo-section a{font-size:20px}.tags-expo .tags-expo-section .post-date{display:inline-block;font-size:80%;color:#000;margin:0;padding:0}
+
+</style>  
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="Play with Kubernetes classroom" href="http://0.0.0.0:4000/feed.xml">  
+<link rel="stylesheet" href="/css/quiz.css">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Play with Kubernetes classroom</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/about/">About</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+</header>
+
+
+    
+
+ 
+
+
+<div class="panel-container">
+    
+    <div class="panel-left content">
+    
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+            <header class="post-header">
+                <h1 class="post-title" itemprop="name headline">Kubernetes for Beginners</h1>
+                <p class="post-meta"><time datetime="2017-12-07T00:00:00-06:00" itemprop="datePublished">Dec 7, 2017</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">@jpetazzo</span></span></p>
+                <blockquote>
+                  <strong><p>Time:</strong> Approximately 10 minutes</p>
+                </blockquote>
+                
+            </header>
+
+            <div class="post-content" itemprop="articleBody">
+                <p>In this lab, you will get a hands-on overview of Kubernetes concepts and functionality. In the right pane, you will see two command line terminals, representing two different nodes.</p>
+
+<blockquote>
+  <p><strong>Difficulty</strong>: Beginner (assumes basic familiarity with Docker concepts)</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>Tasks</strong>:</p>
+
+</blockquote>
+
+<blockquote>
+  <ul>
+    <li><a href="#Task_0">Task 0: Prerequisites</a></li>
+    <li><a href="#Task_1">Task 1: Run some simple Docker containers</a></li>
+    <li><a href="#Task_2">Task 2: Package and run a custom app using Docker</a></li>
+    <li><a href="#Task_3">Task 3: Modify a Running Website</a></li>
+  </ul>
+</blockquote>
+
+<h2 id="task-0-prerequisites"><a name="task0"></a>Task 0: Prerequisites</h2>
+
+<ul>
+  <li>
+    <p>Basic familiarity with Docker. <code class="highlighter-rouge">docker run</code>, <code class="highlighter-rouge">docker ps</code>, <code class="highlighter-rouge">docker build</code> etc. ideally, you know how to write a Dockerfile and build it. If you aren’t familiar with Docker at all, check out the <a href="training.play-with-docker.com/beginner-linux/">beginner tutorial</a> on the Play with Docker site.</p>
+  </li>
+  <li>
+    <p>Basic familiarity with the Linux commandline, navigating directories, editing files, basic bash knowledge.</p>
+  </li>
+</ul>
+
+<h3 id="notes">Notes</h3>
+<ul>
+  <li>We will run almost all the commands on the first node, node1</li>
+  <li>If a command is highlighted in gray, you can click on it and it will autopopulate in the appropriate terminal. For instance:
+    <pre><code class="language-.term1">kubectl --help
+</code></pre>
+  </li>
+</ul>
+
+<h2 id="brand-new-versions">Brand new versions!</h2>
+
+<ul>
+  <li>Kubernetes 1.8</li>
+  <li>Docker Engine 17.11</li>
+  <li>Docker Compose 1.17</li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Check all installed versions:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl version
+docker version
+docker-compose <span class="nt">-v</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>]</p>
+
+<h1 id="sample-application">Sample application</h1>
+
+<ul>
+  <li>
+    <p>Visit the GitHub repository with all the materials of this workshop:
+<br />https://github.com/jpetazzo/container.training</p>
+  </li>
+  <li>
+    <p>The application is in the <a href="https://github.com/jpetazzo/container.training/tree/master/dockercoins">dockercoins</a>
+subdirectory</p>
+  </li>
+  <li>
+    <p>Let’s look at the general layout of the source code:</p>
+
+    <p>there is a Compose file <a href="https://github.com/jpetazzo/container.training/blob/master/dockercoins/docker-compose.yml">docker-compose.yml</a> …</p>
+
+    <p>… and 4 other services, each in its own directory:</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">rng</code> = web service generating random bytes</li>
+      <li><code class="highlighter-rouge">hasher</code> = web service computing hash of POSTed data</li>
+      <li><code class="highlighter-rouge">worker</code> = background process using <code class="highlighter-rouge">rng</code> and <code class="highlighter-rouge">hasher</code></li>
+      <li><code class="highlighter-rouge">webui</code> = web interface to watch progress</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="compose-file-format-version">Compose file format version</h2>
+
+<p><em>Particularly relevant if you have used Compose before…</em></p>
+
+<ul>
+  <li>
+    <p>Compose 1.6 introduced support for a new Compose file format (aka “v2”)</p>
+  </li>
+  <li>
+    <p>Services are no longer at the top level, but under a <code class="highlighter-rouge">services</code> section</p>
+  </li>
+  <li>
+    <p>There has to be a <code class="highlighter-rouge">version</code> key at the top level, with value <code class="highlighter-rouge">"2"</code> (as a string, not an integer)</p>
+  </li>
+  <li>
+    <p>Containers are placed on a dedicated network, making links unnecessary</p>
+  </li>
+  <li>
+    <p>There are other minor differences, but upgrade is easy and straightforward</p>
+  </li>
+</ul>
+
+<h2 id="links-naming-and-service-discovery">Links, naming, and service discovery</h2>
+
+<ul>
+  <li>
+    <p>Containers can have network aliases (resolvable through DNS)</p>
+  </li>
+  <li>
+    <p>Compose file version 2+ makes each container reachable through its service name</p>
+  </li>
+  <li>
+    <p>Compose file version 1 did require “links” sections</p>
+  </li>
+  <li>
+    <p>Our code can connect to services using their short name</p>
+
+    <p>(instead of e.g. IP address or FQDN)</p>
+  </li>
+  <li>
+    <p>Network aliases are automatically namespaced</p>
+
+    <p>(i.e. you can have multiple apps declaring and using a service named <code class="highlighter-rouge">database</code>)</p>
+
+    <h2 id="example-in-workerworkerpy">Example in <code class="highlighter-rouge">worker/worker.py</code></h2>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">redis</span> <span class="o">=</span> <span class="n">Redis</span><span class="p">(</span><span class="s">"`redis`"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_random_bytes</span><span class="p">():</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"http://`rng`/32"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span>
+
+
+<span class="k">def</span> <span class="nf">hash_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"http://`hasher`/"</span><span class="p">,</span>
+                      <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                      <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/octet-stream"</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>(Full source code available <a href="https://github.com/jpetazzo/container.training/blob/8279a3bce9398f7c1a53bdd95187c53eda4e6435/dockercoins/worker/worker.py#L17">here</a>)</p>
+
+<h2 id="whats-this-application">What’s this application?</h2>
+
+<ul>
+  <li>
+    <p>It is a DockerCoin miner! .emoji[💰🐳📦🚢]</p>
+  </li>
+  <li>
+    <p>No, you can’t buy coffee with DockerCoins</p>
+  </li>
+  <li>
+    <p>How DockerCoins works:</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">worker</code> asks to <code class="highlighter-rouge">rng</code> to generate a few random bytes</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">worker</code> feeds these bytes into <code class="highlighter-rouge">hasher</code></p>
+      </li>
+      <li>
+        <p>and repeat forever!</p>
+      </li>
+      <li>
+        <p>every second, <code class="highlighter-rouge">worker</code> updates <code class="highlighter-rouge">redis</code> to indicate how many loops were done</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">webui</code> queries <code class="highlighter-rouge">redis</code>, and computes and exposes “hashing speed” in your browser</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="getting-the-application-source-code">Getting the application source code</h2>
+
+<ul>
+  <li>
+    <p>We will clone the GitHub repository</p>
+  </li>
+  <li>
+    <p>The repository also contains scripts and tools that we will use through the workshop</p>
+  </li>
+</ul>
+
+<p>.exercise[</p>
+
+<!--
+```bash
+if [ -d container.training ]; then
+  mv container.training container.training.$$
+fi
+```
+-->
+
+<ul>
+  <li>Clone the repository on <code class="highlighter-rouge">node1</code>:
+    <pre><code class="language-.term1">git clone git://github.com/jpetazzo/container.training
+</code></pre>
+  </li>
+</ul>
+
+<p>]</p>
+
+<p>(You can also fork the repository on GitHub and clone your fork if you prefer that.)</p>
+
+<h1 id="running-the-application">Running the application</h1>
+
+<p>Without further ado, let’s start our application.</p>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Go to the <code class="highlighter-rouge">dockercoins</code> directory, in the cloned repo:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/container.training/dockercoins
+</code></pre></div>    </div>
+  </li>
+  <li>Use Compose to build and run all containers:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<!--
+```longwait units of work done```
+```keys ^C```
+-->
+
+<p>]</p>
+
+<p>Compose tells Docker to build all container images (pulling
+the corresponding base images), then starts all containers,
+and displays aggregated logs.</p>
+
+<h2 id="lots-of-logs">Lots of logs</h2>
+
+<ul>
+  <li>
+    <p>The application continuously generates logs</p>
+  </li>
+  <li>
+    <p>We can see the <code class="highlighter-rouge">worker</code> service making requests to <code class="highlighter-rouge">rng</code> and <code class="highlighter-rouge">hasher</code></p>
+  </li>
+  <li>
+    <p>Let’s put that in the background</p>
+  </li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Stop the application by hitting <code class="highlighter-rouge">^C</code></li>
+</ul>
+
+<p>]</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">^C</code> stops all containers by sending them the <code class="highlighter-rouge">TERM</code> signal</p>
+  </li>
+  <li>
+    <p>Some containers exit immediately, others take longer
+<br />(because they don’t handle <code class="highlighter-rouge">SIGTERM</code> and end up being killed after a 10s timeout)</p>
+  </li>
+</ul>
+
+<h2 id="restarting-in-the-background">Restarting in the background</h2>
+
+<ul>
+  <li>Many flags and commands of Compose are modeled after those of <code class="highlighter-rouge">docker</code></li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Start the app in the background with the <code class="highlighter-rouge">-d</code> option:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Check that our app is running with the <code class="highlighter-rouge">ps</code> command:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose ps
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>]</p>
+
+<p><code class="highlighter-rouge">docker-compose ps</code> also shows the ports exposed by the application.</p>
+
+<h2 id="viewing-logs">Viewing logs</h2>
+
+<ul>
+  <li>The <code class="highlighter-rouge">docker-compose logs</code> command works like <code class="highlighter-rouge">docker logs</code></li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>View all logs since container creation and exit when done:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose logs
+</code></pre></div>    </div>
+  </li>
+  <li>Stream container logs, starting at the last 10 lines for each container:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose logs <span class="nt">--tail</span> 10 <span class="nt">--follow</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<!--
+```wait units of work done```
+```keys ^C```
+-->
+
+<p>]</p>
+
+<p>Tip: use <code class="highlighter-rouge">^S</code> and <code class="highlighter-rouge">^Q</code> to pause/resume log output.</p>
+
+<h2 id="upgrading-from-compose-16">Upgrading from Compose 1.6</h2>
+
+<p>.warning[The <code class="highlighter-rouge">logs</code> command has changed between Compose 1.6 and 1.7!]</p>
+
+<ul>
+  <li>
+    <p>Up to 1.6</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">docker-compose logs</code> is the equivalent of <code class="highlighter-rouge">logs --follow</code></p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">docker-compose logs</code> must be restarted if containers are added</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Since 1.7</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">--follow</code> must be specified explicitly</p>
+      </li>
+      <li>
+        <p>new containers are automatically picked up by <code class="highlighter-rouge">docker-compose logs</code></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="connecting-to-the-web-ui">Connecting to the web UI</h2>
+
+<ul>
+  <li>The <code class="highlighter-rouge">webui</code> container exposes a web dashboard; let’s view it</li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>
+    <p>With a web browser, connect to <code class="highlighter-rouge">node1</code> on port 8000</p>
+  </li>
+  <li>
+    <p>Remember: the <code class="highlighter-rouge">nodeX</code> aliases are valid only on the nodes themselves</p>
+  </li>
+  <li>
+    <p>In your browser, you need to enter the IP address of your node</p>
+  </li>
+</ul>
+
+<!-- ```open http://node1:8000``` -->
+
+<p>]</p>
+
+<p>A drawing area should show up, and after a few seconds, a blue
+graph will appear.</p>
+
+<h2 id="if-the-graph-doesnt-load">If the graph doesn’t load</h2>
+
+<p>If you just see a <code class="highlighter-rouge">Page not found</code> error, it might be because your
+Docker Engine is running on a different machine. This can be the case if:</p>
+
+<ul>
+  <li>
+    <p>you are using the Docker Toolbox</p>
+  </li>
+  <li>
+    <p>you are using a VM (local or remote) created with Docker Machine</p>
+  </li>
+  <li>
+    <p>you are controlling a remote Docker Engine</p>
+  </li>
+</ul>
+
+<p>When you run DockerCoins in development mode, the web UI static files
+are mapped to the container using a volume. Alas, volumes can only
+work on a local environment, or when using Docker4Mac or Docker4Windows.</p>
+
+<p>How to fix this?</p>
+
+<p>Edit <code class="highlighter-rouge">dockercoins.yml</code> and comment out the <code class="highlighter-rouge">volumes</code> section, and try again.</p>
+
+<h2 id="why-does-the-speed-seem-irregular">Why does the speed seem irregular?</h2>
+
+<ul>
+  <li>
+    <p>It <em>looks like</em> the speed is approximately 4 hashes/second</p>
+  </li>
+  <li>
+    <p>Or more precisely: 4 hashes/second, with regular dips down to zero</p>
+  </li>
+  <li>
+    <p>Why?</p>
+  </li>
+  <li>
+    <p>The app actually has a constant, steady speed: 3.33 hashes/second
+<br />
+(which corresponds to 1 hash every 0.3 seconds, for <em>reasons</em>)</p>
+  </li>
+  <li>
+    <p>Yes, and?</p>
+  </li>
+</ul>
+
+<h2 id="the-reason-why-this-graph-is-not-awesome">The reason why this graph is <em>not awesome</em></h2>
+
+<ul>
+  <li>
+    <p>The worker doesn’t update the counter after every loop, but up to once per second</p>
+  </li>
+  <li>
+    <p>The speed is computed by the browser, checking the counter about once per second</p>
+  </li>
+  <li>
+    <p>Between two consecutive updates, the counter will increase either by 4, or by 0</p>
+  </li>
+  <li>
+    <p>The perceived speed will therefore be 4 - 4 - 4 - 0 - 4 - 4 - 0 etc.</p>
+  </li>
+  <li>
+    <p>What can we conclude from this?</p>
+  </li>
+  <li>
+    <p>Jérôme is clearly incapable of writing good frontend code</p>
+  </li>
+</ul>
+
+<h2 id="scaling-up-the-application">Scaling up the application</h2>
+
+<ul>
+  <li>
+    <p>Our goal is to make that performance graph go up (without changing a line of code!)</p>
+  </li>
+  <li>
+    <p>Before trying to scale the application, we’ll figure out if we need more resources</p>
+
+    <p>(CPU, RAM…)</p>
+  </li>
+  <li>
+    <p>For that, we will use good old UNIX tools on our Docker node</p>
+  </li>
+</ul>
+
+<h2 id="looking-at-resource-usage">Looking at resource usage</h2>
+
+<ul>
+  <li>Let’s look at CPU, memory, and I/O usage</li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>run <code class="highlighter-rouge">top</code> to see CPU and memory usage (you should see idle cycles)</li>
+</ul>
+
+<!--
+```bash top```
+
+```wait Tasks```
+```keys ^C```
+-->
+
+<ul>
+  <li>run <code class="highlighter-rouge">vmstat 1</code> to see I/O usage (si/so/bi/bo)
+<br />(the 4 numbers should be almost zero, except <code class="highlighter-rouge">bo</code> for logging)</li>
+</ul>
+
+<!--
+```bash vmstat 1```
+
+```wait memory```
+```keys ^C```
+-->
+
+<p>]</p>
+
+<p>We have available resources.</p>
+
+<ul>
+  <li>Why?</li>
+  <li>How can we use them?</li>
+</ul>
+
+<h2 id="scaling-workers-on-a-single-node">Scaling workers on a single node</h2>
+
+<ul>
+  <li>Docker Compose supports scaling</li>
+  <li>Let’s scale <code class="highlighter-rouge">worker</code> and see what happens!</li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Start one more <code class="highlighter-rouge">worker</code> container:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose scale <span class="nv">worker</span><span class="o">=</span>2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Look at the performance graph (it should show a x2 improvement)</p>
+  </li>
+  <li>
+    <p>Look at the aggregated logs of our containers (<code class="highlighter-rouge">worker_2</code> should show up)</p>
+  </li>
+  <li>Look at the impact on CPU load with e.g. top (it should be negligible)</li>
+</ul>
+
+<p>]</p>
+
+<h2 id="adding-more-workers">Adding more workers</h2>
+
+<ul>
+  <li>Great, let’s add more workers and call it a day, then!</li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Start eight more <code class="highlighter-rouge">worker</code> containers:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose scale <span class="nv">worker</span><span class="o">=</span>10
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Look at the performance graph: does it show a x10 improvement?</p>
+  </li>
+  <li>
+    <p>Look at the aggregated logs of our containers</p>
+  </li>
+  <li>Look at the impact on CPU load and memory usage</li>
+</ul>
+
+<p>]</p>
+
+<h1 id="identifying-bottlenecks">Identifying bottlenecks</h1>
+
+<ul>
+  <li>
+    <p>You should have seen a 3x speed bump (not 10x)</p>
+  </li>
+  <li>
+    <p>Adding workers didn’t result in linear improvement</p>
+  </li>
+  <li>
+    <p><em>Something else</em> is slowing us down</p>
+  </li>
+  <li>
+    <p>… But what?</p>
+  </li>
+  <li>
+    <p>The code doesn’t have instrumentation</p>
+  </li>
+  <li>
+    <p>Let’s use state-of-the-art HTTP performance analysis!
+<br />(i.e. good old tools like <code class="highlighter-rouge">ab</code>, <code class="highlighter-rouge">httping</code>…)</p>
+  </li>
+</ul>
+
+<h2 id="accessing-internal-services">Accessing internal services</h2>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">rng</code> and <code class="highlighter-rouge">hasher</code> are exposed on ports 8001 and 8002</p>
+  </li>
+  <li>
+    <p>This is declared in the Compose file:</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="s">...</span>
+  <span class="s">rng</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">rng</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">8001:80"</span>
+
+  <span class="na">hasher</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">hasher</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">8002:80"</span>
+  <span class="s">...</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="measuring-latency-under-load">Measuring latency under load</h2>
+
+<p>We will use <code class="highlighter-rouge">httping</code>.</p>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Check the latency of <code class="highlighter-rouge">rng</code>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>httping <span class="nt">-c</span> 10 localhost:8001
+</code></pre></div>    </div>
+  </li>
+  <li>Check the latency of <code class="highlighter-rouge">hasher</code>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>httping <span class="nt">-c</span> 10 localhost:8002
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>]</p>
+
+<p><code class="highlighter-rouge">rng</code> has a much higher latency than <code class="highlighter-rouge">hasher</code>.</p>
+
+<h2 id="lets-draw-hasty-conclusions">Let’s draw hasty conclusions</h2>
+
+<ul>
+  <li>
+    <p>The bottleneck seems to be <code class="highlighter-rouge">rng</code></p>
+  </li>
+  <li>
+    <p><em>What if</em> we don’t have enough entropy and can’t generate enough random numbers?</p>
+  </li>
+  <li>
+    <p>We need to scale out the <code class="highlighter-rouge">rng</code> service on multiple machines!</p>
+  </li>
+</ul>
+
+<p>Note: this is a fiction! We have enough entropy. But we need a pretext to scale out.</p>
+
+<p>(In fact, the code of <code class="highlighter-rouge">rng</code> uses <code class="highlighter-rouge">/dev/urandom</code>, which never runs out of entropy…
+<br />
+…and is <a href="http://www.slideshare.net/PacSecJP/filippo-plain-simple-reality-of-entropy">just as good as <code class="highlighter-rouge">/dev/random</code></a>.)</p>
+
+<h2 id="clean-up">Clean up</h2>
+
+<ul>
+  <li>Before moving on, let’s remove those containers</li>
+</ul>
+
+<p>.exercise[</p>
+
+<ul>
+  <li>Tell Compose to remove everything:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose down
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>]</p>
+<h1 id="kubernetes-concepts">Kubernetes concepts</h1>
+
+<ul>
+  <li>
+    <p>Kubernetes is a container management system</p>
+  </li>
+  <li>
+    <p>It runs and manages containerized applications on a cluster</p>
+  </li>
+  <li>
+    <p>What does that really mean?</p>
+  </li>
+</ul>
+
+<h2 id="basic-things-we-can-ask-kubernetes-to-do">Basic things we can ask Kubernetes to do</h2>
+
+<ul>
+  <li>
+    <p>Start 5 containers using image <code class="highlighter-rouge">atseashop/api:v1.3</code></p>
+  </li>
+  <li>
+    <p>Place an internal load balancer in front of these containers</p>
+  </li>
+  <li>
+    <p>Start 10 containers using image <code class="highlighter-rouge">atseashop/webfront:v1.3</code></p>
+  </li>
+  <li>
+    <p>Place a public load balancer in front of these containers</p>
+  </li>
+  <li>
+    <p>It’s Black Friday (or Christmas), traffic spikes, grow our cluster and add containers</p>
+  </li>
+  <li>
+    <p>New release! Replace my containers with the new image <code class="highlighter-rouge">atseashop/webfront:v1.4</code></p>
+  </li>
+  <li>
+    <p>Keep processing requests during the upgrade; update my containers one at a time</p>
+  </li>
+</ul>
+
+<h2 id="other-things-that-kubernetes-can-do-for-us">Other things that Kubernetes can do for us</h2>
+
+<ul>
+  <li>
+    <p>Basic autoscaling</p>
+  </li>
+  <li>
+    <p>Blue/green deployment, canary deployment</p>
+  </li>
+  <li>
+    <p>Long running services, but also batch (one-off) jobs</p>
+  </li>
+  <li>
+    <p>Overcommit our cluster and <em>evict</em> low-priority jobs</p>
+  </li>
+  <li>
+    <p>Run services with <em>stateful</em> data (databases etc.)</p>
+  </li>
+  <li>
+    <p>Fine-grained access control defining <em>what</em> can be done by <em>whom</em> on <em>which</em> resources</p>
+  </li>
+  <li>
+    <p>Integrating third party services (<em>service catalog</em>)</p>
+  </li>
+  <li>
+    <p>Automating complex tasks (<em>operators</em>)</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-architecture">Kubernetes architecture</h2>
+
+<p><img src="images/k8s-arch1.png" alt="haha only kidding" /></p>
+
+<h2 id="kubernetes-architecture-1">Kubernetes architecture</h2>
+
+<ul>
+  <li>
+    <p>Ha ha ha ha</p>
+  </li>
+  <li>
+    <p>OK, I was trying to scare you, it’s much simpler than that ❤️</p>
+  </li>
+</ul>
+
+<p><img src="images/k8s-arch2.png" alt="that one is more like the real thing" /></p>
+
+<h2 id="credits">Credits</h2>
+
+<ul>
+  <li>
+    <p>The first schema is a Kubernetes cluster with storage backed by multi-path iSCSI</p>
+
+    <p>(Courtesy of <a href="https://www.yongbok.net/blog/">Yongbok Kim</a>)</p>
+  </li>
+  <li>
+    <p>The second one is a simplified representation of a Kubernetes cluster</p>
+
+    <p>(Courtesy of <a href="https://medium.com/containermind/a-reference-architecture-for-deploying-wso2-middleware-on-kubernetes-d4dee7601e8e">Imesh Gunaratne</a>)</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-architecture-the-master">Kubernetes architecture: the master</h2>
+
+<ul>
+  <li>
+    <p>The Kubernetes logic (its “brains”) is a collection of services:</p>
+
+    <ul>
+      <li>the API server (our point of entry to everything!)</li>
+      <li>core services like the scheduler and controller manager</li>
+      <li><code class="highlighter-rouge">etcd</code> (a highly available key/value store; the “database” of Kubernetes)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Together, these services form what is called the “master”</p>
+  </li>
+  <li>
+    <p>These services can run straight on a host, or in containers
+<br />
+(that’s an implementation detail)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">etcd</code> can be run on separate machines (first schema) or co-located (second schema)</p>
+  </li>
+  <li>
+    <p>We need at least one master, but we can have more (for high availability)</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-architecture-the-nodes">Kubernetes architecture: the nodes</h2>
+
+<ul>
+  <li>
+    <p>The nodes executing our containers run another collection of services:</p>
+
+    <ul>
+      <li>a container Engine (typically Docker)</li>
+      <li>kubelet (the “node agent”)</li>
+      <li>kube-proxy (a necessary but not sufficient network component)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Nodes were formerly called “minions”</p>
+  </li>
+  <li>
+    <p>It is customary to <em>not</em> run apps on the node(s) running master components</p>
+
+    <p>(Except when using small development clusters)</p>
+  </li>
+</ul>
+
+<h2 id="do-we-need-to-run-docker-at-all">Do we need to run Docker at all?</h2>
+
+<p>No!</p>
+
+<ul>
+  <li>
+    <p>By default, Kubernetes uses the Docker Engine to run containers</p>
+  </li>
+  <li>
+    <p>We could also use <code class="highlighter-rouge">rkt</code> (“Rocket”) from CoreOS</p>
+  </li>
+  <li>
+    <p>Or leverage other pluggable runtimes through the <em>Container Runtime Interface</em></p>
+
+    <p>(like CRI-O, or containerd)</p>
+  </li>
+</ul>
+
+<h2 id="do-we-need-to-run-docker-at-all-1">Do we need to run Docker at all?</h2>
+
+<p>Yes!</p>
+
+<ul>
+  <li>
+    <p>In this workshop, we run our app on a single node first</p>
+  </li>
+  <li>
+    <p>We will need to build images and ship them around</p>
+  </li>
+  <li>
+    <p>We can do these things without Docker
+<br />
+(and get diagnosed with NIH¹ syndrome)</p>
+  </li>
+  <li>
+    <p>Docker is still the most stable container engine today
+<br />
+(but other options are maturing very quickly)</p>
+  </li>
+</ul>
+
+<p>.footnote[¹<a href="https://en.wikipedia.org/wiki/Not_invented_here">Not Invented Here</a>]</p>
+
+<h2 id="do-we-need-to-run-docker-at-all-2">Do we need to run Docker at all?</h2>
+
+<ul>
+  <li>
+    <p>On our development environments, CI pipelines … :</p>
+
+    <p><em>Yes, almost certainly</em></p>
+  </li>
+  <li>
+    <p>On our production servers:</p>
+
+    <p><em>Yes (today)</em></p>
+
+    <p><em>Probably not (in the future)</em></p>
+  </li>
+</ul>
+
+<p>.footnote[More information about CRI <a href="http://blog.kubernetes.io/2016/12/container-runtime-interface-cri-in-kubernetes.html">on the Kubernetes blog</a>]</p>
+
+<h2 id="kubernetes-resources">Kubernetes resources</h2>
+
+<ul>
+  <li>
+    <p>The Kubernetes API defines a lot of objects called <em>resources</em></p>
+  </li>
+  <li>
+    <p>These resources are organized by type, or <code class="highlighter-rouge">Kind</code> (in the API)</p>
+  </li>
+  <li>
+    <p>A few common resource types are:</p>
+
+    <ul>
+      <li>node (a machine — physical or virtual — in our cluster)</li>
+      <li>pod (group of containers running together on a node)</li>
+      <li>service (stable network endpoint to connect to one or multiple containers)</li>
+      <li>namespace (more-or-less isolated group of things)</li>
+      <li>secret (bundle of sensitive data to be passed to a container)</li>
+    </ul>
+
+    <p>And much more! (We can see the full list by running <code class="highlighter-rouge">kubectl get</code>)</p>
+  </li>
+</ul>
+
+<p><img src="images/k8s-arch3-thanks-weave.png" alt="Node, pod, container" /></p>
+
+<p>(Diagram courtesy of Weave Works, used with permission.)</p>
+
+<h1 id="declarative-vs-imperative">Declarative vs imperative</h1>
+
+<ul>
+  <li>
+    <p>Our container orchestrator puts a very strong emphasis on being <em>declarative</em></p>
+  </li>
+  <li>
+    <p>Declarative:</p>
+
+    <p><em>I would like a cup of tea.</em></p>
+  </li>
+  <li>
+    <p>Imperative:</p>
+
+    <p><em>Boil some water. Pour it in a teapot. Add tea leaves. Steep for a while. Serve in cup.</em></p>
+  </li>
+  <li>
+    <p>Declarative seems simpler at first …</p>
+  </li>
+  <li>
+    <p>… As long as you know how to brew tea</p>
+  </li>
+</ul>
+
+<h2 id="declarative-vs-imperative-1">Declarative vs imperative</h2>
+
+<ul>
+  <li>
+    <p>What declarative would really be:</p>
+
+    <p><em>I want a cup of tea, obtained by pouring an infusion¹ of tea leaves in a cup.</em></p>
+
+    <p><em>¹An infusion is obtained by letting the object steep a few minutes in hot² water.</em></p>
+
+    <p><em>²Hot liquid is obtained by pouring it in an appropriate container³ and setting it on a stove.</em></p>
+
+    <p><em>³Ah, finally, containers! Something we know about. Let’s get to work, shall we?</em></p>
+  </li>
+</ul>
+
+<p>.footnote[Did you know there was an <a href="https://en.wikipedia.org/wiki/ISO_3103">ISO standard</a>
+specifying how to brew tea?]</p>
+
+<h2 id="declarative-vs-imperative-2">Declarative vs imperative</h2>
+
+<ul>
+  <li>
+    <p>Imperative systems:</p>
+
+    <ul>
+      <li>
+        <p>simpler</p>
+      </li>
+      <li>
+        <p>if a task is interrupted, we have to restart from scratch</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Declarative systems:</p>
+
+    <ul>
+      <li>
+        <p>if a task is interrupted (or if we show up to the party half-way through),
+we can figure out what’s missing and do only what’s necessary</p>
+      </li>
+      <li>
+        <p>we need to be able to <em>observe</em> the system</p>
+      </li>
+      <li>
+        <p>… and compute a “diff” between <em>what we have</em> and <em>what we want</em></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+            </div>
+        </article>
+    </div>
+
+    
+    <div class="splitter">
+    </div>
+
+    <div class="panel-right">
+        <span class="resize-warning">If the commandline doesn't appear in the terminal, make sure popups are enabled or try resizing the browser window.</span>
+        
+        <div class="term1"></div>
+        
+    </div>
+    
+
+</div>
+
+<script>
+    (function() {
+        var font3 = document.createElement('link');
+        font3.type = 'text/css';
+        font3.rel = 'stylesheet';
+        font3.href = '/css/syntax-highlighting.css';
+        var q = document.getElementsByTagName('link')[0];
+        q.parentNode.insertBefore(font3, q);
+    })();
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://rawgit.com/RickStrahl/jquery-resizable/master/dist/jquery-resizable.min.js"></script>
+<script src="https://cdn.rawgit.com/play-with-docker/sdk/master/dist/pwd.js"></script>
+<script src="/js/quiz.js"></script>
+<script>
+    var siteUrl = "http://0.0.0.0:4000"
+      
+    pwd.newSession([{selector: '.term1'}, {selector: '.term2'}, {selector: '.term3'}], {baseUrl: 'https://labs.play-with-k8s.com', ImageName: ''});
+    $(".panel-left").resizable({
+        handleSelector: ".splitter",
+        resizeHeight: false,
+        onDragEnd: pwd.resize.bind(pwd)
+    });
+    window.onbeforeunload = function(e) {
+        pwd.closeSession(function(){});
+        return;
+    }
+
+</script>
+<script>
+    var pageTime = 10
+        console.log(pageTime);
+        var panelLeft = document.getElementsByClassName("panel-left")[0];
+        panelLeft.addEventListener('scroll', function(event){
+          console.log( 
+3151 
+);
+          var element = event.target;
+          console.log("height: " + element.scrollHeight + " top: " + element.scrollTop + " clientHeight: " + ((element.clientHeight)+(element.clientHeight*.25)));
+          if ((element.scrollHeight - element.scrollTop) <= ((element.clientHeight)+(element.clientHeight*.25)))
+          {
+              console.log('scrolled');
+              panelLeft.removeEventListener('scroll');
+          }
+        });
+      </script>
+
+       <footer>
+     <div class="mt10 social-share">
+  Share this on &rarr;
+    <a href="https://twitter.com/intent/tweet?text=Kubernetes for Beginners&url=http://0.0.0.0:4000/kubernetes-overview/&via=docker&related=docker" rel="nofollow" target="_blank" title="Share on Twitter"><img src="/images/twitter.svg" alt="https://twitter.com/docker" style="width:48px;display:inline;"></a> Twitter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://facebook.com/sharer.php?u=http://0.0.0.0:4000/kubernetes-overview/" rel="nofollow" target="_blank" title="Share on Facebook"><img src="/images/facebook.svg" style="width:48px;display:inline;" alt="https://www.facebook.com/docker.run"></a> Facebook&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://plus.google.com/share?url=http://0.0.0.0:4000/kubernetes-overview/" rel="nofollow" target="_blank" title="Share on Google+"><img src="https://www.gstatic.com/images/icons/gplus-64.png" alt="Share on Google+" style="width:48px;display:inline;"/></a> Google+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=<URL>&title=<TITILE>&summary=<DESCRIPTION>&source=<DOMAIN>" rel="nofollow" target="_blank" title="Share on LinkedIn"><img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" style="width:48px;display:inline;" /></a> LinkedIn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </div>
+    <div class="container">
+
+      <div class="row mt10 mb10">
+       
+        
+
+      <div class="col-md-4 text-center">All rights reserved by <a target="_blank" href="http://play-with-docker.com">PWD</a></div>
+        
+        
+      <div class="col-md-4 text-center" >
+      
+      <a target="_blank" href="https://www.docker.com"><img src="https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg" alt="PWD Team"></a>
+      
+      </div>
+      <div class="col-md-4 text-center">
+        <a target="_blank" href="https://www.facebook.com/docker.run"><li class="social facebook"><img src="/images/facebook.svg" alt="https://www.facebook.com/docker.run"></li></a> 
+          <a target="_blank" href="https://twitter.com/docker"><li class="social twitter"><img src="/images/twitter.svg" alt="https://twitter.com/docker"></li></a>      
+          <a target="_blank" href="https://www.github.com/play-with-docker/play-with-docker.github.io"><li class="social github"><img src="/images/github.svg" alt="https://www.github.com/play-with-docker/play-with-docker.github.io"></li></a>
+      </div>
+    </div>
+  </div> 
+  
+</footer>
+
+
+    
+<script async>
+    (function() {
+        var font = document.createElement('link'); 
+        font.type = 'text/css'; 
+        font.rel = 'stylesheet';
+        font.href = '//fonts.googleapis.com/css?family=Raleway:400,700';
+        var s = document.getElementsByTagName('link')[0]; 
+        s.parentNode.insertBefore(font, s);
+      })();
+</script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- Google Analytics Tracking code -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-89019737-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+
+
+</html>
