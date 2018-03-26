@@ -210,10 +210,279 @@ docker-compose down
 
 #### What declarative would really be:
 
-  *  want a cup of tea, obtained by pouring an infusion of tea leaves in a cup.*
+  *I want a cup of tea, obtained by pouring an infusion of tea leaves in a cup.*
 
   *An infusion is obtained by letting the object steep a few minutes in hot water.*
 
   *Hot liquid is obtained by pouring it in an appropriate container and setting it on a stove.*
 
   *Ah, finally, containers! Something we know about. Let's get to work, shall we?*
+
+### Summary of declarative vs imperative
+
+* Imperative systems:
+
+  * simpler
+
+  * if a task is interrupted, we have to restart from scratch
+
+* Declarative systems:
+
+  * if a task is interrupted (or if we show up to the party half-way through), we can figure out what's missing and do only what's necessary
+
+  * we need to be able to *observe* the system
+
+  * ... and compute a "diff" between *what we have and what we want*
+
+### Declarative vs imperative in Kubernetes
+
+* Virtually everything we create in Kubernetes is created from a `spec`
+
+* Watch for the `spec` fields in the YAML files later!
+
+* The `spec` describes *how we want the thing to be*
+
+* Kubernetes will *reconcile* the current state with the spec (technically, this is done by a number of *controllers*)
+
+* When we want to change some resource, we update the `spec`
+
+* Kubernetes will then *converge* that resource
+
+## Kubernetes network model
+
+### Kubernetes network model
+* TL,DR:
+
+  *Our cluster (nodes and pods) is one big flat IP network.*
+
+* In detail:
+
+  * all nodes must be able to reach each other, without NAT
+
+  * all pods must be able to reach each other, without NAT
+
+  * pods and nodes must be able to reach each other, without NAT
+
+  * each pod is aware of its IP address (no NAT)
+
+* Kubernetes doesn't mandate any particular implementation
+
+## Kubernetes network model: the good
+
+* Everything can reach everything
+
+* No address translation
+
+* No port translation
+
+* No new protocol
+
+* Pods cannot move from a node to another and keep their IP address
+
+* IP addresses don't have to be "portable" from a node to another (We can use e.g. a subnet per node and use a simple routed topology)
+
+* The specification is simple enough to allow many various implementations
+
+## Kubernetes network model: the less good
+
+* Everything can reach everything
+
+  * if you want security, you need to add network policies
+
+  * the network implementation that you use needs to support them
+
+* There are literally dozens of implementations out there (15 are listed in the Kubernetes documentation)
+
+* It looks like you have a level 3 network, but it's only level 4 (The spec requires UDP and TCP, but not port ranges or arbitrary IP packets)
+
+* `kube-proxy` is on the data path when connecting to a pod or container, and it's not particularly fast (relies on userland proxying or iptables)
+
+### Kubernetes network model: in practice
+
+* The nodes that we are using have been set up to use Weave
+
+* We don't endorse Weave in a particular way, it just Works For Us
+
+* Don't worry about the warning about kube-proxy performance
+
+* Unless you:
+
+  * routinely saturate 10G network interfaces
+
+  * count packet rates in millions per second
+
+  * run high-traffic VOIP or gaming platforms
+
+  * do weird things that involve millions of simultaneous connections (in which case you're already familiar with kernel tuning)
+
+## First contact with `kubectl`
+
+* `kubectl` is (almost) the only tool we'll need to talk to Kubernetes
+
+* It is a rich CLI tool around the Kubernetes API (Everything you can do with `kubectl`, you can do directly with the API)
+
+<!-- TODO: Is this necessary and true? -->
+* On our machines, there is a `~/.kube/config` file with:
+
+  * the Kubernetes API address
+
+  * the path to our TLS certificates used to authenticate
+
+* You can also use the `--kubeconfig` flag to pass a config file
+
+* Or directly `--server`, `--user`, etc.
+
+* `kubectl` can be pronounced "Cube C T L", "Cube cuttle", "Cube cuddle"...
+
+### `kubectl get`
+
+* Let's look at our Node resources with kubectl get!
+
+* Look at the composition of our cluster:
+
+  ```.term
+  kubectl get node
+  ```
+* These commands are equivalent
+
+  ```
+  kubectl get no
+  kubectl get node
+  kubectl get nodes
+  ```
+
+### Obtaining machine-readable output
+
+* `kubectl get` can output JSON, YAML, or be directly formatted
+
+* Give us more info about the nodes:
+
+  ```.term1
+  kubectl get nodes -o wide
+  ```
+
+* Let's have some YAML:
+  ```.term1
+  kubectl get no -o yaml
+  ```
+  See that kind: List at the end? It's the type of our result!
+
+### (Ab)using `kubectl` and `jq`
+
+* It's super easy to build custom reports
+
+* Show the capacity of all our nodes as a stream of JSON objects:
+  ```.term1
+  kubectl get nodes -o json | 
+        jq ".items[] | {name:.metadata.name} + .status.capacity"
+  ```
+
+### What's available?
+
+* `kubectl` has pretty good introspection facilities
+
+* We can list all available resource types by running `kubectl get`
+
+* We can view details about a resource with:
+  ```
+  kubectl describe type/name
+  kubectl describe type name
+  ```
+
+* We can view the definition for a resource type with:
+  ```
+  kubectl explain type
+  ```
+
+Each time, `type` can be singular, plural, or abbreviated type name.
+
+### Services
+
+* A service is a stable endpoint to connect to "something" (In the initial proposal, they were called "portals")
+
+* List the services on our cluster with one of these commands:
+  ```
+  kubectl get services
+  kubectl get svc
+  ```
+
+There is already one service on our cluster: the Kubernetes API itself.
+
+### ClusterIP services
+
+* A `ClusterIP` service is internal, available from the cluster only
+
+* This is useful for introspection from within containers
+
+* Try to connect to the API: <!-- TODO: Check this is accurate -->
+
+  ```.term1
+  curl -k https://10.96.0.1
+  ```
+
+  * `-k` is used to skip certificate verification
+  * Make sure to replace 10.96.0.1 with the CLUSTER-IP shown by `$ kubectl get svc`
+
+The error that we see is expected: the Kubernetes API requires authentication.
+
+### Listing running containers
+
+* Containers are manipulated through pods
+
+* A pod is a group of containers:
+
+  * running together (on the same node)
+
+  * sharing resources (RAM, CPU; but also network, volumes)
+
+* List pods on our cluster:
+
+  ```.term1
+  kubectl get pods
+  ```
+*These are not the pods you're looking for*. But where are they?!?
+
+### Namespaces
+
+* Namespaces allow us to segregate resources
+
+* List the namespaces on our cluster with one of these commands:
+
+```
+kubectl get namespaces
+kubectl get namespace
+kubectl get ns
+```
+*You know what ... This `kube-system` thing looks suspicious.*
+
+### Accessing namespaces
+* By default, `kubectl` uses the `default` namespace
+
+* We can switch to a different namespace with the `-n` option
+
+* List the pods in the `kube-system` namespace:
+  ```.term1
+  kubectl -n kube-system get pods
+  ```
+*Ding ding ding ding ding!*
+
+### What are all these pods?
+
+* `etcd` is our etcd server
+
+* `kube-apiserver` is the API server
+
+* `kube-controller-manager` and `kube-scheduler` are other master components
+
+* `kube-dns` is an additional component (not mandatory but super useful, so it's there)
+
+* `kube-proxy` is the (per-node) component managing port mappings and such
+
+* `weave` is the (per-node) component managing the network overlay <!-- Note: Mention of Weave -->
+
+* the `READY` column indicates the number of containers in each pod
+
+* the pods with a name ending with `-node1` are the master components (they have been specifically "pinned" to the master node)
+
+## Running our first containers on Kubernetes
+
