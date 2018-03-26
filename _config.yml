@@ -54,5 +54,5 @@ plugins:
   - jekyll-paginate
 
 # Play with Docker
-pwdkurl: https://labs.play-with-k8s.com
+pwkurl: https://labs.play-with-k8s.com
 
