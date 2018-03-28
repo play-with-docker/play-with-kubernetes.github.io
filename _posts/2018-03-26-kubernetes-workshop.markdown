@@ -486,3 +486,289 @@ kubectl get ns
 
 ## Running our first containers on Kubernetes
 
+### Running our first containers on Kubernetes
+* First things first: we cannot run a container
+
+* We are going to run a pod, and in that pod there will be a single container
+
+* In that container in the pod, we are going to run a simple ping command
+
+* Then we are going to start additional copies of the pod
+
+### Starting a simple pod with `kubectl run`
+
+* We need to specify at least a name and the image we want to use
+
+* Let's ping `goo.gl`
+
+```.term1
+kubectl run pingpong --image alpine ping goo.gl
+```
+
+* OK, what just happened?
+
+### Behind the scenes of `kubectl run`
+
+* Let's look at the resources that were created by `kubectl run`
+
+* List most resource types:
+
+```.term1
+kubectl get all
+```
+
+We should see the following things:
+
+* `deploy/pingpong` (the *deployment* that we just created)
+* `rs/pingpong-xxxx` (a *replica set* created by the deployment)
+* `po/pingpong-yyyy` (a *pod* created by the replica set)
+
+### What are these different things?
+
+* A *deployment* is a high-level construct
+
+  * allows scaling, rolling updates, rollbacks
+
+  * multiple deployments can be used together to implement a [canary deployment](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#canary-deployments)
+
+  * delegates pods management to *replica sets*
+
+* A *replica set* is a low-level construct
+
+  * makes sure that a given number of identical pods are running
+
+  * allows scaling
+
+  * rarely used directly
+
+* A *replication controller* is the (deprecated) predecessor of a replica set
+
+### Our `pingpong` deployment
+
+* `kubectl run` created a *deployment*, `deploy/pingpong`
+
+* That deployment created a *replica set*, `rs/pingpong-xxxx`
+
+* That *replica set* created a *pod*, `po/pingpong-yyyy`
+
+* We'll see later how these folks play together for:
+
+  * scaling
+
+  * high availability
+
+  * rolling updates
+
+### Viewing container output
+
+* Let's use the `kubectl logs` command
+
+* We will pass either a *pod name*, or a *type/name*
+(E.g. if we specify a deployment or replica set, it will get the first pod in it)
+
+* Unless specified otherwise, it will only show logs of the first container in the pod
+(Good thing there's only one in ours!)
+
+* View the result of our ping command:
+
+```.term1
+kubectl logs deploy/pingpong
+```
+
+### Streaming logs in real time
+* Just like `docker logs`, `kubectl logs` supports convenient options:
+
+  * `-f/--follow` to stream logs in real time (à la tail `-f`)
+
+  * `--tail` to indicate how many lines you want to see (from the end)
+
+  * `--since` to get logs only after a given timestamp
+
+* View the latest logs of our ping command:
+
+```.term1
+kubectl logs deploy/pingpong --tail 1 --follow
+```
+
+### Scaling our application
+
+* We can create additional copies of our container (or rather our pod) with `kubectl scale`
+
+* Scale our pingpong deployment:
+```.term1
+kubectl scale deploy/pingpong --replicas 8
+```
+> Note: what if we tried to scale `rs/pingpong-xxxx`? We could! But the *deployment* would notice it right away, and scale back to the initial level.
+
+### Resilience
+
+* The deployment pingpong watches its replica set
+
+* The replica set ensures that the right number of pods are running
+
+* What happens if pods disappear?
+
+* In a separate window, list pods, and keep watching them:
+```.term1
+kubectl get pods -w
+```
+
+* Destroy a pod:
+```.term1
+kubectl delete pod pingpong-yyyy
+```
+
+### What if we wanted something different?
+* What if we wanted to start a "one-shot" container that *doesn't* get restarted?
+
+* We could use `kubectl run --restart=OnFailure` or `kubectl run --restart=Never`
+
+* These commands would create *jobs* or *pods* instead of *deployments*
+
+* Under the hood, `kubectl run` invokes "generators" to create resource descriptions
+
+* We could also write these resource descriptions ourselves (typically in YAML), 
+and create them on the cluster with `kubectl apply -f` (discussed later)
+
+* With `kubectl run --schedule=`..., we can also create *cronjobs*
+
+### Viewing logs of multiple pods
+
+* When we specify a deployment name, only one single pod's logs are shown
+
+* We can view the logs of multiple pods by specifying a *selector*
+
+* A selector is a logic expression using *labels*
+
+* Conveniently, when `you kubectl run somename`, the associated objects have a `run=somename` label
+
+* View the last line of log from all pods with the `run=pingpong` label:
+```.term1
+kubectl logs -l run=pingpong --tail 1
+```
+
+* Unfortunately, `--follow` cannot (yet) be used to stream the logs from multiple containers.
+
+## Exposing containers
+### Exposing containers
+
+* `kubectl expose` creates a *service* for existing pods
+
+* A *service* is a stable address for a pod (or a bunch of pods)
+
+* If we want to connect to our pod(s), we need to create a *service*
+
+* Once a service is created, `kube-dns` will allow us to resolve it by name (i.e. after creating service `hello`, the name `hello` will resolve to something)
+
+* There are different types of services, detailed on the following slides:
+
+`ClusterIP`, `NodePort`, `LoadBalancer`, `ExternalName`
+
+## Basic service types
+
+* `ClusterIP` (default type)
+
+  a virtual IP address is allocated for the service (in an internal, private range)
+  this IP address is reachable only from within the cluster (nodes and pods)
+  our code can connect to the service using the original port number
+
+* `NodePort`
+
+  a port is allocated for the service (by default, in the 30000-32768 range)
+  that port is made available on all our nodes and anybody can connect to it
+  our code must be changed to connect to that new port number
+
+These service types are always available.
+
+Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables` rules.
+
+### More service types
+
+* `LoadBalancer`
+<!--TODO: Check if LoadBalancer is available in Docker for Desktop. Currently available in EE -->
+  * an external load balancer is allocated for the service
+  * the load balancer is configured accordingly (e.g.: a `NodePort` service is created, and the load balancer sends traffic to that port)
+
+* `ExternalName`
+
+  * the DNS entry managed by `kube-dns` will just be a `CNAME` to a provided record
+  * no port, no IP address, no nothing else is allocated
+
+### Running containers with open ports
+
+* Since ping doesn't have anything to connect to, we'll have to run something else
+
+* Start a bunch of ElasticSearch containers:
+```.term1
+kubectl run elastic --image=elasticsearch:2 --replicas=7
+```
+
+* Watch them being started:
+
+```.term1
+kubectl get pods -w
+```
+
+The `-w` option "watches" events happening on the specified resources.
+
+Note: please DO NOT call the service `search`. It would collide with the TLD.
+
+### Exposing our deployment
+
+* We'll create a default `ClusterIP` service
+
+* Expose the ElasticSearch HTTP API port:
+
+```.term
+kubectl expose deploy/elastic --port 9200
+```
+
+* Look up which IP address was allocated:
+
+```.term1
+kubectl get svc
+```
+### Services are layer 4 constructs
+
+* You can assign IP addresses to services, but they are still *layer 4* (i.e. a service is not an IP address; it's an IP address + protocol + port)
+
+* This is caused by the current implementation of `kube-proxy` (it relies on mechanisms that don't support layer 3)
+
+* As a result: *you have to* indicate the port number for your service
+
+* Running services with arbitrary port (or port ranges) requires hacks (e.g. host networking mode)
+
+### Testing our service
+
+* We will now send a few HTTP requests to our ElasticSearch pods
+
+* Let's obtain the IP address that was allocated for our service, *programatically*:
+```.term1
+IP=$(kubectl get svc elastic -o go-template --template '{{ .spec.clusterIP }}')
+```
+
+* Send a few requests:
+
+```.term1
+curl http://$IP:9200/
+```
+
+Our requests are load balanced across multiple pods.
+
+## Our app on Kube
+
+### What's on the menu?
+In this part, we will:
+
+  * **build** images for our app,
+
+  * **ship** these images with a registry,
+
+  * **run** deployments using these images,
+
+  * expose these deployments so they can communicate with each other,
+
+  * expose the web UI so we can access it from outside.
+
+
+
