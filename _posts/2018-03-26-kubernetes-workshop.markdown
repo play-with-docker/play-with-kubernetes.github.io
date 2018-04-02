@@ -770,5 +770,257 @@ In this part, we will:
 
   * expose the web UI so we can access it from outside.
 
+### The plan
+* Build on our control node (`node1`)
+
+* Tag images so that they are named `$REGISTRY/servicename`
+
+* Upload them to a Docker Hub
+
+* Create deployments using the images
+
+* Expose (with a `ClusterIP`) the services that need to communicate
+
+* Expose (with a `NodePort`) the WebUI
+
+### Which registry do we want to use?
+
+* For this workshop, we'll use (Docker Hub)[https://hub.docker.com]. There are a number of other options, including two provided by Docker.
+
+* Docker also provides:
+  * [Docker Trusted Registry](https://docs.docker.com/datacenter/dtr/2.4/guides/) which adds in a lot of security and deployment features including security scanning, and role-based access control.
+  * [Docker Open Source Registry](https://docs.docker.com/registry/).
+
+### Docker Hub
+
+* [Docker Hub](https://hub.docker.com) is the default registry for Docker. 
+
+  * Image names on Hub are just `$USERNAME/$IMAGENAME` or `$ORGANIZATIONNAME/$IMAGENAME`.
+
+  * [Official images](https://docs.docker.com/docker-hub/official_repos/) can be referred to as just `$IMAGENAME`.
+
+  * To use Hub, make sure you have an account. Then type `docker login` in the terminal and login with your username and password.
+
+* Using Docker Trusted Registry, Docker Open Source Registry is very similar.
+
+  * Image names on other registries are `$REGISTRYPATH/$USERNAME/$IMAGENAME` or `$REGISTRYPATH/$ORGANIZATIONNAME/$IMAGENAME`.
+
+  * Login using `docker login $REGISTRYPATH`.
+
+### Building and pushing our images
+
+<!-- TODO: Fix default registry URL to username in dockercoins.yml -->
+* We are going to use a convenient feature of Docker Compose
+
+* Aafter Go to the `stacks` directory:
+
+```
+cd ~/container.training/stacks
+```
+
+* Build and push the images:
+
+```
+export REGISTRY
+docker-compose -f dockercoins.yml build
+docker-compose -f dockercoins.yml push
+```
+
+Let's have a look at the dockercoins.yml file while this is building and pushing.
+
+```
+version: "3"
+services:
+  rng:
+    build: dockercoins/rng
+    image: ${USERNAME}/rng:${TAG-latest}
+    deploy:
+      mode: global
+  ...
+  redis:
+    image: redis
+  ...
+  worker:
+    build: dockercoins/worker
+    image: ${USERNAME}/worker:${TAG-latest}
+    ...
+    deploy:
+      replicas: 10
+```
+
+> Just in case you were wondering ... Docker "services" are not Kubernetes "services".
+
+### Deploying all the things
+* We can now deploy our code (as well as a redis instance)
+
+* Deploy `redis`:
+
+```
+kubectl run redis --image=redis
+```
+
+* Deploy everything else:
+
+```
+for SERVICE in hasher rng webui worker; do
+  kubectl run $SERVICE --image=$USERNAME/$SERVICE
+done
+```
+
+### Is this working?
+* After waiting for the deployment to complete, let's look at the logs!
+
+* (Hint: use `kubectl get deploy -w` to watch deployment events)
+
+* Look at some logs:
+```
+kubectl logs deploy/rng
+kubectl logs deploy/worker
+```
+
+🤔 `rng` is fine ... But not `worker`.
+
+💡 Oh right! We forgot to `expose`.
+
+### Exposing services
+
+### Exposing services internally
+
+* Three deployments need to be reachable by others: `hasher`, `redis`, `rng`
+
+* `worker` doesn't need to be exposed
+
+* `webui` will be dealt with later
+
+* Expose each deployment, specifying the right port:
+```
+kubectl expose deployment redis --port 6379
+kubectl expose deployment rng --port 80
+kubectl expose deployment hasher --port 80
+```
+
+### Is this working yet?
+* The `worker` has an infinite loop, that retries 10 seconds after an error
+
+* Stream the worker's logs:
+```
+kubectl logs deploy/worker --follow
+```
+(Give it about 10 seconds to recover)
+
+* We should now see the `worker`, well, working happily.
+
+### Exposing services for external access
+
+* Now we would like to access the Web UI
+
+* We will expose it with a `NodePort` (just like we did for the registry)
+
+* Create a `NodePort` service for the Web UI:
+
+```
+kubectl expose deploy/webui --type=NodePort --port=8080
+```
+
+* Check the port that was allocated:
+```
+kubectl get svc
+```
+
+### Accessing the web UI
+
+* We can now connect to **any node**, on the allocated node port, to view the web UI
+
+Click on [this link](/){:data-term=".term1"}{:data-port="8080"}
+
+**Alright, we're back to where we started, when we were running on a single node!**
+
+## Security implications of `kubectl apply`
+
+### Security implications of `kubectl apply`
+* When we do `kubectl apply -f <URL>`, we create arbitrary resources
+
+* Resources can be evil; imagine a `deployment` that ...
+
+  * starts bitcoin miners on the whole cluster
+
+  * hides in a non-default namespace
+
+  * bind-mounts our nodes' filesystem
+
+  * inserts SSH keys in the root account (on the node)
+
+  * encrypts our data and ransoms it
+
+  * ☠️☠️☠️
+
+### `kubectl apply` is the new `curl | sh`
+* `curl | sh` is convenient
+
+* It's safe if you use HTTPS URLs from trusted sources
+
+* `kubectl apply -f` is convenient
+
+* It's safe if you use HTTPS URLs from trusted sources
+
+* It introduces new failure modes
+
+* Example: the official setup instructions for most pod networks
+
+## Scaling a deployment
+
+### Scaling a deployment
+* We will start with an easy one: the `worker` deployment
+
+* Open two new terminals to check what's going on with pods and deployments:
+
+```kubectl get pods -w
+kubectl get deployments -w
+```
+
+* Now, create more `worker` replicas:
+
+```
+kubectl scale deploy/worker --replicas=10
+```
+
+* After a few seconds, the graph in the web UI should show up. (And peak at 10 hashes/second, just like when we were running on a single one.)
+
+## Daemon sets
+
+### Daemon sets
+* What if we want one (and exactly one) instance of rng per node?
+
+* If we just scale deploy/rng to 2, nothing guarantees that they spread
+
+* Instead of a deployment, we will use a daemonset
+
+* Daemon sets are great for cluster-wide, per-node processes:
+
+  * kube-proxy
+  * weave (our overlay network) <!--Calico?-->
+  * monitoring agents
+  * hardware management tools (e.g. SCSI/FC HBA agents)
+  * etc.
+
+* They can also be restricted to run [only on some nodes](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#running-pods-on-only-some-nodes).
+
+### Creating a daemon set
+
+* Unfortunately, as of Kubernetes 1.9, the CLI cannot create daemon sets
+
+* More precisely: it doesn't have a subcommand to create a daemon set
+
+* But any kind of resource can always be created by providing a YAML description:
+
+```
+kubectl apply -f foo.yaml
+```
+
+* How do we create the YAML file for our daemon set?
+
+  * option 1: read the docs
+  * option 2: `vi` our way out of it
+
 
 
