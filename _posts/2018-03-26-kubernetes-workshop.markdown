@@ -88,7 +88,7 @@ Compose tells Docker to build all container images (pulling the corresponding ba
 
 * The `webui` container exposes a web dashboard; let's view it
 
-* With a web browser, connect to `node1` on this link: port 8000 <!-- TODO add link --> (created when you ran the application)
+* With a web browser, connect to `node1` [here on port 8000](/){:data-term=".term1"}{:data-port="8000"} (created when you ran the application)
 
 ### Clean up
 
@@ -142,7 +142,7 @@ docker-compose down
 
 * Automating complex tasks (operators)
 
-### Kubernetes architecture
+## Kubernetes architecture
 
 <!-- TODO: Come up with diagrams -->
 
@@ -320,13 +320,6 @@ docker-compose down
 * `kubectl` is (almost) the only tool we'll need to talk to Kubernetes
 
 * It is a rich CLI tool around the Kubernetes API (Everything you can do with `kubectl`, you can do directly with the API)
-
-<!-- TODO: Is this necessary and true? -->
-* On our machines, there is a `~/.kube/config` file with:
-
-  * the Kubernetes API address
-
-  * the path to our TLS certificates used to authenticate
 
 * You can also use the `--kubeconfig` flag to pass a config file
 
@@ -685,7 +678,6 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 ### More service types
 
 * `LoadBalancer`
-<!--TODO: Check if LoadBalancer is available in Docker for Desktop. Currently available in EE -->
   * an external load balancer is allocated for the service
   * the load balancer is configured accordingly (e.g.: a `NodePort` service is created, and the load balancer sends traffic to that port)
 
@@ -743,9 +735,11 @@ kubectl get svc
 * We will now send a few HTTP requests to our ElasticSearch pods
 
 * Let's obtain the IP address that was allocated for our service, *programatically*:
+{% raw %}
 ```.term1
 IP=$(kubectl get svc elastic -o go-template --template '{{ .spec.clusterIP }}')
 ```
+{% endraw %}
 
 * Send a few requests:
 

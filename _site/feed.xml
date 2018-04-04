@@ -6,169 +6,33 @@
 </description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Dec 2017 12:36:24 -0600</pubDate>
-    <lastBuildDate>Mon, 11 Dec 2017 12:36:24 -0600</lastBuildDate>
-    <generator>Jekyll v3.6.2</generator>
+    <pubDate>Wed, 04 Apr 2018 18:26:00 -0500</pubDate>
+    <lastBuildDate>Wed, 04 Apr 2018 18:26:00 -0500</lastBuildDate>
+    <generator>Jekyll v3.7.3</generator>
     
       <item>
         <title>Kubernetes for Beginners</title>
-        <description>&lt;p&gt;In this lab, you will get a hands-on overview of Kubernetes concepts and functionality. In the right pane, you will see two command line terminals, representing two different nodes.&lt;/p&gt;
+        <description>&lt;h3 id=&quot;our-sample-application&quot;&gt;Our sample application&lt;/h3&gt;
+&lt;p&gt;Visit the GitHub repository with all the materials of this workshop: 
+(https://github.com/jpetazzo/container.training)[https://github.com/jpetazzo/container.training]&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;Difficulty&lt;/strong&gt;: Beginner (assumes basic familiarity with Docker concepts)&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;The application is in the (dockercoins)[https://github.com/jpetazzo/container.training/tree/master/dockercoins] subdirectory.&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;Tasks&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;Let’s look at the general layout of the source code:&lt;/p&gt;
 
-&lt;/blockquote&gt;
+&lt;p&gt;there is a Compose file docker-compose.yml …&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&quot;#Task_0&quot;&gt;Task 0: Prerequisites&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;#Task_1&quot;&gt;Task 1: Run some simple Docker containers&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;#Task_2&quot;&gt;Task 2: Package and run a custom app using Docker&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;#Task_3&quot;&gt;Task 3: Modify a Running Website&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;… and 4 other services, each in its own directory:&lt;/p&gt;
 
-&lt;h2 id=&quot;task-0-prerequisites&quot;&gt;&lt;a name=&quot;task0&quot;&gt;&lt;/a&gt;Task 0: Prerequisites&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; = web service generating random bytes
+&lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt; = web service computing hash of POSTed data
+&lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; = background process using &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; = web interface to watch progress&lt;/p&gt;
 
+&lt;h3 id=&quot;whats-this-application&quot;&gt;What’s this application?&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;Basic familiarity with Docker. &lt;code class=&quot;highlighter-rouge&quot;&gt;docker run&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;docker ps&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;docker build&lt;/code&gt; etc. ideally, you know how to write a Dockerfile and build it. If you aren’t familiar with Docker at all, check out the &lt;a href=&quot;training.play-with-docker.com/beginner-linux/&quot;&gt;beginner tutorial&lt;/a&gt; on the Play with Docker site.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Basic familiarity with the Linux commandline, navigating directories, editing files, basic bash knowledge.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;notes&quot;&gt;Notes&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;We will run almost all the commands on the first node, node1&lt;/li&gt;
-  &lt;li&gt;If a command is highlighted in gray, you can click on it and it will autopopulate in the appropriate terminal. For instance:
-    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl --help
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;brand-new-versions&quot;&gt;Brand new versions!&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Kubernetes 1.8&lt;/li&gt;
-  &lt;li&gt;Docker Engine 17.11&lt;/li&gt;
-  &lt;li&gt;Docker Compose 1.17&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Check all installed versions:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl version
-docker version
-docker-compose &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;h1 id=&quot;sample-application&quot;&gt;Sample application&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Visit the GitHub repository with all the materials of this workshop:
-&lt;br /&gt;https://github.com/jpetazzo/container.training&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The application is in the &lt;a href=&quot;https://github.com/jpetazzo/container.training/tree/master/dockercoins&quot;&gt;dockercoins&lt;/a&gt;
-subdirectory&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Let’s look at the general layout of the source code:&lt;/p&gt;
-
-    &lt;p&gt;there is a Compose file &lt;a href=&quot;https://github.com/jpetazzo/container.training/blob/master/dockercoins/docker-compose.yml&quot;&gt;docker-compose.yml&lt;/a&gt; …&lt;/p&gt;
-
-    &lt;p&gt;… and 4 other services, each in its own directory:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; = web service generating random bytes&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt; = web service computing hash of POSTed data&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; = background process using &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; = web interface to watch progress&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;compose-file-format-version&quot;&gt;Compose file format version&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Particularly relevant if you have used Compose before…&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Compose 1.6 introduced support for a new Compose file format (aka “v2”)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Services are no longer at the top level, but under a &lt;code class=&quot;highlighter-rouge&quot;&gt;services&lt;/code&gt; section&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;There has to be a &lt;code class=&quot;highlighter-rouge&quot;&gt;version&lt;/code&gt; key at the top level, with value &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;2&quot;&lt;/code&gt; (as a string, not an integer)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Containers are placed on a dedicated network, making links unnecessary&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;There are other minor differences, but upgrade is easy and straightforward&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;links-naming-and-service-discovery&quot;&gt;Links, naming, and service discovery&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Containers can have network aliases (resolvable through DNS)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Compose file version 2+ makes each container reachable through its service name&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Compose file version 1 did require “links” sections&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Our code can connect to services using their short name&lt;/p&gt;
-
-    &lt;p&gt;(instead of e.g. IP address or FQDN)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Network aliases are automatically namespaced&lt;/p&gt;
-
-    &lt;p&gt;(i.e. you can have multiple apps declaring and using a service named &lt;code class=&quot;highlighter-rouge&quot;&gt;database&lt;/code&gt;)&lt;/p&gt;
-
-    &lt;h2 id=&quot;example-in-workerworkerpy&quot;&gt;Example in &lt;code class=&quot;highlighter-rouge&quot;&gt;worker/worker.py&lt;/code&gt;&lt;/h2&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;redis&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Redis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;`redis`&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_random_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://`rng`/32&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;
-
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hash_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://`hasher`/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                      &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                      &lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Content-Type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;application/octet-stream&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;(Full source code available &lt;a href=&quot;https://github.com/jpetazzo/container.training/blob/8279a3bce9398f7c1a53bdd95187c53eda4e6435/dockercoins/worker/worker.py#L17&quot;&gt;here&lt;/a&gt;)&lt;/p&gt;
-
-&lt;h2 id=&quot;whats-this-application&quot;&gt;What’s this application?&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;It is a DockerCoin miner! .emoji[💰🐳📦🚢]&lt;/p&gt;
+    &lt;p&gt;It is a DockerCoin miner! 💰🐳📦🚢&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;No, you can’t buy coffee with DockerCoins&lt;/p&gt;
@@ -196,8 +60,7 @@ subdirectory&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;getting-the-application-source-code&quot;&gt;Getting the application source code&lt;/h2&gt;
-
+&lt;h3 id=&quot;getting-the-application-source-code&quot;&gt;Getting the application source code&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;We will clone the GitHub repository&lt;/p&gt;
@@ -207,477 +70,75 @@ subdirectory&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;!--
-```bash
-if [ -d container.training ]; then
-  mv container.training container.training.$$
-fi
-```
---&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Clone the repository on &lt;code class=&quot;highlighter-rouge&quot;&gt;node1&lt;/code&gt;:
-    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;git clone git://github.com/jpetazzo/container.training
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;git clone https://github.com/jpetazzo/container.training/
 &lt;/code&gt;&lt;/pre&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
 
 &lt;p&gt;(You can also fork the repository on GitHub and clone your fork if you prefer that.)&lt;/p&gt;
 
-&lt;h1 id=&quot;running-the-application&quot;&gt;Running the application&lt;/h1&gt;
+&lt;h2 id=&quot;running-the-application&quot;&gt;Running the application&lt;/h2&gt;
 
-&lt;p&gt;Without further ado, let’s start our application.&lt;/p&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
+&lt;h3 id=&quot;running-the-application-1&quot;&gt;Running the application&lt;/h3&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Go to the &lt;code class=&quot;highlighter-rouge&quot;&gt;dockercoins&lt;/code&gt; directory, in the cloned repo:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/container.training/dockercoins
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Use Compose to build and run all containers:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Go to the dockercoins directory, in the cloned repo:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;!--
-```longwait units of work done```
-```keys ^C```
---&gt;
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;cd ~/container.training/dockercoins
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;]&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Use Compose to build and run all containers:&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Compose tells Docker to build all container images (pulling
-the corresponding base images), then starts all containers,
-and displays aggregated logs.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;docker-compose up
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&quot;lots-of-logs&quot;&gt;Lots of logs&lt;/h2&gt;
+&lt;p&gt;Compose tells Docker to build all container images (pulling the corresponding base images), then starts all containers, and displays aggregated logs.&lt;/p&gt;
+
+&lt;h3 id=&quot;lots-of-logs&quot;&gt;Lots of logs&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;The application continuously generates logs&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;We can see the &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; service making requests to &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;We can see the worker service making requests to rng and hasher&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Let’s put that in the background&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Stop the application by hitting &lt;code class=&quot;highlighter-rouge&quot;&gt;^C&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;^C&lt;/code&gt; stops all containers by sending them the &lt;code class=&quot;highlighter-rouge&quot;&gt;TERM&lt;/code&gt; signal&lt;/p&gt;
+    &lt;p&gt;Stop the application by hitting &lt;code class=&quot;highlighter-rouge&quot;&gt;^C&lt;/code&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;^C&lt;/code&gt; stops all containers by sending them the &lt;code class=&quot;highlighter-rouge&quot;&gt;TERM&lt;/code&gt; signal&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Some containers exit immediately, others take longer
-&lt;br /&gt;(because they don’t handle &lt;code class=&quot;highlighter-rouge&quot;&gt;SIGTERM&lt;/code&gt; and end up being killed after a 10s timeout)&lt;/p&gt;
+    &lt;p&gt;Some containers exit immediately, others take longer (because they don’t handle &lt;code class=&quot;highlighter-rouge&quot;&gt;SIGTERM&lt;/code&gt; and end up being killed after a 10s timeout)&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;restarting-in-the-background&quot;&gt;Restarting in the background&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Many flags and commands of Compose are modeled after those of &lt;code class=&quot;highlighter-rouge&quot;&gt;docker&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Start the app in the background with the &lt;code class=&quot;highlighter-rouge&quot;&gt;-d&lt;/code&gt; option:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Check that our app is running with the &lt;code class=&quot;highlighter-rouge&quot;&gt;ps&lt;/code&gt; command:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose ps
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose ps&lt;/code&gt; also shows the ports exposed by the application.&lt;/p&gt;
-
-&lt;h2 id=&quot;viewing-logs&quot;&gt;Viewing logs&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt; command works like &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;View all logs since container creation and exit when done:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose logs
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Stream container logs, starting at the last 10 lines for each container:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose logs &lt;span class=&quot;nt&quot;&gt;--tail&lt;/span&gt; 10 &lt;span class=&quot;nt&quot;&gt;--follow&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--
-```wait units of work done```
-```keys ^C```
---&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;p&gt;Tip: use &lt;code class=&quot;highlighter-rouge&quot;&gt;^S&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;^Q&lt;/code&gt; to pause/resume log output.&lt;/p&gt;
-
-&lt;h2 id=&quot;upgrading-from-compose-16&quot;&gt;Upgrading from Compose 1.6&lt;/h2&gt;
-
-&lt;p&gt;.warning[The &lt;code class=&quot;highlighter-rouge&quot;&gt;logs&lt;/code&gt; command has changed between Compose 1.6 and 1.7!]&lt;/p&gt;
+&lt;h3 id=&quot;connecting-to-the-web-ui&quot;&gt;Connecting to the web UI&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;Up to 1.6&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt; is the equivalent of &lt;code class=&quot;highlighter-rouge&quot;&gt;logs --follow&lt;/code&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt; must be restarted if containers are added&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
+    &lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; container exposes a web dashboard; let’s view it&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Since 1.7&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--follow&lt;/code&gt; must be specified explicitly&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;new containers are automatically picked up by &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose logs&lt;/code&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
+    &lt;p&gt;With a web browser, connect to &lt;code class=&quot;highlighter-rouge&quot;&gt;node1&lt;/code&gt; &lt;a href=&quot;/&quot; data-term=&quot;.term1&quot; data-port=&quot;8000&quot;&gt;here on port 8000&lt;/a&gt; (created when you ran the application)&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;connecting-to-the-web-ui&quot;&gt;Connecting to the web UI&lt;/h2&gt;
+&lt;h3 id=&quot;clean-up&quot;&gt;Clean up&lt;/h3&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; container exposes a web dashboard; let’s view it&lt;/li&gt;
+  &lt;li&gt;Before moving on, let’s remove those containers. Tell Compose to remove everything:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;.exercise[&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;docker-compose down
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;With a web browser, connect to &lt;code class=&quot;highlighter-rouge&quot;&gt;node1&lt;/code&gt; on port 8000&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Remember: the &lt;code class=&quot;highlighter-rouge&quot;&gt;nodeX&lt;/code&gt; aliases are valid only on the nodes themselves&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;In your browser, you need to enter the IP address of your node&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+&lt;h2 id=&quot;kubernetes-concepts&quot;&gt;Kubernetes concepts&lt;/h2&gt;
 
-&lt;!-- ```open http://node1:8000``` --&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;p&gt;A drawing area should show up, and after a few seconds, a blue
-graph will appear.&lt;/p&gt;
-
-&lt;h2 id=&quot;if-the-graph-doesnt-load&quot;&gt;If the graph doesn’t load&lt;/h2&gt;
-
-&lt;p&gt;If you just see a &lt;code class=&quot;highlighter-rouge&quot;&gt;Page not found&lt;/code&gt; error, it might be because your
-Docker Engine is running on a different machine. This can be the case if:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;you are using the Docker Toolbox&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;you are using a VM (local or remote) created with Docker Machine&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;you are controlling a remote Docker Engine&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;When you run DockerCoins in development mode, the web UI static files
-are mapped to the container using a volume. Alas, volumes can only
-work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&gt;
-
-&lt;p&gt;How to fix this?&lt;/p&gt;
-
-&lt;p&gt;Edit &lt;code class=&quot;highlighter-rouge&quot;&gt;dockercoins.yml&lt;/code&gt; and comment out the &lt;code class=&quot;highlighter-rouge&quot;&gt;volumes&lt;/code&gt; section, and try again.&lt;/p&gt;
-
-&lt;h2 id=&quot;why-does-the-speed-seem-irregular&quot;&gt;Why does the speed seem irregular?&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;It &lt;em&gt;looks like&lt;/em&gt; the speed is approximately 4 hashes/second&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Or more precisely: 4 hashes/second, with regular dips down to zero&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Why?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The app actually has a constant, steady speed: 3.33 hashes/second
-&lt;br /&gt;
-(which corresponds to 1 hash every 0.3 seconds, for &lt;em&gt;reasons&lt;/em&gt;)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Yes, and?&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;the-reason-why-this-graph-is-not-awesome&quot;&gt;The reason why this graph is &lt;em&gt;not awesome&lt;/em&gt;&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;The worker doesn’t update the counter after every loop, but up to once per second&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The speed is computed by the browser, checking the counter about once per second&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Between two consecutive updates, the counter will increase either by 4, or by 0&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The perceived speed will therefore be 4 - 4 - 4 - 0 - 4 - 4 - 0 etc.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What can we conclude from this?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Jérôme is clearly incapable of writing good frontend code&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;scaling-up-the-application&quot;&gt;Scaling up the application&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Our goal is to make that performance graph go up (without changing a line of code!)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Before trying to scale the application, we’ll figure out if we need more resources&lt;/p&gt;
-
-    &lt;p&gt;(CPU, RAM…)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;For that, we will use good old UNIX tools on our Docker node&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;looking-at-resource-usage&quot;&gt;Looking at resource usage&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Let’s look at CPU, memory, and I/O usage&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;run &lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt; to see CPU and memory usage (you should see idle cycles)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--
-```bash top```
-
-```wait Tasks```
-```keys ^C```
---&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;run &lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat 1&lt;/code&gt; to see I/O usage (si/so/bi/bo)
-&lt;br /&gt;(the 4 numbers should be almost zero, except &lt;code class=&quot;highlighter-rouge&quot;&gt;bo&lt;/code&gt; for logging)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--
-```bash vmstat 1```
-
-```wait memory```
-```keys ^C```
---&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;p&gt;We have available resources.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Why?&lt;/li&gt;
-  &lt;li&gt;How can we use them?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;scaling-workers-on-a-single-node&quot;&gt;Scaling workers on a single node&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Docker Compose supports scaling&lt;/li&gt;
-  &lt;li&gt;Let’s scale &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; and see what happens!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Start one more &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; container:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose scale &lt;span class=&quot;nv&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Look at the performance graph (it should show a x2 improvement)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Look at the aggregated logs of our containers (&lt;code class=&quot;highlighter-rouge&quot;&gt;worker_2&lt;/code&gt; should show up)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Look at the impact on CPU load with e.g. top (it should be negligible)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;h2 id=&quot;adding-more-workers&quot;&gt;Adding more workers&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Great, let’s add more workers and call it a day, then!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Start eight more &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; containers:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose scale &lt;span class=&quot;nv&quot;&gt;worker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Look at the performance graph: does it show a x10 improvement?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Look at the aggregated logs of our containers&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Look at the impact on CPU load and memory usage&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;h1 id=&quot;identifying-bottlenecks&quot;&gt;Identifying bottlenecks&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;You should have seen a 3x speed bump (not 10x)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Adding workers didn’t result in linear improvement&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;Something else&lt;/em&gt; is slowing us down&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;… But what?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The code doesn’t have instrumentation&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Let’s use state-of-the-art HTTP performance analysis!
-&lt;br /&gt;(i.e. good old tools like &lt;code class=&quot;highlighter-rouge&quot;&gt;ab&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;httping&lt;/code&gt;…)&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;accessing-internal-services&quot;&gt;Accessing internal services&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt; are exposed on ports 8001 and 8002&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;This is declared in the Compose file:&lt;/p&gt;
-
-    &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;rng&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;rng&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8001:80&quot;&lt;/span&gt;
-
-  &lt;span class=&quot;na&quot;&gt;hasher&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;hasher&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8002:80&quot;&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;measuring-latency-under-load&quot;&gt;Measuring latency under load&lt;/h2&gt;
-
-&lt;p&gt;We will use &lt;code class=&quot;highlighter-rouge&quot;&gt;httping&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Check the latency of &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt;:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;httping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 10 localhost:8001
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Check the latency of &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;httping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 10 localhost:8002
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; has a much higher latency than &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;lets-draw-hasty-conclusions&quot;&gt;Let’s draw hasty conclusions&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;The bottleneck seems to be &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;What if&lt;/em&gt; we don’t have enough entropy and can’t generate enough random numbers?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We need to scale out the &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; service on multiple machines!&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Note: this is a fiction! We have enough entropy. But we need a pretext to scale out.&lt;/p&gt;
-
-&lt;p&gt;(In fact, the code of &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; uses &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/urandom&lt;/code&gt;, which never runs out of entropy…
-&lt;br /&gt;
-…and is &lt;a href=&quot;http://www.slideshare.net/PacSecJP/filippo-plain-simple-reality-of-entropy&quot;&gt;just as good as &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/random&lt;/code&gt;&lt;/a&gt;.)&lt;/p&gt;
-
-&lt;h2 id=&quot;clean-up&quot;&gt;Clean up&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Before moving on, let’s remove those containers&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.exercise[&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Tell Compose to remove everything:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose down
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;]&lt;/p&gt;
-&lt;h1 id=&quot;kubernetes-concepts&quot;&gt;Kubernetes concepts&lt;/h1&gt;
+&lt;h3 id=&quot;kubernetes-concepts-1&quot;&gt;Kubernetes concepts&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -691,7 +152,7 @@ work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&g
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;basic-things-we-can-ask-kubernetes-to-do&quot;&gt;Basic things we can ask Kubernetes to do&lt;/h2&gt;
+&lt;h3 id=&quot;basic-things-we-can-ask-kubernetes-to-do&quot;&gt;Basic things we can ask Kubernetes to do&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -717,7 +178,7 @@ work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&g
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;other-things-that-kubernetes-can-do-for-us&quot;&gt;Other things that Kubernetes can do for us&lt;/h2&gt;
+&lt;h3 id=&quot;other-things-that-kubernetes-can-do-for-us&quot;&gt;Other things that Kubernetes can do for us&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -730,56 +191,27 @@ work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&g
     &lt;p&gt;Long running services, but also batch (one-off) jobs&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Overcommit our cluster and &lt;em&gt;evict&lt;/em&gt; low-priority jobs&lt;/p&gt;
+    &lt;p&gt;Overcommit our cluster and evict low-priority jobs&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Run services with &lt;em&gt;stateful&lt;/em&gt; data (databases etc.)&lt;/p&gt;
+    &lt;p&gt;Run services with stateful data (databases etc.)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Fine-grained access control defining &lt;em&gt;what&lt;/em&gt; can be done by &lt;em&gt;whom&lt;/em&gt; on &lt;em&gt;which&lt;/em&gt; resources&lt;/p&gt;
+    &lt;p&gt;Fine-grained access control defining what can be done by whom on which resources&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Integrating third party services (&lt;em&gt;service catalog&lt;/em&gt;)&lt;/p&gt;
+    &lt;p&gt;Integrating third party services (service catalog)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Automating complex tasks (&lt;em&gt;operators&lt;/em&gt;)&lt;/p&gt;
+    &lt;p&gt;Automating complex tasks (operators)&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;kubernetes-architecture&quot;&gt;Kubernetes architecture&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/k8s-arch1.png&quot; alt=&quot;haha only kidding&quot; /&gt;&lt;/p&gt;
+&lt;!-- TODO: Come up with diagrams --&gt;
 
-&lt;h2 id=&quot;kubernetes-architecture-1&quot;&gt;Kubernetes architecture&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Ha ha ha ha&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;OK, I was trying to scare you, it’s much simpler than that ❤️&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;images/k8s-arch2.png&quot; alt=&quot;that one is more like the real thing&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;credits&quot;&gt;Credits&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;The first schema is a Kubernetes cluster with storage backed by multi-path iSCSI&lt;/p&gt;
-
-    &lt;p&gt;(Courtesy of &lt;a href=&quot;https://www.yongbok.net/blog/&quot;&gt;Yongbok Kim&lt;/a&gt;)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The second one is a simplified representation of a Kubernetes cluster&lt;/p&gt;
-
-    &lt;p&gt;(Courtesy of &lt;a href=&quot;https://medium.com/containermind/a-reference-architecture-for-deploying-wso2-middleware-on-kubernetes-d4dee7601e8e&quot;&gt;Imesh Gunaratne&lt;/a&gt;)&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;kubernetes-architecture-the-master&quot;&gt;Kubernetes architecture: the master&lt;/h2&gt;
-
+&lt;h3 id=&quot;kubernetes-architecture-the-master&quot;&gt;Kubernetes architecture: the master&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;The Kubernetes logic (its “brains”) is a collection of services:&lt;/p&gt;
@@ -787,26 +219,26 @@ work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&g
     &lt;ul&gt;
       &lt;li&gt;the API server (our point of entry to everything!)&lt;/li&gt;
       &lt;li&gt;core services like the scheduler and controller manager&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;etcd&lt;/code&gt; (a highly available key/value store; the “database” of Kubernetes)&lt;/li&gt;
+      &lt;li&gt;etcd (a highly available key/value store; the “database” of Kubernetes)&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;*Together, these services form what is called the “master”&lt;/p&gt;
+
+&lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;Together, these services form what is called the “master”&lt;/p&gt;
+    &lt;p&gt;These services can run straight on a host, or in containers (that’s an implementation detail)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;These services can run straight on a host, or in containers
-&lt;br /&gt;
-(that’s an implementation detail)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;etcd&lt;/code&gt; can be run on separate machines (first schema) or co-located (second schema)&lt;/p&gt;
+    &lt;p&gt;etcd can be run on separate machines (first schema) or co-located (second schema)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;We need at least one master, but we can have more (for high availability)&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;kubernetes-architecture-the-nodes&quot;&gt;Kubernetes architecture: the nodes&lt;/h2&gt;
+&lt;h3 id=&quot;kubernetes-architecture-the-nodes&quot;&gt;Kubernetes architecture: the nodes&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -822,82 +254,18 @@ work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&g
     &lt;p&gt;Nodes were formerly called “minions”&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;It is customary to &lt;em&gt;not&lt;/em&gt; run apps on the node(s) running master components&lt;/p&gt;
-
-    &lt;p&gt;(Except when using small development clusters)&lt;/p&gt;
+    &lt;p&gt;It is customary to not run apps on the node(s) running master components (Except when using small development clusters)&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;h2 id=&quot;do-we-need-to-run-docker-at-all&quot;&gt;Do we need to run Docker at all?&lt;/h2&gt;
-
-&lt;p&gt;No!&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;By default, Kubernetes uses the Docker Engine to run containers&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We could also use &lt;code class=&quot;highlighter-rouge&quot;&gt;rkt&lt;/code&gt; (“Rocket”) from CoreOS&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Or leverage other pluggable runtimes through the &lt;em&gt;Container Runtime Interface&lt;/em&gt;&lt;/p&gt;
-
-    &lt;p&gt;(like CRI-O, or containerd)&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;do-we-need-to-run-docker-at-all-1&quot;&gt;Do we need to run Docker at all?&lt;/h2&gt;
-
-&lt;p&gt;Yes!&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;In this workshop, we run our app on a single node first&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We will need to build images and ship them around&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We can do these things without Docker
-&lt;br /&gt;
-(and get diagnosed with NIH¹ syndrome)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Docker is still the most stable container engine today
-&lt;br /&gt;
-(but other options are maturing very quickly)&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.footnote[¹&lt;a href=&quot;https://en.wikipedia.org/wiki/Not_invented_here&quot;&gt;Not Invented Here&lt;/a&gt;]&lt;/p&gt;
-
-&lt;h2 id=&quot;do-we-need-to-run-docker-at-all-2&quot;&gt;Do we need to run Docker at all?&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;On our development environments, CI pipelines … :&lt;/p&gt;
-
-    &lt;p&gt;&lt;em&gt;Yes, almost certainly&lt;/em&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;On our production servers:&lt;/p&gt;
-
-    &lt;p&gt;&lt;em&gt;Yes (today)&lt;/em&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;em&gt;Probably not (in the future)&lt;/em&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.footnote[More information about CRI &lt;a href=&quot;http://blog.kubernetes.io/2016/12/container-runtime-interface-cri-in-kubernetes.html&quot;&gt;on the Kubernetes blog&lt;/a&gt;]&lt;/p&gt;
 
 &lt;h2 id=&quot;kubernetes-resources&quot;&gt;Kubernetes resources&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;The Kubernetes API defines a lot of objects called &lt;em&gt;resources&lt;/em&gt;&lt;/p&gt;
+    &lt;p&gt;The Kubernetes API defines a lot of objects called resources&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;These resources are organized by type, or &lt;code class=&quot;highlighter-rouge&quot;&gt;Kind&lt;/code&gt; (in the API)&lt;/p&gt;
+    &lt;p&gt;These resources are organized by type, or Kind (in the API)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;A few common resource types are:&lt;/p&gt;
@@ -909,20 +277,20 @@ work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&g
       &lt;li&gt;namespace (more-or-less isolated group of things)&lt;/li&gt;
       &lt;li&gt;secret (bundle of sensitive data to be passed to a container)&lt;/li&gt;
     &lt;/ul&gt;
-
-    &lt;p&gt;And much more! (We can see the full list by running &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl get&lt;/code&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;And much more! (We can see the full list by running kubectl get)&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;images/k8s-arch3-thanks-weave.png&quot; alt=&quot;Node, pod, container&quot; /&gt;&lt;/p&gt;
+&lt;!-- TODO: Add diagrams illustrating these concepts --&gt;
 
-&lt;p&gt;(Diagram courtesy of Weave Works, used with permission.)&lt;/p&gt;
+&lt;h2 id=&quot;declarative-vs-imperative&quot;&gt;Declarative vs imperative&lt;/h2&gt;
 
-&lt;h1 id=&quot;declarative-vs-imperative&quot;&gt;Declarative vs imperative&lt;/h1&gt;
-
+&lt;h3 id=&quot;declarative-vs-imperative-1&quot;&gt;Declarative vs imperative&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;Our container orchestrator puts a very strong emphasis on being &lt;em&gt;declarative&lt;/em&gt;&lt;/p&gt;
+    &lt;p&gt;Our container orchestrator puts a very strong emphasis on being declarative&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Declarative:&lt;/p&gt;
@@ -942,26 +310,17 @@ work on a local environment, or when using Docker4Mac or Docker4Windows.&lt;/p&g
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;declarative-vs-imperative-1&quot;&gt;Declarative vs imperative&lt;/h2&gt;
+&lt;h4 id=&quot;what-declarative-would-really-be&quot;&gt;What declarative would really be:&lt;/h4&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;What declarative would really be:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;I want a cup of tea, obtained by pouring an infusion of tea leaves in a cup.&lt;/em&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;em&gt;I want a cup of tea, obtained by pouring an infusion¹ of tea leaves in a cup.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;An infusion is obtained by letting the object steep a few minutes in hot water.&lt;/em&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;em&gt;¹An infusion is obtained by letting the object steep a few minutes in hot² water.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Hot liquid is obtained by pouring it in an appropriate container and setting it on a stove.&lt;/em&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;em&gt;²Hot liquid is obtained by pouring it in an appropriate container³ and setting it on a stove.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ah, finally, containers! Something we know about. Let’s get to work, shall we?&lt;/em&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;em&gt;³Ah, finally, containers! Something we know about. Let’s get to work, shall we?&lt;/em&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;.footnote[Did you know there was an &lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_3103&quot;&gt;ISO standard&lt;/a&gt;
-specifying how to brew tea?]&lt;/p&gt;
-
-&lt;h2 id=&quot;declarative-vs-imperative-2&quot;&gt;Declarative vs imperative&lt;/h2&gt;
+&lt;h3 id=&quot;summary-of-declarative-vs-imperative&quot;&gt;Summary of declarative vs imperative&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -981,22 +340,1687 @@ specifying how to brew tea?]&lt;/p&gt;
 
     &lt;ul&gt;
       &lt;li&gt;
-        &lt;p&gt;if a task is interrupted (or if we show up to the party half-way through),
-we can figure out what’s missing and do only what’s necessary&lt;/p&gt;
+        &lt;p&gt;if a task is interrupted (or if we show up to the party half-way through), we can figure out what’s missing and do only what’s necessary&lt;/p&gt;
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;we need to be able to &lt;em&gt;observe&lt;/em&gt; the system&lt;/p&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        &lt;p&gt;… and compute a “diff” between &lt;em&gt;what we have&lt;/em&gt; and &lt;em&gt;what we want&lt;/em&gt;&lt;/p&gt;
+        &lt;p&gt;… and compute a “diff” between &lt;em&gt;what we have and what we want&lt;/em&gt;&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h3 id=&quot;declarative-vs-imperative-in-kubernetes&quot;&gt;Declarative vs imperative in Kubernetes&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Virtually everything we create in Kubernetes is created from a &lt;code class=&quot;highlighter-rouge&quot;&gt;spec&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Watch for the &lt;code class=&quot;highlighter-rouge&quot;&gt;spec&lt;/code&gt; fields in the YAML files later!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;spec&lt;/code&gt; describes &lt;em&gt;how we want the thing to be&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kubernetes will &lt;em&gt;reconcile&lt;/em&gt; the current state with the spec (technically, this is done by a number of &lt;em&gt;controllers&lt;/em&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When we want to change some resource, we update the &lt;code class=&quot;highlighter-rouge&quot;&gt;spec&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kubernetes will then &lt;em&gt;converge&lt;/em&gt; that resource&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kubernetes-network-model&quot;&gt;Kubernetes network model&lt;/h2&gt;
+
+&lt;h3 id=&quot;kubernetes-network-model-1&quot;&gt;Kubernetes network model&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;TL,DR:&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;Our cluster (nodes and pods) is one big flat IP network.&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In detail:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;all nodes must be able to reach each other, without NAT&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;all pods must be able to reach each other, without NAT&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;pods and nodes must be able to reach each other, without NAT&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;each pod is aware of its IP address (no NAT)&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kubernetes doesn’t mandate any particular implementation&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kubernetes-network-model-the-good&quot;&gt;Kubernetes network model: the good&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Everything can reach everything&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;No address translation&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;No port translation&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;No new protocol&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Pods cannot move from a node to another and keep their IP address&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;IP addresses don’t have to be “portable” from a node to another (We can use e.g. a subnet per node and use a simple routed topology)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The specification is simple enough to allow many various implementations&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kubernetes-network-model-the-less-good&quot;&gt;Kubernetes network model: the less good&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Everything can reach everything&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;if you want security, you need to add network policies&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;the network implementation that you use needs to support them&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;There are literally dozens of implementations out there (15 are listed in the Kubernetes documentation)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It looks like you have a level 3 network, but it’s only level 4 (The spec requires UDP and TCP, but not port ranges or arbitrary IP packets)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kube-proxy&lt;/code&gt; is on the data path when connecting to a pod or container, and it’s not particularly fast (relies on userland proxying or iptables)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;kubernetes-network-model-in-practice&quot;&gt;Kubernetes network model: in practice&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The nodes that we are using have been set up to use Weave&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We don’t endorse Weave in a particular way, it just Works For Us&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Don’t worry about the warning about kube-proxy performance&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Unless you:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;routinely saturate 10G network interfaces&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;count packet rates in millions per second&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;run high-traffic VOIP or gaming platforms&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;do weird things that involve millions of simultaneous connections (in which case you’re already familiar with kernel tuning)&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;first-contact-with-kubectl&quot;&gt;First contact with &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; is (almost) the only tool we’ll need to talk to Kubernetes&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It is a rich CLI tool around the Kubernetes API (Everything you can do with &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;, you can do directly with the API)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;You can also use the &lt;code class=&quot;highlighter-rouge&quot;&gt;--kubeconfig&lt;/code&gt; flag to pass a config file&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Or directly &lt;code class=&quot;highlighter-rouge&quot;&gt;--server&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;--user&lt;/code&gt;, etc.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; can be pronounced “Cube C T L”, “Cube cuttle”, “Cube cuddle”…&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;kubectl-get&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl get&lt;/code&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s look at our Node resources with kubectl get!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Look at the composition of our cluster:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-.term&quot;&gt;kubectl get node
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;These commands are equivalent&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl get no
+kubectl get node
+kubectl get nodes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;obtaining-machine-readable-output&quot;&gt;Obtaining machine-readable output&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl get&lt;/code&gt; can output JSON, YAML, or be directly formatted&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Give us more info about the nodes:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get nodes -o wide
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s have some YAML:&lt;/p&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get no -o yaml
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;p&gt;See that kind: List at the end? It’s the type of our result!&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;abusing-kubectl-and-jq&quot;&gt;(Ab)using &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;jq&lt;/code&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;It’s super easy to build custom reports&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Show the capacity of all our nodes as a stream of JSON objects:&lt;/p&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get nodes -o json | 
+      jq &quot;.items[] | {name:.metadata.name} + .status.capacity&quot;
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;whats-available&quot;&gt;What’s available?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; has pretty good introspection facilities&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We can list all available resource types by running &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl get&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;We can view details about a resource with:
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl describe type/name
+kubectl describe type name
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;We can view the definition for a resource type with:
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl explain type
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Each time, &lt;code class=&quot;highlighter-rouge&quot;&gt;type&lt;/code&gt; can be singular, plural, or abbreviated type name.&lt;/p&gt;
+
+&lt;h3 id=&quot;services&quot;&gt;Services&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;A service is a stable endpoint to connect to “something” (In the initial proposal, they were called “portals”)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;List the services on our cluster with one of these commands:&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl get services
+kubectl get svc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There is already one service on our cluster: the Kubernetes API itself.&lt;/p&gt;
+
+&lt;h3 id=&quot;clusterip-services&quot;&gt;ClusterIP services&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt; service is internal, available from the cluster only&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;This is useful for introspection from within containers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Try to connect to the API: &lt;!-- TODO: Check this is accurate --&gt;&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;curl -k https://10.96.0.1
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-k&lt;/code&gt; is used to skip certificate verification&lt;/li&gt;
+      &lt;li&gt;Make sure to replace 10.96.0.1 with the CLUSTER-IP shown by &lt;code class=&quot;highlighter-rouge&quot;&gt;$ kubectl get svc&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The error that we see is expected: the Kubernetes API requires authentication.&lt;/p&gt;
+
+&lt;h3 id=&quot;listing-running-containers&quot;&gt;Listing running containers&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Containers are manipulated through pods&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A pod is a group of containers:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;running together (on the same node)&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;sharing resources (RAM, CPU; but also network, volumes)&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;List pods on our cluster:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get pods
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;p&gt;&lt;em&gt;These are not the pods you’re looking for&lt;/em&gt;. But where are they?!?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;namespaces&quot;&gt;Namespaces&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Namespaces allow us to segregate resources&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;List the namespaces on our cluster with one of these commands:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl get namespaces
+kubectl get namespace
+kubectl get ns
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;You know what … This &lt;code class=&quot;highlighter-rouge&quot;&gt;kube-system&lt;/code&gt; thing looks suspicious.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;accessing-namespaces&quot;&gt;Accessing namespaces&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;By default, &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; uses the &lt;code class=&quot;highlighter-rouge&quot;&gt;default&lt;/code&gt; namespace&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We can switch to a different namespace with the &lt;code class=&quot;highlighter-rouge&quot;&gt;-n&lt;/code&gt; option&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;List the pods in the &lt;code class=&quot;highlighter-rouge&quot;&gt;kube-system&lt;/code&gt; namespace:&lt;/p&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl -n kube-system get pods
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;p&gt;&lt;em&gt;Ding ding ding ding ding!&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;what-are-all-these-pods&quot;&gt;What are all these pods?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;etcd&lt;/code&gt; is our etcd server&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kube-apiserver&lt;/code&gt; is the API server&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kube-controller-manager&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;kube-scheduler&lt;/code&gt; are other master components&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kube-dns&lt;/code&gt; is an additional component (not mandatory but super useful, so it’s there)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kube-proxy&lt;/code&gt; is the (per-node) component managing port mappings and such&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;weave&lt;/code&gt; is the (per-node) component managing the network overlay &lt;!-- Note: Mention of Weave --&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;the &lt;code class=&quot;highlighter-rouge&quot;&gt;READY&lt;/code&gt; column indicates the number of containers in each pod&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;the pods with a name ending with &lt;code class=&quot;highlighter-rouge&quot;&gt;-node1&lt;/code&gt; are the master components (they have been specifically “pinned” to the master node)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;running-our-first-containers-on-kubernetes&quot;&gt;Running our first containers on Kubernetes&lt;/h2&gt;
+
+&lt;h3 id=&quot;running-our-first-containers-on-kubernetes-1&quot;&gt;Running our first containers on Kubernetes&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;First things first: we cannot run a container&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We are going to run a pod, and in that pod there will be a single container&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In that container in the pod, we are going to run a simple ping command&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Then we are going to start additional copies of the pod&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;starting-a-simple-pod-with-kubectl-run&quot;&gt;Starting a simple pod with &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run&lt;/code&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We need to specify at least a name and the image we want to use&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s ping &lt;code class=&quot;highlighter-rouge&quot;&gt;goo.gl&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl run pingpong --image alpine ping goo.gl
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;OK, what just happened?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;behind-the-scenes-of-kubectl-run&quot;&gt;Behind the scenes of &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run&lt;/code&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s look at the resources that were created by &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;List most resource types:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We should see the following things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;deploy/pingpong&lt;/code&gt; (the &lt;em&gt;deployment&lt;/em&gt; that we just created)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rs/pingpong-xxxx&lt;/code&gt; (a &lt;em&gt;replica set&lt;/em&gt; created by the deployment)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;po/pingpong-yyyy&lt;/code&gt; (a &lt;em&gt;pod&lt;/em&gt; created by the replica set)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;what-are-these-different-things&quot;&gt;What are these different things?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;A &lt;em&gt;deployment&lt;/em&gt; is a high-level construct&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;allows scaling, rolling updates, rollbacks&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;multiple deployments can be used together to implement a &lt;a href=&quot;https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#canary-deployments&quot;&gt;canary deployment&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;delegates pods management to &lt;em&gt;replica sets&lt;/em&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A &lt;em&gt;replica set&lt;/em&gt; is a low-level construct&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;makes sure that a given number of identical pods are running&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;allows scaling&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;rarely used directly&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A &lt;em&gt;replication controller&lt;/em&gt; is the (deprecated) predecessor of a replica set&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;our-pingpong-deployment&quot;&gt;Our &lt;code class=&quot;highlighter-rouge&quot;&gt;pingpong&lt;/code&gt; deployment&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run&lt;/code&gt; created a &lt;em&gt;deployment&lt;/em&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy/pingpong&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;That deployment created a &lt;em&gt;replica set&lt;/em&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;rs/pingpong-xxxx&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;That &lt;em&gt;replica set&lt;/em&gt; created a &lt;em&gt;pod&lt;/em&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;po/pingpong-yyyy&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We’ll see later how these folks play together for:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;scaling&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;high availability&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;rolling updates&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;viewing-container-output&quot;&gt;Viewing container output&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s use the &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl logs&lt;/code&gt; command&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We will pass either a &lt;em&gt;pod name&lt;/em&gt;, or a &lt;em&gt;type/name&lt;/em&gt;
+(E.g. if we specify a deployment or replica set, it will get the first pod in it)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Unless specified otherwise, it will only show logs of the first container in the pod
+(Good thing there’s only one in ours!)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;View the result of our ping command:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl logs deploy/pingpong
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;streaming-logs-in-real-time&quot;&gt;Streaming logs in real time&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Just like &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl logs&lt;/code&gt; supports convenient options:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-f/--follow&lt;/code&gt; to stream logs in real time (à la tail &lt;code class=&quot;highlighter-rouge&quot;&gt;-f&lt;/code&gt;)&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--tail&lt;/code&gt; to indicate how many lines you want to see (from the end)&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--since&lt;/code&gt; to get logs only after a given timestamp&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;View the latest logs of our ping command:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl logs deploy/pingpong --tail 1 --follow
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;scaling-our-application&quot;&gt;Scaling our application&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We can create additional copies of our container (or rather our pod) with &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl scale&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Scale our pingpong deployment:&lt;/p&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl scale deploy/pingpong --replicas 8
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;Note: what if we tried to scale &lt;code class=&quot;highlighter-rouge&quot;&gt;rs/pingpong-xxxx&lt;/code&gt;? We could! But the &lt;em&gt;deployment&lt;/em&gt; would notice it right away, and scale back to the initial level.&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;resilience&quot;&gt;Resilience&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The deployment pingpong watches its replica set&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The replica set ensures that the right number of pods are running&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What happens if pods disappear?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In a separate window, list pods, and keep watching them:
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get pods -w
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Destroy a pod:
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl delete pod pingpong-yyyy
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;what-if-we-wanted-something-different&quot;&gt;What if we wanted something different?&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;What if we wanted to start a “one-shot” container that &lt;em&gt;doesn’t&lt;/em&gt; get restarted?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We could use &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run --restart=OnFailure&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run --restart=Never&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;These commands would create &lt;em&gt;jobs&lt;/em&gt; or &lt;em&gt;pods&lt;/em&gt; instead of &lt;em&gt;deployments&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Under the hood, &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run&lt;/code&gt; invokes “generators” to create resource descriptions&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We could also write these resource descriptions ourselves (typically in YAML), 
+and create them on the cluster with &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl apply -f&lt;/code&gt; (discussed later)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;With &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl run --schedule=&lt;/code&gt;…, we can also create &lt;em&gt;cronjobs&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;viewing-logs-of-multiple-pods&quot;&gt;Viewing logs of multiple pods&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;When we specify a deployment name, only one single pod’s logs are shown&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We can view the logs of multiple pods by specifying a &lt;em&gt;selector&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A selector is a logic expression using &lt;em&gt;labels&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Conveniently, when &lt;code class=&quot;highlighter-rouge&quot;&gt;you kubectl run somename&lt;/code&gt;, the associated objects have a &lt;code class=&quot;highlighter-rouge&quot;&gt;run=somename&lt;/code&gt; label&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;View the last line of log from all pods with the &lt;code class=&quot;highlighter-rouge&quot;&gt;run=pingpong&lt;/code&gt; label:
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl logs -l run=pingpong --tail 1
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Unfortunately, &lt;code class=&quot;highlighter-rouge&quot;&gt;--follow&lt;/code&gt; cannot (yet) be used to stream the logs from multiple containers.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;exposing-containers&quot;&gt;Exposing containers&lt;/h2&gt;
+&lt;h3 id=&quot;exposing-containers-1&quot;&gt;Exposing containers&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl expose&lt;/code&gt; creates a &lt;em&gt;service&lt;/em&gt; for existing pods&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A &lt;em&gt;service&lt;/em&gt; is a stable address for a pod (or a bunch of pods)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If we want to connect to our pod(s), we need to create a &lt;em&gt;service&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Once a service is created, &lt;code class=&quot;highlighter-rouge&quot;&gt;kube-dns&lt;/code&gt; will allow us to resolve it by name (i.e. after creating service &lt;code class=&quot;highlighter-rouge&quot;&gt;hello&lt;/code&gt;, the name &lt;code class=&quot;highlighter-rouge&quot;&gt;hello&lt;/code&gt; will resolve to something)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;There are different types of services, detailed on the following slides:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;NodePort&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadBalancer&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;ExternalName&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;basic-service-types&quot;&gt;Basic service types&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt; (default type)&lt;/p&gt;
+
+    &lt;p&gt;a virtual IP address is allocated for the service (in an internal, private range)
+this IP address is reachable only from within the cluster (nodes and pods)
+our code can connect to the service using the original port number&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;NodePort&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;a port is allocated for the service (by default, in the 30000-32768 range)
+that port is made available on all our nodes and anybody can connect to it
+our code must be changed to connect to that new port number&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These service types are always available.&lt;/p&gt;
+
+&lt;p&gt;Under the hood: &lt;code class=&quot;highlighter-rouge&quot;&gt;kube-proxy&lt;/code&gt; is using a userland proxy and a bunch of &lt;code class=&quot;highlighter-rouge&quot;&gt;iptables&lt;/code&gt; rules.&lt;/p&gt;
+
+&lt;h3 id=&quot;more-service-types&quot;&gt;More service types&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;LoadBalancer&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;an external load balancer is allocated for the service&lt;/li&gt;
+      &lt;li&gt;the load balancer is configured accordingly (e.g.: a &lt;code class=&quot;highlighter-rouge&quot;&gt;NodePort&lt;/code&gt; service is created, and the load balancer sends traffic to that port)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ExternalName&lt;/code&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;the DNS entry managed by &lt;code class=&quot;highlighter-rouge&quot;&gt;kube-dns&lt;/code&gt; will just be a &lt;code class=&quot;highlighter-rouge&quot;&gt;CNAME&lt;/code&gt; to a provided record&lt;/li&gt;
+      &lt;li&gt;no port, no IP address, no nothing else is allocated&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;running-containers-with-open-ports&quot;&gt;Running containers with open ports&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Since ping doesn’t have anything to connect to, we’ll have to run something else&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Start a bunch of ElasticSearch containers:
+    &lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl run elastic --image=elasticsearch:2 --replicas=7
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Watch them being started:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get pods -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;-w&lt;/code&gt; option “watches” events happening on the specified resources.&lt;/p&gt;
+
+&lt;p&gt;Note: please DO NOT call the service &lt;code class=&quot;highlighter-rouge&quot;&gt;search&lt;/code&gt;. It would collide with the TLD.&lt;/p&gt;
+
+&lt;h3 id=&quot;exposing-our-deployment&quot;&gt;Exposing our deployment&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We’ll create a default &lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt; service&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expose the ElasticSearch HTTP API port:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term&quot;&gt;kubectl expose deploy/elastic --port 9200
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Look up which IP address was allocated:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;kubectl get svc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;services-are-layer-4-constructs&quot;&gt;Services are layer 4 constructs&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;You can assign IP addresses to services, but they are still &lt;em&gt;layer 4&lt;/em&gt; (i.e. a service is not an IP address; it’s an IP address + protocol + port)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;This is caused by the current implementation of &lt;code class=&quot;highlighter-rouge&quot;&gt;kube-proxy&lt;/code&gt; (it relies on mechanisms that don’t support layer 3)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;As a result: &lt;em&gt;you have to&lt;/em&gt; indicate the port number for your service&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Running services with arbitrary port (or port ranges) requires hacks (e.g. host networking mode)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;testing-our-service&quot;&gt;Testing our service&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We will now send a few HTTP requests to our ElasticSearch pods&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s obtain the IP address that was allocated for our service, &lt;em&gt;programatically&lt;/em&gt;:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;IP=$(kubectl get svc elastic -o go-template --template '{{ .spec.clusterIP }}')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Send a few requests:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-.term1&quot;&gt;curl http://$IP:9200/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our requests are load balanced across multiple pods.&lt;/p&gt;
+
+&lt;h2 id=&quot;our-app-on-kube&quot;&gt;Our app on Kube&lt;/h2&gt;
+
+&lt;h3 id=&quot;whats-on-the-menu&quot;&gt;What’s on the menu?&lt;/h3&gt;
+&lt;p&gt;In this part, we will:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;build&lt;/strong&gt; images for our app,&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;ship&lt;/strong&gt; these images with a registry,&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;run&lt;/strong&gt; deployments using these images,&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;expose these deployments so they can communicate with each other,&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;expose the web UI so we can access it from outside.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;the-plan&quot;&gt;The plan&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Build on our control node (&lt;code class=&quot;highlighter-rouge&quot;&gt;node1&lt;/code&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Tag images so that they are named &lt;code class=&quot;highlighter-rouge&quot;&gt;$REGISTRY/servicename&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Upload them to a Docker Hub&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create deployments using the images&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expose (with a &lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt;) the services that need to communicate&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expose (with a &lt;code class=&quot;highlighter-rouge&quot;&gt;NodePort&lt;/code&gt;) the WebUI&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;which-registry-do-we-want-to-use&quot;&gt;Which registry do we want to use?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;For this workshop, we’ll use (Docker Hub)[https://hub.docker.com]. There are a number of other options, including two provided by Docker.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Docker also provides:&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/datacenter/dtr/2.4/guides/&quot;&gt;Docker Trusted Registry&lt;/a&gt; which adds in a lot of security and deployment features including security scanning, and role-based access control.&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/registry/&quot;&gt;Docker Open Source Registry&lt;/a&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;docker-hub&quot;&gt;Docker Hub&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://hub.docker.com&quot;&gt;Docker Hub&lt;/a&gt; is the default registry for Docker.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Image names on Hub are just &lt;code class=&quot;highlighter-rouge&quot;&gt;$USERNAME/$IMAGENAME&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;$ORGANIZATIONNAME/$IMAGENAME&lt;/code&gt;.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://docs.docker.com/docker-hub/official_repos/&quot;&gt;Official images&lt;/a&gt; can be referred to as just &lt;code class=&quot;highlighter-rouge&quot;&gt;$IMAGENAME&lt;/code&gt;.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;To use Hub, make sure you have an account. Then type &lt;code class=&quot;highlighter-rouge&quot;&gt;docker login&lt;/code&gt; in the terminal and login with your username and password.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Using Docker Trusted Registry, Docker Open Source Registry is very similar.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Image names on other registries are &lt;code class=&quot;highlighter-rouge&quot;&gt;$REGISTRYPATH/$USERNAME/$IMAGENAME&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;$REGISTRYPATH/$ORGANIZATIONNAME/$IMAGENAME&lt;/code&gt;.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Login using &lt;code class=&quot;highlighter-rouge&quot;&gt;docker login $REGISTRYPATH&lt;/code&gt;.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;building-and-pushing-our-images&quot;&gt;Building and pushing our images&lt;/h3&gt;
+
+&lt;!-- TODO: Fix default registry URL to username in dockercoins.yml --&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We are going to use a convenient feature of Docker Compose&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Aafter Go to the &lt;code class=&quot;highlighter-rouge&quot;&gt;stacks&lt;/code&gt; directory:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/container.training/stacks
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Build and push the images:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export REGISTRY
+docker-compose -f dockercoins.yml build
+docker-compose -f dockercoins.yml push
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s have a look at the dockercoins.yml file while this is building and pushing.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: &quot;3&quot;
+services:
+  rng:
+    build: dockercoins/rng
+    image: ${USERNAME}/rng:${TAG-latest}
+    deploy:
+      mode: global
+  ...
+  redis:
+    image: redis
+  ...
+  worker:
+    build: dockercoins/worker
+    image: ${USERNAME}/worker:${TAG-latest}
+    ...
+    deploy:
+      replicas: 10
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Just in case you were wondering … Docker “services” are not Kubernetes “services”.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;deploying-all-the-things&quot;&gt;Deploying all the things&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We can now deploy our code (as well as a redis instance)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Deploy &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt;:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl run redis --image=redis
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Deploy everything else:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for SERVICE in hasher rng webui worker; do
+  kubectl run $SERVICE --image=$USERNAME/$SERVICE
+done
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;is-this-working&quot;&gt;Is this working?&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;After waiting for the deployment to complete, let’s look at the logs!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;(Hint: use &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl get deploy -w&lt;/code&gt; to watch deployment events)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Look at some logs:&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl logs deploy/rng
+kubectl logs deploy/worker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;🤔 &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt; is fine … But not &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;💡 Oh right! We forgot to &lt;code class=&quot;highlighter-rouge&quot;&gt;expose&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;exposing-services&quot;&gt;Exposing services&lt;/h3&gt;
+
+&lt;h3 id=&quot;exposing-services-internally&quot;&gt;Exposing services internally&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Three deployments need to be reachable by others: &lt;code class=&quot;highlighter-rouge&quot;&gt;hasher&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;rng&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; doesn’t need to be exposed&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;webui&lt;/code&gt; will be dealt with later&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expose each deployment, specifying the right port:&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl expose deployment redis --port 6379
+kubectl expose deployment rng --port 80
+kubectl expose deployment hasher --port 80
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;is-this-working-yet&quot;&gt;Is this working yet?&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; has an infinite loop, that retries 10 seconds after an error&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Stream the worker’s logs:
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl logs deploy/worker --follow
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;(Give it about 10 seconds to recover)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;We should now see the &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt;, well, working happily.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;exposing-services-for-external-access&quot;&gt;Exposing services for external access&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Now we would like to access the Web UI&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We will expose it with a &lt;code class=&quot;highlighter-rouge&quot;&gt;NodePort&lt;/code&gt; (just like we did for the registry)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a &lt;code class=&quot;highlighter-rouge&quot;&gt;NodePort&lt;/code&gt; service for the Web UI:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl expose deploy/webui --type=NodePort --port=8080
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check the port that was allocated:
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl get svc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;accessing-the-web-ui&quot;&gt;Accessing the web UI&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We can now connect to &lt;em&gt;any node&lt;/em&gt;, on the allocated node port, to view the web UI&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Click on &lt;a href=&quot;/&quot; data-term=&quot;.term1&quot; data-port=&quot;8080&quot;&gt;this link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Alright, we’re back to where we started, when we were running on a single node!&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;security-implications-of-kubectl-apply&quot;&gt;Security implications of &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl apply&lt;/code&gt;&lt;/h2&gt;
+
+&lt;h3 id=&quot;security-implications-of-kubectl-apply-1&quot;&gt;Security implications of &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl apply&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;When we do &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl apply -f &amp;lt;URL&amp;gt;&lt;/code&gt;, we create arbitrary resources&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Resources can be evil; imagine a &lt;code class=&quot;highlighter-rouge&quot;&gt;deployment&lt;/code&gt; that …&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;starts bitcoin miners on the whole cluster&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;hides in a non-default namespace&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;bind-mounts our nodes’ filesystem&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;inserts SSH keys in the root account (on the node)&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;encrypts our data and ransoms it&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;☠️☠️☠️&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;kubectl-apply-is-the-new-curl--sh&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl apply&lt;/code&gt; is the new &lt;code class=&quot;highlighter-rouge&quot;&gt;curl | sh&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;curl | sh&lt;/code&gt; is convenient&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It’s safe if you use HTTPS URLs from trusted sources&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl apply -f&lt;/code&gt; is convenient&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It’s safe if you use HTTPS URLs from trusted sources&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It introduces new failure modes&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Example: the official setup instructions for most pod networks&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;scaling-a-deployment&quot;&gt;Scaling a deployment&lt;/h2&gt;
+
+&lt;h3 id=&quot;scaling-a-deployment-1&quot;&gt;Scaling a deployment&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;We will start with an easy one: the &lt;code class=&quot;highlighter-rouge&quot;&gt;worker&lt;/code&gt; deployment&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Open two new terminals to check what’s going on with pods and deployments:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;```kubectl get pods -w
+kubectl get deployments -w&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* Now, create more `worker` replicas:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl scale deploy/worker –replicas=10&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* After a few seconds, the graph in the web UI should show up. (And peak at 10 hashes/second, just like when we were running on a single one.)
+
+## Daemon sets
+
+### Daemon sets
+* What if we want one (and exactly one) instance of rng per node?
+
+* If we just scale deploy/rng to 2, nothing guarantees that they spread
+
+* Instead of a deployment, we will use a daemonset
+
+* Daemon sets are great for cluster-wide, per-node processes:
+
+  * kube-proxy
+  * weave (our overlay network) &amp;lt;!--Calico?--&amp;gt;
+  * monitoring agents
+  * hardware management tools (e.g. SCSI/FC HBA agents)
+  * etc.
+
+* They can also be restricted to run [only on some nodes](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#running-pods-on-only-some-nodes).
+
+### Creating a daemon set
+
+* Unfortunately, as of Kubernetes 1.9, the CLI cannot create daemon sets
+
+* More precisely: it doesn't have a subcommand to create a daemon set
+
+* But any kind of resource can always be created by providing a YAML description:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl apply -f foo.yaml&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* How do we create the YAML file for our daemon set?
+
+  * option 1: read the docs
+  * option 2: `vi` our way out of it
+
+### Creating the YAML file for our daemon set
+* Let's start with the YAML file for the current `rng` resource
+
+* Dump the rng resource in YAML:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl get deploy/rng -o yaml –export &amp;gt;rng.yml&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+Edit `rng.yml`
+
+Note: `--export` will remove &quot;cluster-specific&quot; information, i.e.:
+
+namespace (so that the resource is not tied to a specific namespace)
+status and creation timestamp (useless when creating a new resource)
+resourceVersion and uid (these would cause... *interesting* problems)
+
+### &quot;Casting&quot; a resource to another
+* What if we just changed the `kind` field?
+
+* (It can't be that easy, right?)
+
+Change `kind: Deployment` to `kind: DaemonSet`
+
+Save, quit
+
+Try to create our new resource:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl apply -f rng.yml&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* We all knew this couldn't be that easy, right!
+
+### Understanding the problem
+
+* The core of the error is:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;error validating data:
+[ValidationError(DaemonSet.spec):
+unknown field “replicas” in io.k8s.api.extensions.v1beta1.DaemonSetSpec,
+…&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* *Obviously*, it doesn't make sense to specify a number of replicas for a daemon set
+
+* Workaround: fix the YAML
+
+  * remove the `replicas` field
+  * remove the `strategy` field (which defines the rollout mechanism for a deployment)
+  * remove the `status: {}` line at the end
+
+* Or, we could also ...
+
+### Use the `--force`, Luke
+
+* We could also tell Kubernetes to ignore these errors and try anyway
+
+* The `--force` flag actual name is `--validate=false`
+
+* Try to load our YAML file and ignore errors:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl apply -f rng.yml –validate=false&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Use the --force, Luke
+We could also tell Kubernetes to ignore these errors and try anyway
+
+The --force flag actual name is --validate=false
+
+Try to load our YAML file and ignore errors:
+kubectl apply -f rng.yml --validate=false
+🎩✨🐇
+
+Wait ... Now, *can* it be that easy?
+
+### Checking what we've done
+
+* Did we transform our `deployment` into a `daemonset`?
+
+* Look at the resources that we have now:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl get all&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;We have both `deploy/rng` and `ds/rng` now!
+
+And one too many pods...
+
+### Explanation
+
+* You can have different resource types with the same name (i.e. a *deployment* and a *daemonset* both named `rng`)
+
+* We still have the old `rng` *deployment*
+
+* But now we have the new `rng` *daemonset* as well
+
+* If we look at the pods, we have:
+
+  * *one pod* for the deployment
+  * *one pod per node* for the daemonset
+
+### What are all these pods doing?
+* Let's check the logs of all these `rng` pods
+
+* All these pods have a `run=rng` label:
+
+  * the first pod, because that's what `kubectl run` does
+  * the other ones (in the daemon set), because we *copied the spec from the first one*
+
+* Therefore, we can query everybody's logs using that `run=rng` selector
+
+* Check the logs of all the pods having a label `run=rng`:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl logs -l run=rng –tail 1&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* It appears that *all the pods* are serving requests at the moment.
+
+### Removing the first pod from the load balancer
+
+* What would happen if we removed that pod, with `kubectl delete pod ...`?
+
+  The replicaset would re-create it immediately.
+
+* What would happen if we removed the `run=rng` label from that pod?
+
+  The `replicaset` would re-create it immediately.
+
+  ... Because what matters to the `replicaset` is the number of pods *matching that selector*.
+
+* But but but ... Don't we have more than one pod with `run=rng` now?
+
+  The answer lies in the exact selector used by the `replicaset` ...
+
+### Deep dive into selectors
+* Let's look at the selectors for the `rng` *deployment* and the associated *replica set*
+
+* Show detailed information about the `rng` deployment:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl describe deploy rng&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* Show detailed information about the `rng` replica: (The second command doesn't require you to get the exact name of the replica set)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl describe rs rng-yyyy
+kubectl describe rs -l run=rng&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* The replica set selector also has a `pod-template-hash`, unlike the pods in our daemon set.
+
+## Updating a service through labels and selectors
+
+### Updating a service through labels and selectors
+
+* What if we want to drop the `rng` deployment from the load balancer?
+
+* Option 1:
+
+  * destroy it
+
+* Option 2:
+
+  * add an extra *label* to the daemon set
+  * update the service *selector* to refer to that *label*
+
+Of course, option 2 offers more learning opportunities. Right?
+
+### Add an extra label to the daemon set
+
+* We will update the daemon set &quot;spec&quot;
+
+* Option 1:
+
+  * edit the `rng.yml` file that we used earlier
+  * load the new definition with `kubectl apply`
+
+* Option 2:
+
+  * use `kubectl edit`
+
+*If you feel like you got this, feel free to try directly. We've included a few hints on the next slides for your convenience!*
+
+### We've put resources in your resources
+* Reminder: a daemon set is a resource that creates more resources!
+
+* There is a difference between:
+
+  * the label(s) of a resource (in the `metadata` block in the beginning)
+  * the selector of a resource (in the `spec` block)
+  * the label(s) of the resource(s) created by the first resource (in the `template` block)
+
+* You need to update the selector and the template (metadata labels are not mandatory)
+
+* The template must match the selector (i.e. the resource will refuse to create resources that it will not select)
+
+### Adding our label
+Let's add a label `isactive: yes`
+
+In YAML, yes should be quoted; i.e. `isactive: &quot;yes&quot;`
+
+* Update the daemon set to add `isactive: &quot;yes&quot;` to the selector and template label:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl edit daemonset rng&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* Update the service to add `isactive: &quot;yes&quot;` to its selector:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl edit service rng&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+### Checking what we've done
+* Check the logs of all `run=rng` pods to confirm that only 2 of them are now active:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl logs -l run=rng&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* The timestamps should give us a hint about how many pods are currently receiving traffic.
+
+* Look at the pods that we have right now:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl get pods&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+### More labels, more selectors, more problems?
+* Bonus exercise 1: clean up the pods of the &quot;old&quot; daemon set
+
+* Bonus exercise 2: how could we have done this to avoid creating new pods?
+
+## Rolling updates
+
+### Rolling updates
+* By default (without rolling updates), when a scaled resource is updated:
+
+  * new pods are created
+  * old pods are terminated
+  * ... all at the same time
+  * if something goes wrong, ¯\_(ツ)_/¯
+
+* With rolling updates, when a resource is updated, it happens progressively
+
+* Two parameters determine the pace of the rollout: `maxUnavailable` and `maxSurge`
+
+* They can be specified in absolute number of pods, or percentage of the `replicas` count
+
+* At any given time ...
+
+  * there will always be at least `replicas`-`maxUnavailable` pods available
+  * there will never be more than `replicas`+`maxSurge` pods in total
+  * there will therefore be up to `maxUnavailable`+`maxSurge` pods being updated
+
+* We have the possibility to rollback to the previous version (if the update fails or is unsatisfactory in any way)
+
+### Rolling updates in practice
+* As of Kubernetes 1.8, we can do rolling updates with:
+
+  `deployments`, `daemonsets`, `statefulsets`
+
+* Editing one of these resources will automatically result in a rolling update
+
+* Rolling updates can be monitored with the `kubectl rollout` subcommand
+
+### Building a new version of the `worker` service
+
+* Go to the stack directory:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;cd ~/container.training/stacks&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+Edit `dockercoins/worker/worker.py`, update the sleep line to sleep 1 second
+
+Build a new tag and push it to the registry:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;export TAG=v0.2
+  docker-compose -f dockercoins.yml build
+  docker-compose -f dockercoins.yml push&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+### Rolling out the new worker service
+
+* Let's monitor what's going on by opening a few terminals, and run:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl get pods -w
+  kubectl get replicasets -w
+  kubectl get deployments -w&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* Update worker either with kubectl edit, or by running:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl set image deploy worker worker=$USERNAME/worker:$TAG&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* That rollout should be pretty quick. What shows in the web UI?
+
+### Rolling out an error
+
+* What happens if we make a mistake?
+
+* Update worker by specifying a non-existent image:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;export TAG=v0.3
+  kubectl set image deploy worker worker=$REGISTRY/worker:$TAG&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* Check what's going on:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl rollout status deploy worker&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+* Our rollout is stuck. However, the app is not dead (just 10% slower).
+
+### Recovering from a bad rollout
+
+* We could push some v0.3 image (the pod retry logic will eventually catch it and the rollout will proceed)
+
+* Or we could invoke a manual rollback
+
+* Cancel the deployment and wait for the dust to settle down:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl rollout undo deploy worker
+  kubectl rollout status deploy worker&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+### Changing rollout parameters
+
+* We want to:
+
+  * revert to `v0.1` (which we now realize we didn't tag - yikes!)
+  * be conservative on availability (always have desired number of available workers)
+  * be aggressive on rollout speed (update more than one pod at a time)
+  * give some time to our workers to &quot;warm up&quot; before starting more
+
+* The corresponding changes can be expressed in the following YAML snippet:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;spec:
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: $USERNAME/worker:latest
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 3
+  minReadySeconds: 10&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+### Applying changes through a YAML patch
+
+* We could use `kubectl edit deployment worker`
+
+* But we could also use `kubectl patch` with the exact YAML shown before
+
+* Apply all our changes and wait for them to take effect:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;kubectl patch deployment worker -p “
+  spec:
+    template:
+      spec:
+        containers:
+        - name: worker
+          image: $USERNAME/worker:latest
+    strategy:
+      rollingUpdate:
+        maxUnavailable: 0
+        maxSurge: 3
+    minReadySeconds: 10
+  “
+  kubectl rollout status deployment worker
+  ```&lt;/p&gt;
+
+&lt;h3 id=&quot;next-steps&quot;&gt;Next steps&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Alright, how do I get started and containerize my apps?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Suggested containerization checklist:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;write a Dockerfile for one service in one app&lt;/li&gt;
+  &lt;li&gt;write Dockerfiles for the other (buildable) services&lt;/li&gt;
+  &lt;li&gt;write a Compose file for that whole app&lt;/li&gt;
+  &lt;li&gt;make sure that devs are empowered to run the app in containers&lt;/li&gt;
+  &lt;li&gt;set up automated builds of container images from the code repo&lt;/li&gt;
+  &lt;li&gt;set up a CI pipeline using these container images&lt;/li&gt;
+  &lt;li&gt;set up a CD pipeline (for staging/QA) using these images&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And &lt;em&gt;then&lt;/em&gt; it is time to look at orchestration!&lt;/p&gt;
+
+&lt;h3 id=&quot;namespaces-1&quot;&gt;Namespaces&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Namespaces let you run multiple identical stacks side by side&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Two namespaces (&lt;em&gt;e.g.&lt;/em&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;blue&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;green&lt;/code&gt;) can each have their own &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt; service&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Each of the two &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt; services has its own &lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kube-dns&lt;/code&gt; creates two entries, mapping to these two &lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt; addresses:&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;redis.blue.svc.cluster.local&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;redis.green.svc.cluster.local&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Pods in the &lt;code class=&quot;highlighter-rouge&quot;&gt;blue&lt;/code&gt; namespace get a &lt;em&gt;search suffix&lt;/em&gt; of &lt;code class=&quot;highlighter-rouge&quot;&gt;blue.svc.cluster.local&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;As a result, resolving &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt; from a pod in the &lt;code class=&quot;highlighter-rouge&quot;&gt;blue&lt;/code&gt; namespace yields the “local” &lt;code class=&quot;highlighter-rouge&quot;&gt;redis&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This does not provide &lt;em&gt;isolation&lt;/em&gt;! That would be the job of network policies.&lt;/p&gt;
+
+&lt;h3 id=&quot;stateful-services-databases-etc&quot;&gt;Stateful services (databases etc.)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;As a first step, it is wiser to keep stateful services &lt;em&gt;outside&lt;/em&gt; of the cluster&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Exposing them to pods can be done with multiple solutions:&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ExternalName&lt;/code&gt; services (&lt;code class=&quot;highlighter-rouge&quot;&gt;redis.blue.svc.cluster.local&lt;/code&gt; will be a &lt;code class=&quot;highlighter-rouge&quot;&gt;CNAME&lt;/code&gt; record)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ClusterIP&lt;/code&gt; services with explicit &lt;code class=&quot;highlighter-rouge&quot;&gt;Endpoints&lt;/code&gt; (instead of letting Kubernetes generate the endpoints from a selector)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ambassador services (application-level proxies that can provide credentials injection and more)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;stateful-services-second-take&quot;&gt;Stateful services (second take)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;If you really want to host stateful services on Kubernetes, you can look into:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;volumes (to carry persistent data)&lt;/li&gt;
+      &lt;li&gt;storage plugins&lt;/li&gt;
+      &lt;li&gt;persistent volume claims (to ask for specific volume characteristics)&lt;/li&gt;
+      &lt;li&gt;stateful sets (pods that are &lt;em&gt;not&lt;/em&gt; ephemeral)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;http-traffic-handling&quot;&gt;HTTP traffic handling&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Services&lt;/em&gt; are layer 4 constructs&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;HTTP is a layer 7 protocol&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It is handled by &lt;em&gt;ingresses&lt;/em&gt; (a different resource kind)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ingresses allow:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;virtual host routing&lt;/li&gt;
+      &lt;li&gt;session stickiness&lt;/li&gt;
+      &lt;li&gt;URI mapping&lt;/li&gt;
+      &lt;li&gt;and much more!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;logging-and-metrics&quot;&gt;Logging and metrics&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Logging is delegated to the container engine&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Metrics are typically handled with Prometheus&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;managing-the-configuration-of-our-applications&quot;&gt;Managing the configuration of our applications&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Two constructs are particularly useful: secrets and config maps&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;They allow to expose arbitrary information to our containers&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Avoid&lt;/strong&gt; storing configuration in container images (There are some exceptions to that rule, but it’s generally a Bad Idea)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Never&lt;/strong&gt; store sensitive information in container images (It’s the container equivalent of the password on a post-it note on your screen)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--TODO check slide 267, managing stacks. Docker EE handles that, should we mention other things? --&gt;
+
+&lt;h3 id=&quot;cluster-federation&quot;&gt;Cluster federation&lt;/h3&gt;
+&lt;!--TODO: should we include? Docker EE doesn't do Cluster Federation --&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kubernetes master operation relies on etcd&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;etcd uses the Raft protocol&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Raft recommends low latency between nodes&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What if our cluster spreads to multiple regions?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Break it down in local clusters&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Regroup them in a cluster &lt;em&gt;federation&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Synchronize resources across clusters&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Discover resources across clusters&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;developer-experience&quot;&gt;Developer experience&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;I’ve put this last, but it’s pretty important!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How do you on-board a new developer?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;What do they need to install to get a dev stack?&lt;/li&gt;
+      &lt;li&gt;How does a code change make it from dev to prod?&lt;/li&gt;
+      &lt;li&gt;How does someone add a component to a stack?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
 </description>
         <pubDate>Thu, 07 Dec 2017 00:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/kubernetes-overview/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/kubernetes-overview/</guid>
+        <link>http://0.0.0.0:4000/kubernetes-workshop/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/kubernetes-workshop/</guid>
         
         <category>beginner</category>
         
@@ -1010,83 +2034,6 @@ we can figure out what’s missing and do only what’s necessary&lt;/p&gt;
         
         
         <category>beginner</category>
-        
-      </item>
-    
-      <item>
-        <title>Docker for Developers</title>
-        <description>&lt;p&gt;This self-paced learning journey for Developers will help you understand and be able to deploy applications with Docker. We’ve designed three stages.&lt;/p&gt;
-
-&lt;h2 id=&quot;stage-1-the-basics&quot;&gt;&lt;a href=&quot;/dev-stage1&quot;&gt;Stage 1: The Basics&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;This stage will&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Get you familiar with the core concepts of Docker&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Show you how to build and deploy basic applications&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;stage-2-digging-deeper&quot;&gt;&lt;a href=&quot;/dev-stage2&quot;&gt;Stage 2: Digging Deeper&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;This stage show you how to&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Create and run Docker image registries&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Use Docker with in a continuous integration environment&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;stage-3-moving-to-staging&quot;&gt;&lt;a href=&quot;/dev-stage3&quot;&gt;Stage 3: Moving to Staging&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;This final stage will help you&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Deploy an application to a staging environment&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Manage your staging environment with Docker Swarm Mode&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Learn how to build a secure application&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h2&gt;
-
-&lt;p&gt;Once you’ve finished the three stages, you can&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://docker.com/get-docker&quot;&gt;Download Docker&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://community.docker.com&quot;&gt;Sign up for the Docker Community&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://docs.docker.com&quot;&gt;Explore the Docker documentation&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 20 Jan 2017 00:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/dev-landing/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/dev-landing/</guid>
-        
-        <category>windows</category>
-        
-        <category>operations</category>
-        
-        <category>developer</category>
-        
-        <category>landing</category>
-        
         
       </item>
     
