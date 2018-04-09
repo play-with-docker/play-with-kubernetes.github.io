@@ -8,22 +8,18 @@ categories: beginner
 terms: 3
 ---
 
-### Our sample application
-Visit the GitHub repository with all the materials of this workshop: 
-(https://github.com/jpetazzo/container.training)[https://github.com/jpetazzo/container.training]
+## Introduction
 
-The application is in the (dockercoins)[https://github.com/jpetazzo/container.training/tree/master/dockercoins] subdirectory.
+In this hands-on workshop, you will learn the basic concepts of Kubernetes. You will do that through interacting with Kubernetes through the command line terminals on the right. Ultimately you will deploy the sample applications [Dockercoins](https://github.com/dockersamples/dockercoins) on both worker nodes.
 
-Let's look at the general layout of the source code:
+## Getting Started
 
-there is a Compose file docker-compose.yml ...
+### What are these terminals in the browsers?
+On the right you should see two terminal windows. You may be asked to login first, which you can do either with a [Docker ID](https://hub.docker.com/) or a [GitHub](https://github.com) account. Those terminals are fully functional terminals running Centos. Actually, they're the commandline for Centos containers running on our Play-with-Kubernetes infrastructure. When you see code blocks that look like this, you can either click on them and they will auto populate, or your can copy and paste them.
 
-... and 4 other services, each in its own directory:
-
-`rng` = web service generating random bytes
-`hasher` = web service computing hash of POSTed data
-`worker` = background process using `rng` and `hasher`
-`webui` = web interface to watch progress
+  ```.term1
+  ls
+  ```
 
 ### What's this application?
 * It is a DockerCoin miner! 💰🐳📦🚢
@@ -43,31 +39,46 @@ there is a Compose file docker-compose.yml ...
   * `webui` queries `redis`, and computes and exposes "hashing speed" in your browser
 
 ### Getting the application source code
+We've created a sample appliation to run for parts of the workshop. The application is in the [dockercoins](https://github.com/dockersamples/dockercoins) repository.
+
+Let's look at the general layout of the source code:
+
+there is a Compose file `docker-compose.yml` ...
+
+... and 4 other services, each in its own directory:
+
+`rng` = web service generating random bytes
+
+`hasher` = web service computing hash of POSTed data
+
+`worker` = background process using `rng` and `hasher`
+
+`webui` = web interface to watch progress
+
+
 * We will clone the GitHub repository
 
 * The repository also contains scripts and tools that we will use through the workshop
 
-```.term1
-git clone https://github.com/jpetazzo/container.training/
-```
+  ```.term1
+  git clone https://github.com/dockersamples/dockercoins
+  ```
 
 (You can also fork the repository on GitHub and clone your fork if you prefer that.)
 
 ## Running the application
 
-### Running the application
-
 * Go to the dockercoins directory, in the cloned repo:
 
-```.term1
-cd ~/container.training/dockercoins
-```
+  ```.term1
+  cd ~/dockercoins
+  ```
 
 * Use Compose to build and run all containers:
 
-```.term1
-docker-compose up
-```
+  ```.term1
+  docker-compose up
+  ```
 
 Compose tells Docker to build all container images (pulling the corresponding base images), then starts all containers, and displays aggregated logs.
 
@@ -80,7 +91,8 @@ Compose tells Docker to build all container images (pulling the corresponding ba
 *  Let's put that in the background
 
 * Stop the application by hitting `^C`
-`^C` stops all containers by sending them the `TERM` signal
+
+  `^C` stops all containers by sending them the `TERM` signal
 
 * Some containers exit immediately, others take longer (because they don't handle `SIGTERM` and end up being killed after a 10s timeout)
 
@@ -94,13 +106,11 @@ Compose tells Docker to build all container images (pulling the corresponding ba
 
 * Before moving on, let's remove those containers. Tell Compose to remove everything:
 
-```.term1
-docker-compose down
-```
+  ```.term1
+  docker-compose down
+  ```
 
 ## Kubernetes concepts
-
-### Kubernetes concepts
 
 * Kubernetes is a container management system
 
@@ -193,7 +203,6 @@ docker-compose down
 
 ## Declarative vs imperative
 
-### Declarative vs imperative
 * Our container orchestrator puts a very strong emphasis on being declarative
 
 * Declarative:
@@ -250,7 +259,6 @@ docker-compose down
 
 ## Kubernetes network model
 
-### Kubernetes network model
 * TL,DR:
 
   *Our cluster (nodes and pods) is one big flat IP network.*
@@ -441,11 +449,11 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 * List the namespaces on our cluster with one of these commands:
 
-```
-kubectl get namespaces
-kubectl get namespace
-kubectl get ns
-```
+  ```
+  kubectl get namespaces
+  kubectl get namespace
+  kubectl get ns
+  ```
 *You know what ... This `kube-system` thing looks suspicious.*
 
 ### Accessing namespaces
@@ -479,7 +487,6 @@ kubectl get ns
 
 ## Running our first containers on Kubernetes
 
-### Running our first containers on Kubernetes
 * First things first: we cannot run a container
 
 * We are going to run a pod, and in that pod there will be a single container
@@ -494,9 +501,9 @@ kubectl get ns
 
 * Let's ping `goo.gl`
 
-```.term1
-kubectl run pingpong --image alpine ping goo.gl
-```
+  ```.term1
+  kubectl run pingpong --image alpine ping goo.gl
+  ```
 
 * OK, what just happened?
 
@@ -506,9 +513,9 @@ kubectl run pingpong --image alpine ping goo.gl
 
 * List most resource types:
 
-```.term1
-kubectl get all
-```
+  ```.term1
+  kubectl get all
+  ```
 
 We should see the following things:
 
@@ -564,9 +571,9 @@ We should see the following things:
 
 * View the result of our ping command:
 
-```.term1
-kubectl logs deploy/pingpong
-```
+  ```.term1
+  kubectl logs deploy/pingpong
+  ```
 
 ### Streaming logs in real time
 * Just like `docker logs`, `kubectl logs` supports convenient options:
@@ -579,18 +586,20 @@ kubectl logs deploy/pingpong
 
 * View the latest logs of our ping command:
 
-```.term1
-kubectl logs deploy/pingpong --tail 1 --follow
-```
+  ```.term1
+  kubectl logs deploy/pingpong --tail 1 --follow
+  ```
 
 ### Scaling our application
 
 * We can create additional copies of our container (or rather our pod) with `kubectl scale`
 
 * Scale our pingpong deployment:
-```.term1
-kubectl scale deploy/pingpong --replicas 8
-```
+
+  ```.term1
+  kubectl scale deploy/pingpong --replicas 8
+  ```
+
 > Note: what if we tried to scale `rs/pingpong-xxxx`? We could! But the *deployment* would notice it right away, and scale back to the initial level.
 
 ### Resilience
@@ -636,14 +645,14 @@ and create them on the cluster with `kubectl apply -f` (discussed later)
 * Conveniently, when `you kubectl run somename`, the associated objects have a `run=somename` label
 
 * View the last line of log from all pods with the `run=pingpong` label:
-```.term1
-kubectl logs -l run=pingpong --tail 1
-```
+
+  ```.term1
+  kubectl logs -l run=pingpong --tail 1
+  ```
 
 * Unfortunately, `--follow` cannot (yet) be used to stream the logs from multiple containers.
 
 ## Exposing containers
-### Exposing containers
 
 * `kubectl expose` creates a *service* for existing pods
 
@@ -697,9 +706,9 @@ kubectl run elastic --image=elasticsearch:2 --replicas=7
 
 * Watch them being started:
 
-```.term1
-kubectl get pods -w
-```
+  ```.term1
+  kubectl get pods -w
+  ```
 
 The `-w` option "watches" events happening on the specified resources.
 
@@ -711,15 +720,16 @@ Note: please DO NOT call the service `search`. It would collide with the TLD.
 
 * Expose the ElasticSearch HTTP API port:
 
-```.term
-kubectl expose deploy/elastic --port 9200
-```
+  ```.term
+  kubectl expose deploy/elastic --port 9200
+  ```
 
 * Look up which IP address was allocated:
 
-```.term1
-kubectl get svc
-```
+  ```.term1
+  kubectl get svc
+  ```
+
 ### Services are layer 4 constructs
 
 * You can assign IP addresses to services, but they are still *layer 4* (i.e. a service is not an IP address; it's an IP address + protocol + port)
@@ -735,17 +745,18 @@ kubectl get svc
 * We will now send a few HTTP requests to our ElasticSearch pods
 
 * Let's obtain the IP address that was allocated for our service, *programatically*:
-{% raw %}
-```.term1
-IP=$(kubectl get svc elastic -o go-template --template '{{ .spec.clusterIP }}')
-```
-{% endraw %}
+
+  {% raw %}
+  ```.term1
+  IP=$(kubectl get svc elastic -o go-template --template '{{ .spec.clusterIP }}')
+  ```
+  {% endraw %}
 
 * Send a few requests:
 
-```.term1
-curl http://$IP:9200/
-```
+  ```.term1
+  curl http://$IP:9200/
+  ```
 
 Our requests are load balanced across multiple pods.
 
@@ -806,19 +817,19 @@ In this part, we will:
 <!-- TODO: Fix default registry URL to username in dockercoins.yml -->
 * We are going to use a convenient feature of Docker Compose
 
-* Aafter Go to the `stacks` directory:
+* Go to the `stacks` directory:
 
-```
-cd ~/container.training/stacks
-```
+  ```.term1
+  cd ~/container.training/stacks
+  ```
 
 * Build and push the images:
 
-```
-export REGISTRY
-docker-compose -f dockercoins.yml build
-docker-compose -f dockercoins.yml push
-```
+  ```.term1
+  export REGISTRY
+  docker-compose -f dockercoins.yml build
+  docker-compose -f dockercoins.yml push
+  ```
 
 Let's have a look at the dockercoins.yml file while this is building and pushing.
 
@@ -849,16 +860,16 @@ services:
 
 * Deploy `redis`:
 
-```
-kubectl run redis --image=redis
-```
+  ```.term1
+  kubectl run redis --image=redis
+  ```
 
 * Deploy everything else:
 
-```
-for SERVICE in hasher rng webui worker; do
-  kubectl run $SERVICE --image=$USERNAME/$SERVICE
-done
+  ```.term1
+  for SERVICE in hasher rng webui worker; do
+    kubectl run $SERVICE --image=$USERNAME/$SERVICE
+  done
 ```
 
 ### Is this working?
@@ -867,10 +878,11 @@ done
 * (Hint: use `kubectl get deploy -w` to watch deployment events)
 
 * Look at some logs:
-```
-kubectl logs deploy/rng
-kubectl logs deploy/worker
-```
+
+  ```.term1
+  kubectl logs deploy/rng
+  kubectl logs deploy/worker
+  ```
 
 🤔 `rng` is fine ... But not `worker`.
 
@@ -887,19 +899,22 @@ kubectl logs deploy/worker
 * `webui` will be dealt with later
 
 * Expose each deployment, specifying the right port:
-```
-kubectl expose deployment redis --port 6379
-kubectl expose deployment rng --port 80
-kubectl expose deployment hasher --port 80
-```
+
+  ```.term1
+  kubectl expose deployment redis --port 6379
+  kubectl expose deployment rng --port 80
+  kubectl expose deployment hasher --port 80
+  ```
 
 ### Is this working yet?
 * The `worker` has an infinite loop, that retries 10 seconds after an error
 
 * Stream the worker's logs:
-```
-kubectl logs deploy/worker --follow
-```
+
+  ```.term1
+  kubectl logs deploy/worker --follow
+  ```
+
 (Give it about 10 seconds to recover)
 
 * We should now see the `worker`, well, working happily.
@@ -912,14 +927,15 @@ kubectl logs deploy/worker --follow
 
 * Create a `NodePort` service for the Web UI:
 
-```
-kubectl expose deploy/webui --type=NodePort --port=8080
-```
+  ```.term1
+  kubectl expose deploy/webui --type=NodePort --port=8080
+  ```
 
 * Check the port that was allocated:
-```
-kubectl get svc
-```
+
+  ```.term1
+  kubectl get svc
+  ```
 
 ### Accessing the web UI
 
@@ -931,7 +947,6 @@ Click on [this link](/){:data-term=".term1"}{:data-port="8080"}
 
 ## Security implications of `kubectl apply`
 
-### Security implications of `kubectl apply`
 * When we do `kubectl apply -f <URL>`, we create arbitrary resources
 
 * Resources can be evil; imagine a `deployment` that ...
@@ -963,26 +978,24 @@ Click on [this link](/){:data-term=".term1"}{:data-port="8080"}
 
 ## Scaling a deployment
 
-### Scaling a deployment
 * We will start with an easy one: the `worker` deployment
 
-* Open two new terminals to check what's going on with pods and deployments:
+  ```.term1
+  kubectl get pods -w
 
-```kubectl get pods -w
-kubectl get deployments -w
-```
+  kubectl get deployments -w
+  ```
 
 * Now, create more `worker` replicas:
 
-```
-kubectl scale deploy/worker --replicas=10
-```
+  ```.term1
+  kubectl scale deploy/worker --replicas=10
+  ```
 
 * After a few seconds, the graph in the web UI should show up. (And peak at 10 hashes/second, just like when we were running on a single one.)
 
 ## Daemon sets
 
-### Daemon sets
 * What if we want one (and exactly one) instance of rng per node?
 
 * If we just scale deploy/rng to 2, nothing guarantees that they spread
@@ -1007,9 +1020,9 @@ kubectl scale deploy/worker --replicas=10
 
 * But any kind of resource can always be created by providing a YAML description:
 
-```
-kubectl apply -f foo.yaml
-```
+  ```
+  kubectl apply -f foo.yaml
+  ```
 
 * How do we create the YAML file for our daemon set?
 
@@ -1021,9 +1034,9 @@ kubectl apply -f foo.yaml
 
 * Dump the rng resource in YAML:
 
-```
-kubectl get deploy/rng -o yaml --export >rng.yml
-```
+  ```.term1
+  kubectl get deploy/rng -o yaml --export >rng.yml
+  ```
 
 Edit `rng.yml`
 
@@ -1043,9 +1056,10 @@ Change `kind: Deployment` to `kind: DaemonSet`
 Save, quit
 
 Try to create our new resource:
-```
-kubectl apply -f rng.yml
-```
+
+  ```.term1
+  kubectl apply -f rng.yml
+  ```
 
 * We all knew this couldn't be that easy, right!
 
@@ -1053,12 +1067,12 @@ kubectl apply -f rng.yml
 
 * The core of the error is:
 
-```
-error validating data:
-[ValidationError(DaemonSet.spec):
-unknown field "replicas" in io.k8s.api.extensions.v1beta1.DaemonSetSpec,
-...
-```
+  ```
+  error validating data:
+  [ValidationError(DaemonSet.spec):
+  unknown field "replicas" in io.k8s.api.extensions.v1beta1.DaemonSetSpec,
+  ...
+  ```
 
 * *Obviously*, it doesn't make sense to specify a number of replicas for a daemon set
 
@@ -1078,9 +1092,10 @@ unknown field "replicas" in io.k8s.api.extensions.v1beta1.DaemonSetSpec,
 
 * Try to load our YAML file and ignore errors:
 
-```
-kubectl apply -f rng.yml --validate=false
-```
+  ```.term1
+  kubectl apply -f rng.yml --validate=false
+  ```
+
 Use the --force, Luke
 We could also tell Kubernetes to ignore these errors and try anyway
 
@@ -1098,9 +1113,10 @@ Wait ... Now, *can* it be that easy?
 
 * Look at the resources that we have now:
 
-```
-kubectl get all
-```
+  ```.term1
+  kubectl get all
+  ```
+
 We have both `deploy/rng` and `ds/rng` now!
 
 And one too many pods...
@@ -1129,9 +1145,10 @@ And one too many pods...
 * Therefore, we can query everybody's logs using that `run=rng` selector
 
 * Check the logs of all the pods having a label `run=rng`:
-```
-kubectl logs -l run=rng --tail 1
-```
+
+  ```.term1
+  kubectl logs -l run=rng --tail 1
+  ```
 
 * It appears that *all the pods* are serving requests at the moment.
 
@@ -1156,21 +1173,20 @@ kubectl logs -l run=rng --tail 1
 
 * Show detailed information about the `rng` deployment:
 
-```
-kubectl describe deploy rng
-```
+  ```.term1
+  kubectl describe deploy rng
+  ```
 
 * Show detailed information about the `rng` replica: (The second command doesn't require you to get the exact name of the replica set)
 
-```
-kubectl describe rs rng-yyyy
-kubectl describe rs -l run=rng
-```
+  ```.term1
+  kubectl describe rs rng-yyyy
+  kubectl describe rs -l run=rng
+  ```
+
 * The replica set selector also has a `pod-template-hash`, unlike the pods in our daemon set.
 
 ## Updating a service through labels and selectors
-
-### Updating a service through labels and selectors
 
 * What if we want to drop the `rng` deployment from the load balancer?
 
@@ -1220,27 +1236,30 @@ In YAML, yes should be quoted; i.e. `isactive: "yes"`
 
 * Update the daemon set to add `isactive: "yes"` to the selector and template label:
 
-```
-kubectl edit daemonset rng
-```
+  ```.term1
+  kubectl edit daemonset rng
+  ```
 
 * Update the service to add `isactive: "yes"` to its selector:
-```
-kubectl edit service rng
-```
+
+  ```.term1
+  kubectl edit service rng
+  ```
 
 ### Checking what we've done
 * Check the logs of all `run=rng` pods to confirm that only 2 of them are now active:
-```
-kubectl logs -l run=rng
-```
+
+  ```.term1
+  kubectl logs -l run=rng
+  ```
 
 * The timestamps should give us a hint about how many pods are currently receiving traffic.
 
 * Look at the pods that we have right now:
-```
-kubectl get pods
-```
+
+  ```.term1
+  kubectl get pods
+  ```
 
 ### More labels, more selectors, more problems?
 * Bonus exercise 1: clean up the pods of the "old" daemon set
@@ -1249,7 +1268,6 @@ kubectl get pods
 
 ## Rolling updates
 
-### Rolling updates
 * By default (without rolling updates), when a scaled resource is updated:
 
   * new pods are created
@@ -1283,30 +1301,34 @@ kubectl get pods
 ### Building a new version of the `worker` service
 
 * Go to the stack directory:
-```
-cd ~/container.training/stacks
-```
 
-Edit `dockercoins/worker/worker.py`, update the sleep line to sleep 1 second
+  ```.term1
+  cd ~/container.training/stacks
+  ```
 
-Build a new tag and push it to the registry:
-```
-  export TAG=v0.2
-  docker-compose -f dockercoins.yml build
-  docker-compose -f dockercoins.yml push
-```
+* Edit `dockercoins/worker/worker.py`, update the sleep line to sleep 1 second
+
+* Build a new tag and push it to the registry:
+
+  ```.term1
+    export TAG=v0.2
+    docker-compose -f dockercoins.yml build
+    docker-compose -f dockercoins.yml push
+  ```
 
 ### Rolling out the new worker service
 
 * Let's monitor what's going on by opening a few terminals, and run:
-```
-  kubectl get pods -w
-  kubectl get replicasets -w
-  kubectl get deployments -w
-```
+
+  ```.term1
+    kubectl get pods -w
+    kubectl get replicasets -w
+    kubectl get deployments -w
+  ```
 
 * Update worker either with kubectl edit, or by running:
-  ```
+
+  ```.term1
   kubectl set image deploy worker worker=$USERNAME/worker:$TAG
   ```
 
@@ -1317,16 +1339,17 @@ Build a new tag and push it to the registry:
 * What happens if we make a mistake?
 
 * Update worker by specifying a non-existent image:
-  ```
+
+  ```.term1
   export TAG=v0.3
   kubectl set image deploy worker worker=$REGISTRY/worker:$TAG
   ```
 
 * Check what's going on:
 
-```
-kubectl rollout status deploy worker
-```
+  ```.term1
+  kubectl rollout status deploy worker
+  ```
 
 * Our rollout is stuck. However, the app is not dead (just 10% slower).
 
@@ -1337,7 +1360,8 @@ kubectl rollout status deploy worker
 * Or we could invoke a manual rollback
 
 * Cancel the deployment and wait for the dust to settle down:
-  ```
+
+  ```.term1
   kubectl rollout undo deploy worker
   kubectl rollout status deploy worker
   ```
@@ -1353,19 +1377,19 @@ kubectl rollout status deploy worker
 
 * The corresponding changes can be expressed in the following YAML snippet:
 
-```
-spec:
-  template:
-    spec:
-      containers:
-      - name: worker
-        image: $USERNAME/worker:latest
-  strategy:
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 3
-  minReadySeconds: 10
-```
+  ```
+  spec:
+    template:
+      spec:
+        containers:
+        - name: worker
+          image: $USERNAME/worker:latest
+    strategy:
+      rollingUpdate:
+        maxUnavailable: 0
+        maxSurge: 3
+    minReadySeconds: 10
+  ```
 
 ### Applying changes through a YAML patch
 
@@ -1375,7 +1399,7 @@ spec:
 
 * Apply all our changes and wait for them to take effect:
 
-  ```
+  ```.term1
   kubectl patch deployment worker -p "
   spec:
     template:
