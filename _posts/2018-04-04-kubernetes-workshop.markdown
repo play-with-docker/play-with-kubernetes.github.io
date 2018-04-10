@@ -5,7 +5,7 @@ date:   2017-12-07
 author: "@jpetazzo"
 tags: [beginner, linux, operations, kubernetes, developer]
 categories: beginner
-terms: 3
+terms: 2
 ---
 
 ## Introduction
@@ -20,6 +20,81 @@ On the right you should see two terminal windows. You may be asked to login firs
   ```.term1
   ls
   ```
+
+### Start the cluster
+
+First step is to initialize the cluster in the first terminal:
+
+  ```.term1
+  kubeadm init --apiserver-advertise-address $(hostname -i)
+  ```
+
+That will take a couple of minutes, during which time you'll see a lot of activity in the terminal.
+
+You will see something like this at the end:
+
+our Kubernetes master has initialized successfully!
+
+To start using your cluster, you need to run (as a regular user):
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  http://kubernetes.io/docs/admin/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  ```
+  kubeadm join --token SOMETOKEN SOMEIPADDRESS --discovery-token-ca-cert-hash SOMESHAHASH
+  ```
+
+Copy the whole line that starts `kubeadm join` from the first terminal and paste it into the second terminal. You should see something like this:
+
+```
+kubeadm join --token a146c9.9421a0d62a0611f4 172.26.0.2:6443 --discovery-token-ca-cert-hash sha256:9a4dc07bd8ac596336ecee6ce0928b3500174037c07a38a03bebef25e97c4db5
+Initializing machine ID from random generator.
+[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.
+[preflight] Skipping pre-flight checks
+[discovery] Trying to connect to API Server "172.26.0.2:6443"
+[discovery] Created cluster-info discovery client, requesting info from "https://172.26.0.2:6443"
+[discovery] Requesting info from "https://172.26.0.2:6443" again to validate TLS against the pinned public key
+[discovery] Cluster info signature and contents are valid and TLS certificate validates against pinned roots, will use API Server "172.26.0.2:6443"
+[discovery] Successfully established connection with API Server "172.26.0.2:6443"
+[bootstrap] Detected server version: v1.8.11
+[bootstrap] The server supports the Certificates API (certificates.k8s.io/v1beta1)
+
+Node join complete:
+* Certificate signing request sent to master and response
+  received.
+* Kubelet informed of new secure connection details.
+
+Run 'kubectl get nodes' on the master to see this machine join.
+```
+
+That means you're almost ready to go. Last you just have to initialize your cluster networking in the first terminal:
+
+  ```.term1
+   kubectl apply -n kube-system -f \
+    "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+  ```
+
+You'll see an output like this:
+
+  ```
+  kubectl apply -n kube-system -f \
+  >     "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+  serviceaccount "weave-net" created
+  clusterrole "weave-net" created
+  clusterrolebinding "weave-net" created
+  role "weave-net" created
+  rolebinding "weave-net" created
+  daemonset "weave-net" created
+  ```
+You cluster is set-up!
 
 ### What's this application?
 * It is a DockerCoin miner! 💰🐳📦🚢
@@ -66,7 +141,7 @@ there is a Compose file `docker-compose.yml` ...
 
 (You can also fork the repository on GitHub and clone your fork if you prefer that.)
 
-## Running the application
+### Running the application
 
 * Go to the dockercoins directory, in the cloned repo:
 
@@ -77,7 +152,7 @@ there is a Compose file `docker-compose.yml` ...
 * Use Compose to build and run all containers:
 
   ```.term1
-  docker-compose up
+  docker-compose up -d
   ```
 
 Compose tells Docker to build all container images (pulling the corresponding base images), then starts all containers, and displays aggregated logs.
@@ -89,12 +164,6 @@ Compose tells Docker to build all container images (pulling the corresponding ba
 * We can see the worker service making requests to rng and hasher
 
 *  Let's put that in the background
-
-* Stop the application by hitting `^C`
-
-  `^C` stops all containers by sending them the `TERM` signal
-
-* Some containers exit immediately, others take longer (because they don't handle `SIGTERM` and end up being killed after a 10s timeout)
 
 ### Connecting to the web UI
 
@@ -341,7 +410,7 @@ Compose tells Docker to build all container images (pulling the corresponding ba
 
 * Look at the composition of our cluster:
 
-  ```.term
+  ```.term1
   kubectl get node
   ```
 * These commands are equivalent
@@ -401,10 +470,16 @@ Each time, `type` can be singular, plural, or abbreviated type name.
 
 * A service is a stable endpoint to connect to "something" (In the initial proposal, they were called "portals")
 
-* List the services on our cluster with one of these commands:
-  ```
+* List the services on our cluster:
+
+  ```.term1
   kubectl get services
-  kubectl get svc
+  ```
+
+This would also work:
+
+  ```
+    kubectl get svc
   ```
 
 There is already one service on our cluster: the Kubernetes API itself.
@@ -415,14 +490,13 @@ There is already one service on our cluster: the Kubernetes API itself.
 
 * This is useful for introspection from within containers
 
-* Try to connect to the API: <!-- TODO: Check this is accurate -->
-
-  ```.term1
-  curl -k https://10.96.0.1
-  ```
-
+* Try to connect to the API. 
   * `-k` is used to skip certificate verification
   * Make sure to replace 10.96.0.1 with the CLUSTER-IP shown by `$ kubectl get svc`
+
+  ```
+  curl -k https://10.96.0.1
+  ```
 
 The error that we see is expected: the Kubernetes API requires authentication.
 
@@ -449,11 +523,17 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 * List the namespaces on our cluster with one of these commands:
 
-  ```
+  ```.term1
   kubectl get namespaces
+  ```
+
+  either of these would work as well:
+
+  ```
   kubectl get namespace
   kubectl get ns
   ```
+
 *You know what ... This `kube-system` thing looks suspicious.*
 
 ### Accessing namespaces
@@ -615,8 +695,10 @@ We should see the following things:
 kubectl get pods -w
 ```
 
-* Destroy a pod:
-```.term1
+  `Ctrl-C` to terminate watching.
+
+* If you wanted to destroy a pod, you would use this pattern where `yyyy` was the identifier of the particular pod:
+```
 kubectl delete pod pingpong-yyyy
 ```
 
@@ -651,6 +733,14 @@ and create them on the cluster with `kubectl apply -f` (discussed later)
   ```
 
 * Unfortunately, `--follow` cannot (yet) be used to stream the logs from multiple containers.
+
+### Clean-up
+
+* Clean up your deployment by deleting `pingpong`
+
+  ```.term1
+  kubectl delete deploy/pingpong
+  ```
 
 ## Exposing containers
 
@@ -701,7 +791,7 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 
 * Start a bunch of ElasticSearch containers:
 ```.term1
-kubectl run elastic --image=elasticsearch:2 --replicas=7
+kubectl run elastic --image=elasticsearch:2 --replicas=4
 ```
 
 * Watch them being started:
@@ -720,7 +810,7 @@ Note: please DO NOT call the service `search`. It would collide with the TLD.
 
 * Expose the ElasticSearch HTTP API port:
 
-  ```.term
+  ```.term1
   kubectl expose deploy/elastic --port 9200
   ```
 
@@ -760,6 +850,14 @@ Note: please DO NOT call the service `search`. It would collide with the TLD.
 
 Our requests are load balanced across multiple pods.
 
+### Clean up
+
+* We're done with the `elastic` deployment, so let's clean it up
+
+  ```.term1
+  kubectl delete deploy/elastic
+  ```
+
 ## Our app on Kube
 
 ### What's on the menu?
@@ -778,7 +876,7 @@ In this part, we will:
 ### The plan
 * Build on our control node (`node1`)
 
-* Tag images so that they are named `$REGISTRY/servicename`
+* Tag images so that they are named `$USERNAME/servicename`
 
 * Upload them to a Docker Hub
 
@@ -788,9 +886,23 @@ In this part, we will:
 
 * Expose (with a `NodePort`) the WebUI
 
-### Which registry do we want to use?
+### Setup
 
-* For this workshop, we'll use (Docker Hub)[https://hub.docker.com]. There are a number of other options, including two provided by Docker.
+* In the first terminal, set an environment variable for your Docker Hub user name. It can be the same user name that you used to log in to the terminals on this site.
+
+  ```
+  export USERNAME=YourUserName
+  ```
+
+* Make sure you're still in the `dockercoins` directory.
+
+  ```.term1
+  pwd
+  ```
+
+### A note on registries
+
+* For this workshop, we'll use [Docker Hub](https://hub.docker.com). There are a number of other options, including two provided by Docker.
 
 * Docker also provides:
   * [Docker Trusted Registry](https://docs.docker.com/datacenter/dtr/2.4/guides/) which adds in a lot of security and deployment features including security scanning, and role-based access control.
@@ -820,13 +932,12 @@ In this part, we will:
 * Go to the `stacks` directory:
 
   ```.term1
-  cd ~/container.training/stacks
+  cd ~/dockercoins/stacks
   ```
 
 * Build and push the images:
 
   ```.term1
-  export REGISTRY
   docker-compose -f dockercoins.yml build
   docker-compose -f dockercoins.yml push
   ```
@@ -941,7 +1052,7 @@ services:
 
 * We can now connect to *any node*, on the allocated node port, to view the web UI
 
-Click on [this link](/){:data-term=".term1"}{:data-port="8080"}
+Click on [this link](/){:data-term=".term2"}{:data-port="8080"}
 
 *Alright, we're back to where we started, when we were running on a single node!*
 
@@ -1179,7 +1290,7 @@ And one too many pods...
 
 * Show detailed information about the `rng` replica: (The second command doesn't require you to get the exact name of the replica set)
 
-  ```.term1
+  ```
   kubectl describe rs rng-yyyy
   kubectl describe rs -l run=rng
   ```
@@ -1300,13 +1411,13 @@ In YAML, yes should be quoted; i.e. `isactive: "yes"`
 
 ### Building a new version of the `worker` service
 
+* Edit `dockercoins/worker/worker.py`, update the sleep line to sleep 1 second
+
 * Go to the stack directory:
 
   ```.term1
-  cd ~/container.training/stacks
+  cd stacks
   ```
-
-* Edit `dockercoins/worker/worker.py`, update the sleep line to sleep 1 second
 
 * Build a new tag and push it to the registry:
 
