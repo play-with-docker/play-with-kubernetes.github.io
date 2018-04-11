@@ -579,10 +579,10 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 * We need to specify at least a name and the image we want to use
 
-* Let's ping `goo.gl`
+* Let's ping `8.8.8.8`, Google's public DNS 
 
   ```.term1
-  kubectl run pingpong --image alpine ping goo.gl
+  kubectl run pingpong --image alpine ping 8.8.8.8
   ```
 
 * OK, what just happened?
