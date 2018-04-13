@@ -1,0 +1,2546 @@
+<!-- Remove the comments to compress html
+
+---
+layout: compress
+--- 
+
+-->
+<!DOCTYPE html>
+<html>
+
+  <head>
+<title>Kubernetes for Beginners</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Kubernetes for Beginners" />
+<meta name="twitter:description" content="Learn docker through online trainings in training.play-with-docker.com" />
+<meta name="twitter:image" content="http://birthday.play-with-docker.com/images/simple-logo.jpg" />
+
+  
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+
+<style>
+          
+          html,body{height:100%}img{max-width:100%}.mt50{margin-top:50px}.mt20{margin-top:20px}.mt10{margin-top:10px}.mb10{margin-bottom:10px}body{display:flex;flex-direction:column}body>*{flex:none}.navbar{border-radius:0px;margin-bottom:0px}.navbar.navbar-inverse{background-color:#1488C6;border-color:#1488C6}.navbar.navbar-inverse a,.navbar.navbar-inverse .navbar-nav li a{color:white}.navbar.navbar-inverse a:hover,.navbar.navbar-inverse .navbar-nav li a:hover{text-decoration:underline}.navbar-brand{font-weight:900}@media screen and (max-width: 600px){.navbar-brand{font-size:1.5em}}.post-meta{color:#828282}div.post-content{max-width:1200px}.panel{border:none;box-shadow:0px 0px 1px #828282}.panel:hover{box-shadow:0px 0px 6px #828282}footer{border-top:1px solid #e8e8e8;max-height:300px}.social-share{margin-top:10px;margin-bottom:15px;text-align:center}.social{list-style:none;display:inline;margin-left:10px;padding:5px 8px}.social:hover{opacity:0.7}.social img{width:20px}.quora img{width:17px}.facebook img{width:16px}.recent ul{list-style:none;padding:0;text-align:justify}.recent li{margin:20px}.recent img{display:block;margin:auto}.recent{padding:10px;border:1px solid #e8e8e8}.post-img img{width:100%}.announce{margin-top:10px;margin-bottom:60px;text-align:center}.pack{display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;flex-wrap:wrap;-webkit-flex-wrap:wrap}.banner{display:block;margin:auto}.panel-container{display:flex;flex-direction:row;overflow:hidden;height:100%;flex:1 1 auto;xtouch-action:none}.terminal{font-size:15px}.panel-left{flex:0 0 auto;width:50%;min-width:150px}.content{padding:0 15px;overflow-y:auto}.content{padding:0 15px}.panel-singular{margin:0 auto;max-width:1200}.splitter{flex:0 0 auto;width:18px;background:url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #2fa8c3;min-height:200px;cursor:col-resize}.panel-right{display:flex;flex-direction:column;flex:1 1 auto;width:100%;background:#565656}.panel-right>div{flex:1 1 auto;margin-bottom:15px;overflow-y:auto}.panel-right>div:last-of-type{margin-bottom:0px}.panel-right>div.initialized{background-color:black}.getting-started ul{list-style-type:none;font-size:36px}.card{float:none}code[class*="."]{cursor:pointer}.resize-warning{background-color:black;color:white;text-align:center}.post-tag{display:inline-block;background:rgba(42,122,226,0.15);padding:0 .5rem;margin-right:.5rem;border-radius:4px;color:#2a7ae2;font-family:"Open Sans",serif;font-size:90%}.post-tag:before{content:"\f02b";font-family:FontAwesome;padding-right:.5em}.post-tag:hover{text-decoration:none;background:#2a7ae2;color:#fff}small .post-tag{background:#eee;color:#000}small .post-tag:before{content:none}small .post-tag:hover{text-decoration:none;background:#000;color:#fff;cursor:default}.tags-expo :target:before{content:"";display:block;height:72px;margin:-72px 0 0}@media (min-width: 38em){.tags-expo .tags-expo-list{font-size:2.9rem}.tags-expo .tags-expo-list .post-tag{margin:.2em .3em}}.tags-expo .tags-expo-section{font-family:"Open Sans",serif}.tags-expo .tags-expo-section ul{list-style-type:circle;list-style-position:inside;padding:0}.tags-expo .tags-expo-section ul li{padding:0 1rem}.tags-expo .tags-expo-section ul li:hover{list-style-type:disc}.tags-expo .tags-expo-section a{font-size:20px}.tags-expo .tags-expo-section .post-date{display:inline-block;font-size:80%;color:#000;margin:0;padding:0}
+
+</style>  
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+<link rel="alternate" type="application/rss+xml" title="Play with Kubernetes classroom" href="http://0.0.0.0:4000/feed.xml">  
+<link rel="stylesheet" href="/css/quiz.css">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Play with Kubernetes classroom</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/about/">About</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+</header>
+
+
+    
+
+ 
+
+
+<div class="panel-container">
+    
+    <div class="panel-left content">
+    
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+            <header class="post-header">
+                <h1 class="post-title" itemprop="name headline">Kubernetes for Beginners</h1>
+                <p class="post-meta"><time datetime="2017-12-07T00:00:00-06:00" itemprop="datePublished">Dec 7, 2017</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">@jpetazzo</span></span></p>
+                <blockquote>
+                  <strong><p>Time:</strong> Approximately 26 minutes</p>
+                </blockquote>
+                
+            </header>
+
+            <div class="post-content" itemprop="articleBody">
+                <h2 id="introduction">Introduction</h2>
+
+<p>In this hands-on workshop, you will learn the basic concepts of Kubernetes. You will do that through interacting with Kubernetes through the command line terminals on the right. Ultimately you will deploy the sample applications <a href="https://github.com/dockersamples/dockercoins">Dockercoins</a> on both worker nodes.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<h3 id="what-are-these-terminals-in-the-browsers">What are these terminals in the browsers?</h3>
+<p>On the right you should see two terminal windows. You may be asked to login first, which you can do either with a <a href="https://hub.docker.com/">Docker ID</a> or a <a href="https://github.com">GitHub</a> account. Those terminals are fully functional terminals running Centos. Actually, they’re the commandline for Centos containers running on our Play-with-Kubernetes infrastructure. When you see code blocks that look like this, you can either click on them and they will auto populate, or your can copy and paste them.</p>
+
+<pre><code class="language-.term1">  ls
+</code></pre>
+
+<h3 id="start-the-cluster">Start the cluster</h3>
+
+<p>First step is to initialize the cluster in the first terminal:</p>
+
+<pre><code class="language-.term1">  kubeadm init --apiserver-advertise-address $(hostname -i)
+</code></pre>
+
+<p>That will take a couple of minutes, during which time you’ll see a lot of activity in the terminal.</p>
+
+<p>You will see something like this at the end:</p>
+
+<p>our Kubernetes master has initialized successfully!</p>
+
+<p>To start using your cluster, you need to run (as a regular user):</p>
+
+<p>mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config</p>
+
+<p>You should now deploy a pod network to the cluster.
+Run “kubectl apply -f [podnetwork].yaml” with one of the options listed at:
+  http://kubernetes.io/docs/admin/addons/</p>
+
+<p>You can now join any number of machines by running the following on each node
+as root:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  kubeadm join --token SOMETOKEN SOMEIPADDRESS --discovery-token-ca-cert-hash SOMESHAHASH
+</code></pre></div></div>
+
+<p>Copy the whole line that starts <code class="highlighter-rouge">kubeadm join</code> from the first terminal and paste it into the second terminal. You should see something like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm join --token a146c9.9421a0d62a0611f4 172.26.0.2:6443 --discovery-token-ca-cert-hash sha256:9a4dc07bd8ac596336ecee6ce0928b3500174037c07a38a03bebef25e97c4db5
+Initializing machine ID from random generator.
+[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.
+[preflight] Skipping pre-flight checks
+[discovery] Trying to connect to API Server "172.26.0.2:6443"
+[discovery] Created cluster-info discovery client, requesting info from "https://172.26.0.2:6443"
+[discovery] Requesting info from "https://172.26.0.2:6443" again to validate TLS against the pinned public key
+[discovery] Cluster info signature and contents are valid and TLS certificate validates against pinned roots, will use API Server "172.26.0.2:6443"
+[discovery] Successfully established connection with API Server "172.26.0.2:6443"
+[bootstrap] Detected server version: v1.8.11
+[bootstrap] The server supports the Certificates API (certificates.k8s.io/v1beta1)
+
+Node join complete:
+* Certificate signing request sent to master and response
+  received.
+* Kubelet informed of new secure connection details.
+
+Run 'kubectl get nodes' on the master to see this machine join.
+</code></pre></div></div>
+
+<p>That means you’re almost ready to go. Last you just have to initialize your cluster networking in the first terminal:</p>
+
+<pre><code class="language-.term1">   kubectl apply -n kube-system -f \
+    "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+</code></pre>
+
+<p>You’ll see an output like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  kubectl apply -n kube-system -f \
+  &gt;     "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+  serviceaccount "weave-net" created
+  clusterrole "weave-net" created
+  clusterrolebinding "weave-net" created
+  role "weave-net" created
+  rolebinding "weave-net" created
+  daemonset "weave-net" created
+</code></pre></div></div>
+<p>You cluster is set-up!</p>
+
+<h3 id="whats-this-application">What’s this application?</h3>
+<ul>
+  <li>
+    <p>It is a DockerCoin miner! 💰🐳📦🚢</p>
+  </li>
+  <li>
+    <p>No, you can’t buy coffee with DockerCoins</p>
+  </li>
+  <li>
+    <p>How DockerCoins works:</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">worker</code> asks to <code class="highlighter-rouge">rng</code> to generate a few random bytes</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">worker</code> feeds these bytes into <code class="highlighter-rouge">hasher</code></p>
+      </li>
+      <li>
+        <p>and repeat forever!</p>
+      </li>
+      <li>
+        <p>every second, <code class="highlighter-rouge">worker</code> updates <code class="highlighter-rouge">redis</code> to indicate how many loops were done</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">webui</code> queries <code class="highlighter-rouge">redis</code>, and computes and exposes “hashing speed” in your browser</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="getting-the-application-source-code">Getting the application source code</h3>
+<p>We’ve created a sample appliation to run for parts of the workshop. The application is in the <a href="https://github.com/dockersamples/dockercoins">dockercoins</a> repository.</p>
+
+<p>Let’s look at the general layout of the source code:</p>
+
+<p>there is a Compose file <code class="highlighter-rouge">docker-compose.yml</code> …</p>
+
+<p>… and 4 other services, each in its own directory:</p>
+
+<p><code class="highlighter-rouge">rng</code> = web service generating random bytes</p>
+
+<p><code class="highlighter-rouge">hasher</code> = web service computing hash of POSTed data</p>
+
+<p><code class="highlighter-rouge">worker</code> = background process using <code class="highlighter-rouge">rng</code> and <code class="highlighter-rouge">hasher</code></p>
+
+<p><code class="highlighter-rouge">webui</code> = web interface to watch progress</p>
+
+<ul>
+  <li>
+    <p>We will clone the GitHub repository</p>
+  </li>
+  <li>
+    <p>The repository also contains scripts and tools that we will use through the workshop</p>
+
+    <pre><code class="language-.term1">git clone https://github.com/dockersamples/dockercoins
+</code></pre>
+  </li>
+</ul>
+
+<p>(You can also fork the repository on GitHub and clone your fork if you prefer that.)</p>
+
+<h3 id="running-the-application">Running the application</h3>
+
+<ul>
+  <li>
+    <p>Go to the dockercoins directory, in the cloned repo:</p>
+
+    <pre><code class="language-.term1">cd ~/dockercoins
+</code></pre>
+  </li>
+  <li>
+    <p>Use Compose to build and run all containers:</p>
+
+    <pre><code class="language-.term1">docker-compose up -d
+</code></pre>
+  </li>
+</ul>
+
+<p>Compose tells Docker to build all container images (pulling the corresponding base images), then starts all containers, and displays aggregated logs.</p>
+
+<h3 id="lots-of-logs">Lots of logs</h3>
+
+<ul>
+  <li>
+    <p>The application continuously generates logs</p>
+  </li>
+  <li>
+    <p>We can see the worker service making requests to rng and hasher</p>
+  </li>
+  <li>
+    <p>Let’s put that in the background</p>
+  </li>
+</ul>
+
+<h3 id="connecting-to-the-web-ui">Connecting to the web UI</h3>
+
+<ul>
+  <li>
+    <p>The <code class="highlighter-rouge">webui</code> container exposes a web dashboard; let’s view it</p>
+  </li>
+  <li>
+    <p>With a web browser, connect to <code class="highlighter-rouge">node1</code> <a href="/" data-term=".term1" data-port="8000">here on port 8000</a> (created when you ran the application)</p>
+  </li>
+</ul>
+
+<h3 id="clean-up">Clean up</h3>
+
+<ul>
+  <li>
+    <p>Before moving on, let’s remove those containers. Tell Compose to remove everything:</p>
+
+    <pre><code class="language-.term1">docker-compose down
+</code></pre>
+  </li>
+</ul>
+
+<h2 id="kubernetes-concepts">Kubernetes concepts</h2>
+
+<ul>
+  <li>
+    <p>Kubernetes is a container management system</p>
+  </li>
+  <li>
+    <p>It runs and manages containerized applications on a cluster</p>
+  </li>
+  <li>
+    <p>What does that really mean?</p>
+  </li>
+</ul>
+
+<h3 id="basic-things-we-can-ask-kubernetes-to-do">Basic things we can ask Kubernetes to do</h3>
+
+<ul>
+  <li>
+    <p>Start 5 containers using image <code class="highlighter-rouge">atseashop/api:v1.3</code></p>
+  </li>
+  <li>
+    <p>Place an internal load balancer in front of these containers</p>
+  </li>
+  <li>
+    <p>Start 10 containers using image <code class="highlighter-rouge">atseashop/webfront:v1.3</code></p>
+  </li>
+  <li>
+    <p>Place a public load balancer in front of these containers</p>
+  </li>
+  <li>
+    <p>It’s Black Friday (or Christmas), traffic spikes, grow our cluster and add containers</p>
+  </li>
+  <li>
+    <p>New release! Replace my containers with the new image <code class="highlighter-rouge">atseashop/webfront:v1.4</code></p>
+  </li>
+  <li>
+    <p>Keep processing requests during the upgrade; update my containers one at a time</p>
+  </li>
+</ul>
+
+<h3 id="other-things-that-kubernetes-can-do-for-us">Other things that Kubernetes can do for us</h3>
+
+<ul>
+  <li>
+    <p>Basic autoscaling</p>
+  </li>
+  <li>
+    <p>Blue/green deployment, canary deployment</p>
+  </li>
+  <li>
+    <p>Long running services, but also batch (one-off) jobs</p>
+  </li>
+  <li>
+    <p>Overcommit our cluster and evict low-priority jobs</p>
+  </li>
+  <li>
+    <p>Run services with stateful data (databases etc.)</p>
+  </li>
+  <li>
+    <p>Fine-grained access control defining what can be done by whom on which resources</p>
+  </li>
+  <li>
+    <p>Integrating third party services (service catalog)</p>
+  </li>
+  <li>
+    <p>Automating complex tasks (operators)</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-architecture">Kubernetes architecture</h2>
+
+<!-- TODO: Come up with diagrams -->
+
+<h3 id="kubernetes-architecture-the-master">Kubernetes architecture: the master</h3>
+<ul>
+  <li>
+    <p>The Kubernetes logic (its “brains”) is a collection of services:</p>
+
+    <ul>
+      <li>the API server (our point of entry to everything!)</li>
+      <li>core services like the scheduler and controller manager</li>
+      <li>etcd (a highly available key/value store; the “database” of Kubernetes)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>*Together, these services form what is called the “master”</p>
+
+<ul>
+  <li>
+    <p>These services can run straight on a host, or in containers (that’s an implementation detail)</p>
+  </li>
+  <li>
+    <p>etcd can be run on separate machines (first schema) or co-located (second schema)</p>
+  </li>
+  <li>
+    <p>We need at least one master, but we can have more (for high availability)</p>
+  </li>
+</ul>
+
+<h3 id="kubernetes-architecture-the-nodes">Kubernetes architecture: the nodes</h3>
+
+<ul>
+  <li>
+    <p>The nodes executing our containers run another collection of services:</p>
+
+    <ul>
+      <li>a container Engine (typically Docker)</li>
+      <li>kubelet (the “node agent”)</li>
+      <li>kube-proxy (a necessary but not sufficient network component)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Nodes were formerly called “minions”</p>
+  </li>
+  <li>
+    <p>It is customary to not run apps on the node(s) running master components (Except when using small development clusters)</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-resources">Kubernetes resources</h2>
+
+<ul>
+  <li>
+    <p>The Kubernetes API defines a lot of objects called resources</p>
+  </li>
+  <li>
+    <p>These resources are organized by type, or Kind (in the API)</p>
+  </li>
+  <li>
+    <p>A few common resource types are:</p>
+
+    <ul>
+      <li>node (a machine — physical or virtual — in our cluster)</li>
+      <li>pod (group of containers running together on a node)</li>
+      <li>service (stable network endpoint to connect to one or multiple containers)</li>
+      <li>namespace (more-or-less isolated group of things)</li>
+      <li>secret (bundle of sensitive data to be passed to a container)</li>
+    </ul>
+  </li>
+  <li>
+    <p>And much more! (We can see the full list by running kubectl get)</p>
+  </li>
+</ul>
+
+<!-- TODO: Add diagrams illustrating these concepts -->
+
+<h2 id="declarative-vs-imperative">Declarative vs imperative</h2>
+
+<ul>
+  <li>
+    <p>Our container orchestrator puts a very strong emphasis on being declarative</p>
+  </li>
+  <li>
+    <p>Declarative:</p>
+
+    <p><em>I would like a cup of tea.</em></p>
+  </li>
+  <li>
+    <p>Imperative:</p>
+
+    <p><em>Boil some water. Pour it in a teapot. Add tea leaves. Steep for a while. Serve in cup.</em></p>
+  </li>
+  <li>
+    <p>Declarative seems simpler at first …</p>
+  </li>
+  <li>
+    <p>… As long as you know how to brew tea</p>
+  </li>
+</ul>
+
+<h4 id="what-declarative-would-really-be">What declarative would really be:</h4>
+
+<p><em>I want a cup of tea, obtained by pouring an infusion of tea leaves in a cup.</em></p>
+
+<p><em>An infusion is obtained by letting the object steep a few minutes in hot water.</em></p>
+
+<p><em>Hot liquid is obtained by pouring it in an appropriate container and setting it on a stove.</em></p>
+
+<p><em>Ah, finally, containers! Something we know about. Let’s get to work, shall we?</em></p>
+
+<h3 id="summary-of-declarative-vs-imperative">Summary of declarative vs imperative</h3>
+
+<ul>
+  <li>
+    <p>Imperative systems:</p>
+
+    <ul>
+      <li>
+        <p>simpler</p>
+      </li>
+      <li>
+        <p>if a task is interrupted, we have to restart from scratch</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Declarative systems:</p>
+
+    <ul>
+      <li>
+        <p>if a task is interrupted (or if we show up to the party half-way through), we can figure out what’s missing and do only what’s necessary</p>
+      </li>
+      <li>
+        <p>we need to be able to <em>observe</em> the system</p>
+      </li>
+      <li>
+        <p>… and compute a “diff” between <em>what we have and what we want</em></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="declarative-vs-imperative-in-kubernetes">Declarative vs imperative in Kubernetes</h3>
+
+<ul>
+  <li>
+    <p>Virtually everything we create in Kubernetes is created from a <code class="highlighter-rouge">spec</code></p>
+  </li>
+  <li>
+    <p>Watch for the <code class="highlighter-rouge">spec</code> fields in the YAML files later!</p>
+  </li>
+  <li>
+    <p>The <code class="highlighter-rouge">spec</code> describes <em>how we want the thing to be</em></p>
+  </li>
+  <li>
+    <p>Kubernetes will <em>reconcile</em> the current state with the spec (technically, this is done by a number of <em>controllers</em>)</p>
+  </li>
+  <li>
+    <p>When we want to change some resource, we update the <code class="highlighter-rouge">spec</code></p>
+  </li>
+  <li>
+    <p>Kubernetes will then <em>converge</em> that resource</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-network-model">Kubernetes network model</h2>
+
+<ul>
+  <li>
+    <p>TL,DR:</p>
+
+    <p><em>Our cluster (nodes and pods) is one big flat IP network.</em></p>
+  </li>
+  <li>
+    <p>In detail:</p>
+
+    <ul>
+      <li>
+        <p>all nodes must be able to reach each other, without NAT</p>
+      </li>
+      <li>
+        <p>all pods must be able to reach each other, without NAT</p>
+      </li>
+      <li>
+        <p>pods and nodes must be able to reach each other, without NAT</p>
+      </li>
+      <li>
+        <p>each pod is aware of its IP address (no NAT)</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Kubernetes doesn’t mandate any particular implementation</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-network-model-the-good">Kubernetes network model: the good</h2>
+
+<ul>
+  <li>
+    <p>Everything can reach everything</p>
+  </li>
+  <li>
+    <p>No address translation</p>
+  </li>
+  <li>
+    <p>No port translation</p>
+  </li>
+  <li>
+    <p>No new protocol</p>
+  </li>
+  <li>
+    <p>Pods cannot move from a node to another and keep their IP address</p>
+  </li>
+  <li>
+    <p>IP addresses don’t have to be “portable” from a node to another (We can use e.g. a subnet per node and use a simple routed topology)</p>
+  </li>
+  <li>
+    <p>The specification is simple enough to allow many various implementations</p>
+  </li>
+</ul>
+
+<h2 id="kubernetes-network-model-the-less-good">Kubernetes network model: the less good</h2>
+
+<ul>
+  <li>
+    <p>Everything can reach everything</p>
+
+    <ul>
+      <li>
+        <p>if you want security, you need to add network policies</p>
+      </li>
+      <li>
+        <p>the network implementation that you use needs to support them</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>There are literally dozens of implementations out there (15 are listed in the Kubernetes documentation)</p>
+  </li>
+  <li>
+    <p>It looks like you have a level 3 network, but it’s only level 4 (The spec requires UDP and TCP, but not port ranges or arbitrary IP packets)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kube-proxy</code> is on the data path when connecting to a pod or container, and it’s not particularly fast (relies on userland proxying or iptables)</p>
+  </li>
+</ul>
+
+<h3 id="kubernetes-network-model-in-practice">Kubernetes network model: in practice</h3>
+
+<ul>
+  <li>
+    <p>The nodes that we are using have been set up to use Weave</p>
+  </li>
+  <li>
+    <p>We don’t endorse Weave in a particular way, it just Works For Us</p>
+  </li>
+  <li>
+    <p>Don’t worry about the warning about kube-proxy performance</p>
+  </li>
+  <li>
+    <p>Unless you:</p>
+
+    <ul>
+      <li>
+        <p>routinely saturate 10G network interfaces</p>
+      </li>
+      <li>
+        <p>count packet rates in millions per second</p>
+      </li>
+      <li>
+        <p>run high-traffic VOIP or gaming platforms</p>
+      </li>
+      <li>
+        <p>do weird things that involve millions of simultaneous connections (in which case you’re already familiar with kernel tuning)</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="first-contact-with-kubectl">First contact with <code class="highlighter-rouge">kubectl</code></h2>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">kubectl</code> is (almost) the only tool we’ll need to talk to Kubernetes</p>
+  </li>
+  <li>
+    <p>It is a rich CLI tool around the Kubernetes API (Everything you can do with <code class="highlighter-rouge">kubectl</code>, you can do directly with the API)</p>
+  </li>
+  <li>
+    <p>You can also use the <code class="highlighter-rouge">--kubeconfig</code> flag to pass a config file</p>
+  </li>
+  <li>
+    <p>Or directly <code class="highlighter-rouge">--server</code>, <code class="highlighter-rouge">--user</code>, etc.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kubectl</code> can be pronounced “Cube C T L”, “Cube cuttle”, “Cube cuddle”…</p>
+  </li>
+</ul>
+
+<h3 id="kubectl-get"><code class="highlighter-rouge">kubectl get</code></h3>
+
+<ul>
+  <li>
+    <p>Let’s look at our Node resources with kubectl get!</p>
+  </li>
+  <li>
+    <p>Look at the composition of our cluster:</p>
+
+    <pre><code class="language-.term1">kubectl get node
+</code></pre>
+  </li>
+  <li>
+    <p>These commands are equivalent</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get no
+kubectl get node
+kubectl get nodes
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="obtaining-machine-readable-output">Obtaining machine-readable output</h3>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">kubectl get</code> can output JSON, YAML, or be directly formatted</p>
+  </li>
+  <li>
+    <p>Give us more info about the nodes:</p>
+
+    <pre><code class="language-.term1">kubectl get nodes -o wide
+</code></pre>
+  </li>
+  <li>
+    <p>Let’s have some YAML:</p>
+    <pre><code class="language-.term1">kubectl get no -o yaml
+</code></pre>
+    <p>See that kind: List at the end? It’s the type of our result!</p>
+  </li>
+</ul>
+
+<h3 id="abusing-kubectl-and-jq">(Ab)using <code class="highlighter-rouge">kubectl</code> and <code class="highlighter-rouge">jq</code></h3>
+
+<ul>
+  <li>
+    <p>It’s super easy to build custom reports</p>
+  </li>
+  <li>
+    <p>Show the capacity of all our nodes as a stream of JSON objects:</p>
+    <pre><code class="language-.term1">kubectl get nodes -o json | 
+      jq ".items[] | {name:.metadata.name} + .status.capacity"
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="whats-available">What’s available?</h3>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">kubectl</code> has pretty good introspection facilities</p>
+  </li>
+  <li>
+    <p>We can list all available resource types by running <code class="highlighter-rouge">kubectl get</code></p>
+  </li>
+  <li>We can view details about a resource with:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe type/name
+kubectl describe type name
+</code></pre></div>    </div>
+  </li>
+  <li>We can view the definition for a resource type with:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl explain type
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Each time, <code class="highlighter-rouge">type</code> can be singular, plural, or abbreviated type name.</p>
+
+<h3 id="services">Services</h3>
+
+<ul>
+  <li>
+    <p>A service is a stable endpoint to connect to “something” (In the initial proposal, they were called “portals”)</p>
+  </li>
+  <li>
+    <p>List the services on our cluster:</p>
+
+    <pre><code class="language-.term1">kubectl get services
+</code></pre>
+  </li>
+</ul>
+
+<p>This would also work:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    kubectl get svc
+</code></pre></div></div>
+
+<p>There is already one service on our cluster: the Kubernetes API itself.</p>
+
+<h3 id="clusterip-services">ClusterIP services</h3>
+
+<ul>
+  <li>
+    <p>A <code class="highlighter-rouge">ClusterIP</code> service is internal, available from the cluster only</p>
+  </li>
+  <li>
+    <p>This is useful for introspection from within containers</p>
+  </li>
+  <li>
+    <p>Try to connect to the API.</p>
+    <ul>
+      <li><code class="highlighter-rouge">-k</code> is used to skip certificate verification</li>
+      <li>Make sure to replace 10.96.0.1 with the CLUSTER-IP shown by <code class="highlighter-rouge">$ kubectl get svc</code></li>
+    </ul>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -k https://10.96.0.1
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>The error that we see is expected: the Kubernetes API requires authentication.</p>
+
+<h3 id="listing-running-containers">Listing running containers</h3>
+
+<ul>
+  <li>
+    <p>Containers are manipulated through pods</p>
+  </li>
+  <li>
+    <p>A pod is a group of containers:</p>
+
+    <ul>
+      <li>
+        <p>running together (on the same node)</p>
+      </li>
+      <li>
+        <p>sharing resources (RAM, CPU; but also network, volumes)</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>List pods on our cluster:</p>
+
+    <pre><code class="language-.term1">kubectl get pods
+</code></pre>
+    <p><em>These are not the pods you’re looking for</em>. But where are they?!?</p>
+  </li>
+</ul>
+
+<h3 id="namespaces">Namespaces</h3>
+
+<ul>
+  <li>
+    <p>Namespaces allow us to segregate resources</p>
+  </li>
+  <li>
+    <p>List the namespaces on our cluster with one of these commands:</p>
+
+    <pre><code class="language-.term1">kubectl get namespaces
+</code></pre>
+
+    <p>either of these would work as well:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get namespace
+kubectl get ns
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p><em>You know what … This <code class="highlighter-rouge">kube-system</code> thing looks suspicious.</em></p>
+
+<h3 id="accessing-namespaces">Accessing namespaces</h3>
+<ul>
+  <li>
+    <p>By default, <code class="highlighter-rouge">kubectl</code> uses the <code class="highlighter-rouge">default</code> namespace</p>
+  </li>
+  <li>
+    <p>We can switch to a different namespace with the <code class="highlighter-rouge">-n</code> option</p>
+  </li>
+  <li>
+    <p>List the pods in the <code class="highlighter-rouge">kube-system</code> namespace:</p>
+    <pre><code class="language-.term1">kubectl -n kube-system get pods
+</code></pre>
+    <p><em>Ding ding ding ding ding!</em></p>
+  </li>
+</ul>
+
+<h3 id="what-are-all-these-pods">What are all these pods?</h3>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">etcd</code> is our etcd server</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kube-apiserver</code> is the API server</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kube-controller-manager</code> and <code class="highlighter-rouge">kube-scheduler</code> are other master components</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kube-dns</code> is an additional component (not mandatory but super useful, so it’s there)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kube-proxy</code> is the (per-node) component managing port mappings and such</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">weave</code> is the (per-node) component managing the network overlay <!-- Note: Mention of Weave --></p>
+  </li>
+  <li>
+    <p>the <code class="highlighter-rouge">READY</code> column indicates the number of containers in each pod</p>
+  </li>
+  <li>
+    <p>the pods with a name ending with <code class="highlighter-rouge">-node1</code> are the master components (they have been specifically “pinned” to the master node)</p>
+  </li>
+</ul>
+
+<h2 id="running-our-first-containers-on-kubernetes">Running our first containers on Kubernetes</h2>
+
+<ul>
+  <li>
+    <p>First things first: we cannot run a container</p>
+  </li>
+  <li>
+    <p>We are going to run a pod, and in that pod there will be a single container</p>
+  </li>
+  <li>
+    <p>In that container in the pod, we are going to run a simple ping command</p>
+  </li>
+  <li>
+    <p>Then we are going to start additional copies of the pod</p>
+  </li>
+</ul>
+
+<h3 id="starting-a-simple-pod-with-kubectl-run">Starting a simple pod with <code class="highlighter-rouge">kubectl run</code></h3>
+
+<ul>
+  <li>
+    <p>We need to specify at least a name and the image we want to use</p>
+  </li>
+  <li>
+    <p>Let’s ping <code class="highlighter-rouge">8.8.8.8</code>, Google’s public DNS</p>
+
+    <pre><code class="language-.term1">kubectl run pingpong --image alpine ping 8.8.8.8
+</code></pre>
+  </li>
+  <li>
+    <p>OK, what just happened?</p>
+  </li>
+</ul>
+
+<h3 id="behind-the-scenes-of-kubectl-run">Behind the scenes of <code class="highlighter-rouge">kubectl run</code></h3>
+
+<ul>
+  <li>
+    <p>Let’s look at the resources that were created by <code class="highlighter-rouge">kubectl run</code></p>
+  </li>
+  <li>
+    <p>List most resource types:</p>
+
+    <pre><code class="language-.term1">kubectl get all
+</code></pre>
+  </li>
+</ul>
+
+<p>We should see the following things:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">deploy/pingpong</code> (the <em>deployment</em> that we just created)</li>
+  <li><code class="highlighter-rouge">rs/pingpong-xxxx</code> (a <em>replica set</em> created by the deployment)</li>
+  <li><code class="highlighter-rouge">po/pingpong-yyyy</code> (a <em>pod</em> created by the replica set)</li>
+</ul>
+
+<h3 id="what-are-these-different-things">What are these different things?</h3>
+
+<ul>
+  <li>
+    <p>A <em>deployment</em> is a high-level construct</p>
+
+    <ul>
+      <li>
+        <p>allows scaling, rolling updates, rollbacks</p>
+      </li>
+      <li>
+        <p>multiple deployments can be used together to implement a <a href="https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#canary-deployments">canary deployment</a></p>
+      </li>
+      <li>
+        <p>delegates pods management to <em>replica sets</em></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>A <em>replica set</em> is a low-level construct</p>
+
+    <ul>
+      <li>
+        <p>makes sure that a given number of identical pods are running</p>
+      </li>
+      <li>
+        <p>allows scaling</p>
+      </li>
+      <li>
+        <p>rarely used directly</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>A <em>replication controller</em> is the (deprecated) predecessor of a replica set</p>
+  </li>
+</ul>
+
+<h3 id="our-pingpong-deployment">Our <code class="highlighter-rouge">pingpong</code> deployment</h3>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">kubectl run</code> created a <em>deployment</em>, <code class="highlighter-rouge">deploy/pingpong</code></p>
+  </li>
+  <li>
+    <p>That deployment created a <em>replica set</em>, <code class="highlighter-rouge">rs/pingpong-xxxx</code></p>
+  </li>
+  <li>
+    <p>That <em>replica set</em> created a <em>pod</em>, <code class="highlighter-rouge">po/pingpong-yyyy</code></p>
+  </li>
+  <li>
+    <p>We’ll see later how these folks play together for:</p>
+
+    <ul>
+      <li>
+        <p>scaling</p>
+      </li>
+      <li>
+        <p>high availability</p>
+      </li>
+      <li>
+        <p>rolling updates</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="viewing-container-output">Viewing container output</h3>
+
+<ul>
+  <li>
+    <p>Let’s use the <code class="highlighter-rouge">kubectl logs</code> command</p>
+  </li>
+  <li>
+    <p>We will pass either a <em>pod name</em>, or a <em>type/name</em>
+(E.g. if we specify a deployment or replica set, it will get the first pod in it)</p>
+  </li>
+  <li>
+    <p>Unless specified otherwise, it will only show logs of the first container in the pod
+(Good thing there’s only one in ours!)</p>
+  </li>
+  <li>
+    <p>View the result of our ping command:</p>
+
+    <pre><code class="language-.term1">kubectl logs deploy/pingpong
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="streaming-logs-in-real-time">Streaming logs in real time</h3>
+<ul>
+  <li>
+    <p>Just like <code class="highlighter-rouge">docker logs</code>, <code class="highlighter-rouge">kubectl logs</code> supports convenient options:</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">-f/--follow</code> to stream logs in real time (à la tail <code class="highlighter-rouge">-f</code>)</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">--tail</code> to indicate how many lines you want to see (from the end)</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">--since</code> to get logs only after a given timestamp</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>View the latest logs of our ping command:</p>
+
+    <pre><code class="language-.term1">kubectl logs deploy/pingpong --tail 1 --follow
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="scaling-our-application">Scaling our application</h3>
+
+<ul>
+  <li>
+    <p>We can create additional copies of our container (or rather our pod) with <code class="highlighter-rouge">kubectl scale</code></p>
+  </li>
+  <li>
+    <p>Scale our pingpong deployment:</p>
+
+    <pre><code class="language-.term1">kubectl scale deploy/pingpong --replicas 8
+</code></pre>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Note: what if we tried to scale <code class="highlighter-rouge">rs/pingpong-xxxx</code>? We could! But the <em>deployment</em> would notice it right away, and scale back to the initial level.</p>
+</blockquote>
+
+<h3 id="resilience">Resilience</h3>
+
+<ul>
+  <li>
+    <p>The deployment pingpong watches its replica set</p>
+  </li>
+  <li>
+    <p>The replica set ensures that the right number of pods are running</p>
+  </li>
+  <li>
+    <p>What happens if pods disappear?</p>
+  </li>
+  <li>In a separate window, list pods, and keep watching them:
+    <pre><code class="language-.term1">kubectl get pods -w
+</code></pre>
+
+    <p><code class="highlighter-rouge">Ctrl-C</code> to terminate watching.</p>
+  </li>
+  <li>If you wanted to destroy a pod, you would use this pattern where <code class="highlighter-rouge">yyyy</code> was the identifier of the particular pod:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete pod pingpong-yyyy
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="what-if-we-wanted-something-different">What if we wanted something different?</h3>
+<ul>
+  <li>
+    <p>What if we wanted to start a “one-shot” container that <em>doesn’t</em> get restarted?</p>
+  </li>
+  <li>
+    <p>We could use <code class="highlighter-rouge">kubectl run --restart=OnFailure</code> or <code class="highlighter-rouge">kubectl run --restart=Never</code></p>
+  </li>
+  <li>
+    <p>These commands would create <em>jobs</em> or <em>pods</em> instead of <em>deployments</em></p>
+  </li>
+  <li>
+    <p>Under the hood, <code class="highlighter-rouge">kubectl run</code> invokes “generators” to create resource descriptions</p>
+  </li>
+  <li>
+    <p>We could also write these resource descriptions ourselves (typically in YAML), 
+and create them on the cluster with <code class="highlighter-rouge">kubectl apply -f</code> (discussed later)</p>
+  </li>
+  <li>
+    <p>With <code class="highlighter-rouge">kubectl run --schedule=</code>…, we can also create <em>cronjobs</em></p>
+  </li>
+</ul>
+
+<h3 id="viewing-logs-of-multiple-pods">Viewing logs of multiple pods</h3>
+
+<ul>
+  <li>
+    <p>When we specify a deployment name, only one single pod’s logs are shown</p>
+  </li>
+  <li>
+    <p>We can view the logs of multiple pods by specifying a <em>selector</em></p>
+  </li>
+  <li>
+    <p>A selector is a logic expression using <em>labels</em></p>
+  </li>
+  <li>
+    <p>Conveniently, when <code class="highlighter-rouge">you kubectl run somename</code>, the associated objects have a <code class="highlighter-rouge">run=somename</code> label</p>
+  </li>
+  <li>
+    <p>View the last line of log from all pods with the <code class="highlighter-rouge">run=pingpong</code> label:</p>
+
+    <pre><code class="language-.term1">kubectl logs -l run=pingpong --tail 1
+</code></pre>
+  </li>
+  <li>
+    <p>Unfortunately, <code class="highlighter-rouge">--follow</code> cannot (yet) be used to stream the logs from multiple containers.</p>
+  </li>
+</ul>
+
+<h3 id="clean-up-1">Clean-up</h3>
+
+<ul>
+  <li>
+    <p>Clean up your deployment by deleting <code class="highlighter-rouge">pingpong</code></p>
+
+    <pre><code class="language-.term1">kubectl delete deploy/pingpong
+</code></pre>
+  </li>
+</ul>
+
+<h2 id="exposing-containers">Exposing containers</h2>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">kubectl expose</code> creates a <em>service</em> for existing pods</p>
+  </li>
+  <li>
+    <p>A <em>service</em> is a stable address for a pod (or a bunch of pods)</p>
+  </li>
+  <li>
+    <p>If we want to connect to our pod(s), we need to create a <em>service</em></p>
+  </li>
+  <li>
+    <p>Once a service is created, <code class="highlighter-rouge">kube-dns</code> will allow us to resolve it by name (i.e. after creating service <code class="highlighter-rouge">hello</code>, the name <code class="highlighter-rouge">hello</code> will resolve to something)</p>
+  </li>
+  <li>
+    <p>There are different types of services, detailed on the following slides:</p>
+  </li>
+</ul>
+
+<p><code class="highlighter-rouge">ClusterIP</code>, <code class="highlighter-rouge">NodePort</code>, <code class="highlighter-rouge">LoadBalancer</code>, <code class="highlighter-rouge">ExternalName</code></p>
+
+<h2 id="basic-service-types">Basic service types</h2>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">ClusterIP</code> (default type)</p>
+
+    <p>a virtual IP address is allocated for the service (in an internal, private range)
+this IP address is reachable only from within the cluster (nodes and pods)
+our code can connect to the service using the original port number</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">NodePort</code></p>
+
+    <p>a port is allocated for the service (by default, in the 30000-32768 range)
+that port is made available on all our nodes and anybody can connect to it
+our code must be changed to connect to that new port number</p>
+  </li>
+</ul>
+
+<p>These service types are always available.</p>
+
+<p>Under the hood: <code class="highlighter-rouge">kube-proxy</code> is using a userland proxy and a bunch of <code class="highlighter-rouge">iptables</code> rules.</p>
+
+<h3 id="more-service-types">More service types</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">LoadBalancer</code>
+    <ul>
+      <li>an external load balancer is allocated for the service</li>
+      <li>the load balancer is configured accordingly (e.g.: a <code class="highlighter-rouge">NodePort</code> service is created, and the load balancer sends traffic to that port)</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">ExternalName</code></p>
+
+    <ul>
+      <li>the DNS entry managed by <code class="highlighter-rouge">kube-dns</code> will just be a <code class="highlighter-rouge">CNAME</code> to a provided record</li>
+      <li>no port, no IP address, no nothing else is allocated</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="running-containers-with-open-ports">Running containers with open ports</h3>
+
+<ul>
+  <li>
+    <p>Since ping doesn’t have anything to connect to, we’ll have to run something else</p>
+  </li>
+  <li>Start a bunch of ElasticSearch containers:
+    <pre><code class="language-.term1">kubectl run elastic --image=elasticsearch:2 --replicas=4
+</code></pre>
+  </li>
+  <li>
+    <p>Watch them being started:</p>
+
+    <pre><code class="language-.term1">kubectl get pods -w
+</code></pre>
+  </li>
+</ul>
+
+<p>The <code class="highlighter-rouge">-w</code> option “watches” events happening on the specified resources.</p>
+
+<p>Note: please DO NOT call the service <code class="highlighter-rouge">search</code>. It would collide with the TLD.</p>
+
+<h3 id="exposing-our-deployment">Exposing our deployment</h3>
+
+<ul>
+  <li>
+    <p>We’ll create a default <code class="highlighter-rouge">ClusterIP</code> service</p>
+  </li>
+  <li>
+    <p>Expose the ElasticSearch HTTP API port:</p>
+
+    <pre><code class="language-.term1">kubectl expose deploy/elastic --port 9200
+</code></pre>
+  </li>
+  <li>
+    <p>Look up which IP address was allocated:</p>
+
+    <pre><code class="language-.term1">kubectl get svc
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="services-are-layer-4-constructs">Services are layer 4 constructs</h3>
+
+<ul>
+  <li>
+    <p>You can assign IP addresses to services, but they are still <em>layer 4</em> (i.e. a service is not an IP address; it’s an IP address + protocol + port)</p>
+  </li>
+  <li>
+    <p>This is caused by the current implementation of <code class="highlighter-rouge">kube-proxy</code> (it relies on mechanisms that don’t support layer 3)</p>
+  </li>
+  <li>
+    <p>As a result: <em>you have to</em> indicate the port number for your service</p>
+  </li>
+  <li>
+    <p>Running services with arbitrary port (or port ranges) requires hacks (e.g. host networking mode)</p>
+  </li>
+</ul>
+
+<h3 id="testing-our-service">Testing our service</h3>
+
+<ul>
+  <li>
+    <p>We will now send a few HTTP requests to our ElasticSearch pods</p>
+  </li>
+  <li>
+    <p>Let’s obtain the IP address that was allocated for our service, <em>programatically</em>:</p>
+
+    <pre><code class="language-.term1">IP=$(kubectl get svc elastic -o go-template --template '{{ .spec.clusterIP }}')
+</code></pre>
+  </li>
+  <li>
+    <p>Send a few requests:</p>
+
+    <pre><code class="language-.term1">curl http://$IP:9200/
+</code></pre>
+  </li>
+</ul>
+
+<p>Our requests are load balanced across multiple pods.</p>
+
+<h3 id="clean-up-2">Clean up</h3>
+
+<ul>
+  <li>
+    <p>We’re done with the <code class="highlighter-rouge">elastic</code> deployment, so let’s clean it up</p>
+
+    <pre><code class="language-.term1">kubectl delete deploy/elastic
+</code></pre>
+  </li>
+</ul>
+
+<h2 id="our-app-on-kube">Our app on Kube</h2>
+
+<h3 id="whats-on-the-menu">What’s on the menu?</h3>
+<p>In this part, we will:</p>
+
+<ul>
+  <li>
+    <p><strong>build</strong> images for our app,</p>
+  </li>
+  <li>
+    <p><strong>ship</strong> these images with a registry,</p>
+  </li>
+  <li>
+    <p><strong>run</strong> deployments using these images,</p>
+  </li>
+  <li>
+    <p>expose these deployments so they can communicate with each other,</p>
+  </li>
+  <li>
+    <p>expose the web UI so we can access it from outside.</p>
+  </li>
+</ul>
+
+<h3 id="the-plan">The plan</h3>
+<ul>
+  <li>
+    <p>Build on our control node (<code class="highlighter-rouge">node1</code>)</p>
+  </li>
+  <li>
+    <p>Tag images so that they are named <code class="highlighter-rouge">$USERNAME/servicename</code></p>
+  </li>
+  <li>
+    <p>Upload them to a Docker Hub</p>
+  </li>
+  <li>
+    <p>Create deployments using the images</p>
+  </li>
+  <li>
+    <p>Expose (with a <code class="highlighter-rouge">ClusterIP</code>) the services that need to communicate</p>
+  </li>
+  <li>
+    <p>Expose (with a <code class="highlighter-rouge">NodePort</code>) the WebUI</p>
+  </li>
+</ul>
+
+<h3 id="setup">Setup</h3>
+
+<ul>
+  <li>
+    <p>In the first terminal, set an environment variable for your Docker Hub user name. It can be the same user name that you used to log in to the terminals on this site.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export USERNAME=YourUserName
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Make sure you’re still in the <code class="highlighter-rouge">dockercoins</code> directory.</p>
+
+    <pre><code class="language-.term1">pwd
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="a-note-on-registries">A note on registries</h3>
+
+<ul>
+  <li>
+    <p>For this workshop, we’ll use <a href="https://hub.docker.com">Docker Hub</a>. There are a number of other options, including two provided by Docker.</p>
+  </li>
+  <li>
+    <p>Docker also provides:</p>
+    <ul>
+      <li><a href="https://docs.docker.com/datacenter/dtr/2.4/guides/">Docker Trusted Registry</a> which adds in a lot of security and deployment features including security scanning, and role-based access control.</li>
+      <li><a href="https://docs.docker.com/registry/">Docker Open Source Registry</a>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="docker-hub">Docker Hub</h3>
+
+<ul>
+  <li>
+    <p><a href="https://hub.docker.com">Docker Hub</a> is the default registry for Docker.</p>
+
+    <ul>
+      <li>
+        <p>Image names on Hub are just <code class="highlighter-rouge">$USERNAME/$IMAGENAME</code> or <code class="highlighter-rouge">$ORGANIZATIONNAME/$IMAGENAME</code>.</p>
+      </li>
+      <li>
+        <p><a href="https://docs.docker.com/docker-hub/official_repos/">Official images</a> can be referred to as just <code class="highlighter-rouge">$IMAGENAME</code>.</p>
+      </li>
+      <li>
+        <p>To use Hub, make sure you have an account. Then type <code class="highlighter-rouge">docker login</code> in the terminal and login with your username and password.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Using Docker Trusted Registry, Docker Open Source Registry is very similar.</p>
+
+    <ul>
+      <li>
+        <p>Image names on other registries are <code class="highlighter-rouge">$REGISTRYPATH/$USERNAME/$IMAGENAME</code> or <code class="highlighter-rouge">$REGISTRYPATH/$ORGANIZATIONNAME/$IMAGENAME</code>.</p>
+      </li>
+      <li>
+        <p>Login using <code class="highlighter-rouge">docker login $REGISTRYPATH</code>.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="building-and-pushing-our-images">Building and pushing our images</h3>
+
+<!-- TODO: Fix default registry URL to username in dockercoins.yml -->
+<ul>
+  <li>
+    <p>We are going to use a convenient feature of Docker Compose</p>
+  </li>
+  <li>
+    <p>Go to the <code class="highlighter-rouge">stacks</code> directory:</p>
+
+    <pre><code class="language-.term1">cd ~/dockercoins/stacks
+</code></pre>
+  </li>
+  <li>
+    <p>Build and push the images:</p>
+
+    <pre><code class="language-.term1">docker-compose -f dockercoins.yml build
+docker-compose -f dockercoins.yml push
+</code></pre>
+  </li>
+</ul>
+
+<p>Let’s have a look at the dockercoins.yml file while this is building and pushing.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: "3"
+services:
+  rng:
+    build: dockercoins/rng
+    image: ${USERNAME}/rng:${TAG-latest}
+    deploy:
+      mode: global
+  ...
+  redis:
+    image: redis
+  ...
+  worker:
+    build: dockercoins/worker
+    image: ${USERNAME}/worker:${TAG-latest}
+    ...
+    deploy:
+      replicas: 10
+</code></pre></div></div>
+
+<blockquote>
+  <p>Just in case you were wondering … Docker “services” are not Kubernetes “services”.</p>
+</blockquote>
+
+<h3 id="deploying-all-the-things">Deploying all the things</h3>
+<ul>
+  <li>
+    <p>We can now deploy our code (as well as a redis instance)</p>
+  </li>
+  <li>
+    <p>Deploy <code class="highlighter-rouge">redis</code>:</p>
+
+    <pre><code class="language-.term1">kubectl run redis --image=redis
+</code></pre>
+  </li>
+  <li>
+    <p>Deploy everything else:</p>
+
+    <pre><code class="language-.term1">for SERVICE in hasher rng webui worker; do
+  kubectl run $SERVICE --image=$USERNAME/$SERVICE
+done
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="is-this-working">Is this working?</h3>
+<ul>
+  <li>
+    <p>After waiting for the deployment to complete, let’s look at the logs!</p>
+  </li>
+  <li>
+    <p>(Hint: use <code class="highlighter-rouge">kubectl get deploy -w</code> to watch deployment events)</p>
+  </li>
+  <li>
+    <p>Look at some logs:</p>
+
+    <pre><code class="language-.term1">kubectl logs deploy/rng
+kubectl logs deploy/worker
+</code></pre>
+  </li>
+</ul>
+
+<p>🤔 <code class="highlighter-rouge">rng</code> is fine … But not <code class="highlighter-rouge">worker</code>.</p>
+
+<p>💡 Oh right! We forgot to <code class="highlighter-rouge">expose</code>.</p>
+
+<h3 id="exposing-services">Exposing services</h3>
+
+<h3 id="exposing-services-internally">Exposing services internally</h3>
+
+<ul>
+  <li>
+    <p>Three deployments need to be reachable by others: <code class="highlighter-rouge">hasher</code>, <code class="highlighter-rouge">redis</code>, <code class="highlighter-rouge">rng</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">worker</code> doesn’t need to be exposed</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">webui</code> will be dealt with later</p>
+  </li>
+  <li>
+    <p>Expose each deployment, specifying the right port:</p>
+
+    <pre><code class="language-.term1">kubectl expose deployment redis --port 6379
+kubectl expose deployment rng --port 80
+kubectl expose deployment hasher --port 80
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="is-this-working-yet">Is this working yet?</h3>
+<ul>
+  <li>
+    <p>The <code class="highlighter-rouge">worker</code> has an infinite loop, that retries 10 seconds after an error</p>
+  </li>
+  <li>
+    <p>Stream the worker’s logs:</p>
+
+    <pre><code class="language-.term1">kubectl logs deploy/worker --follow
+</code></pre>
+  </li>
+</ul>
+
+<p>(Give it about 10 seconds to recover)</p>
+
+<ul>
+  <li>We should now see the <code class="highlighter-rouge">worker</code>, well, working happily.</li>
+</ul>
+
+<h3 id="exposing-services-for-external-access">Exposing services for external access</h3>
+
+<ul>
+  <li>
+    <p>Now we would like to access the Web UI</p>
+  </li>
+  <li>
+    <p>We will expose it with a <code class="highlighter-rouge">NodePort</code> (just like we did for the registry)</p>
+  </li>
+  <li>
+    <p>Create a <code class="highlighter-rouge">NodePort</code> service for the Web UI:</p>
+
+    <pre><code class="language-.term1">kubectl expose deploy/webui --type=NodePort --port=8080
+</code></pre>
+  </li>
+  <li>
+    <p>Check the port that was allocated:</p>
+
+    <pre><code class="language-.term1">kubectl get svc
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="accessing-the-web-ui">Accessing the web UI</h3>
+
+<ul>
+  <li>We can now connect to <em>any node</em>, on the allocated node port, to view the web UI</li>
+</ul>
+
+<p>Click on <a href="/" data-term=".term2" data-port="8080">this link</a></p>
+
+<p><em>Alright, we’re back to where we started, when we were running on a single node!</em></p>
+
+<h2 id="security-implications-of-kubectl-apply">Security implications of <code class="highlighter-rouge">kubectl apply</code></h2>
+
+<ul>
+  <li>
+    <p>When we do <code class="highlighter-rouge">kubectl apply -f &lt;URL&gt;</code>, we create arbitrary resources</p>
+  </li>
+  <li>
+    <p>Resources can be evil; imagine a <code class="highlighter-rouge">deployment</code> that …</p>
+
+    <ul>
+      <li>
+        <p>starts bitcoin miners on the whole cluster</p>
+      </li>
+      <li>
+        <p>hides in a non-default namespace</p>
+      </li>
+      <li>
+        <p>bind-mounts our nodes’ filesystem</p>
+      </li>
+      <li>
+        <p>inserts SSH keys in the root account (on the node)</p>
+      </li>
+      <li>
+        <p>encrypts our data and ransoms it</p>
+      </li>
+      <li>
+        <p>☠️☠️☠️</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="kubectl-apply-is-the-new-curl--sh"><code class="highlighter-rouge">kubectl apply</code> is the new <code class="highlighter-rouge">curl | sh</code></h3>
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">curl | sh</code> is convenient</p>
+  </li>
+  <li>
+    <p>It’s safe if you use HTTPS URLs from trusted sources</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kubectl apply -f</code> is convenient</p>
+  </li>
+  <li>
+    <p>It’s safe if you use HTTPS URLs from trusted sources</p>
+  </li>
+  <li>
+    <p>It introduces new failure modes</p>
+  </li>
+  <li>
+    <p>Example: the official setup instructions for most pod networks</p>
+  </li>
+</ul>
+
+<h2 id="scaling-a-deployment">Scaling a deployment</h2>
+
+<ul>
+  <li>
+    <p>We will start with an easy one: the <code class="highlighter-rouge">worker</code> deployment</p>
+
+    <pre><code class="language-.term1">kubectl get pods -w
+
+kubectl get deployments -w
+</code></pre>
+  </li>
+  <li>
+    <p>Now, create more <code class="highlighter-rouge">worker</code> replicas:</p>
+
+    <pre><code class="language-.term1">kubectl scale deploy/worker --replicas=10
+</code></pre>
+  </li>
+  <li>
+    <p>After a few seconds, the graph in the web UI should show up. (And peak at 10 hashes/second, just like when we were running on a single one.)</p>
+  </li>
+</ul>
+
+<h2 id="daemon-sets">Daemon sets</h2>
+
+<ul>
+  <li>
+    <p>What if we want one (and exactly one) instance of rng per node?</p>
+  </li>
+  <li>
+    <p>If we just scale deploy/rng to 2, nothing guarantees that they spread</p>
+  </li>
+  <li>
+    <p>Instead of a deployment, we will use a daemonset</p>
+  </li>
+  <li>
+    <p>Daemon sets are great for cluster-wide, per-node processes:</p>
+
+    <ul>
+      <li>kube-proxy</li>
+      <li>weave (our overlay network) <!--Calico?--></li>
+      <li>monitoring agents</li>
+      <li>hardware management tools (e.g. SCSI/FC HBA agents)</li>
+      <li>etc.</li>
+    </ul>
+  </li>
+  <li>
+    <p>They can also be restricted to run <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#running-pods-on-only-some-nodes">only on some nodes</a>.</p>
+  </li>
+</ul>
+
+<h3 id="creating-a-daemon-set">Creating a daemon set</h3>
+
+<ul>
+  <li>
+    <p>Unfortunately, as of Kubernetes 1.9, the CLI cannot create daemon sets</p>
+  </li>
+  <li>
+    <p>More precisely: it doesn’t have a subcommand to create a daemon set</p>
+  </li>
+  <li>
+    <p>But any kind of resource can always be created by providing a YAML description:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply -f foo.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>How do we create the YAML file for our daemon set?</p>
+
+    <ul>
+      <li>option 1: read the docs</li>
+      <li>option 2: <code class="highlighter-rouge">vi</code> our way out of it</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="creating-the-yaml-file-for-our-daemon-set">Creating the YAML file for our daemon set</h3>
+<ul>
+  <li>
+    <p>Let’s start with the YAML file for the current <code class="highlighter-rouge">rng</code> resource</p>
+  </li>
+  <li>
+    <p>Dump the rng resource in YAML:</p>
+
+    <pre><code class="language-.term1">kubectl get deploy/rng -o yaml --export &gt;rng.yml
+</code></pre>
+  </li>
+</ul>
+
+<p>Edit <code class="highlighter-rouge">rng.yml</code></p>
+
+<p>Note: <code class="highlighter-rouge">--export</code> will remove “cluster-specific” information, i.e.:</p>
+
+<p>namespace (so that the resource is not tied to a specific namespace)
+status and creation timestamp (useless when creating a new resource)
+resourceVersion and uid (these would cause… <em>interesting</em> problems)</p>
+
+<h3 id="casting-a-resource-to-another">“Casting” a resource to another</h3>
+<ul>
+  <li>
+    <p>What if we just changed the <code class="highlighter-rouge">kind</code> field?</p>
+  </li>
+  <li>
+    <p>(It can’t be that easy, right?)</p>
+  </li>
+</ul>
+
+<p>Change <code class="highlighter-rouge">kind: Deployment</code> to <code class="highlighter-rouge">kind: DaemonSet</code></p>
+
+<p>Save, quit</p>
+
+<p>Try to create our new resource:</p>
+
+<pre><code class="language-.term1">  kubectl apply -f rng.yml
+</code></pre>
+
+<ul>
+  <li>We all knew this couldn’t be that easy, right!</li>
+</ul>
+
+<h3 id="understanding-the-problem">Understanding the problem</h3>
+
+<ul>
+  <li>
+    <p>The core of the error is:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error validating data:
+[ValidationError(DaemonSet.spec):
+unknown field "replicas" in io.k8s.api.extensions.v1beta1.DaemonSetSpec,
+...
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><em>Obviously</em>, it doesn’t make sense to specify a number of replicas for a daemon set</p>
+  </li>
+  <li>
+    <p>Workaround: fix the YAML</p>
+
+    <ul>
+      <li>remove the <code class="highlighter-rouge">replicas</code> field</li>
+      <li>remove the <code class="highlighter-rouge">strategy</code> field (which defines the rollout mechanism for a deployment)</li>
+      <li>remove the <code class="highlighter-rouge">status: {}</code> line at the end</li>
+    </ul>
+  </li>
+  <li>
+    <p>Or, we could also …</p>
+  </li>
+</ul>
+
+<h3 id="use-the---force-luke">Use the <code class="highlighter-rouge">--force</code>, Luke</h3>
+
+<ul>
+  <li>
+    <p>We could also tell Kubernetes to ignore these errors and try anyway</p>
+  </li>
+  <li>
+    <p>The <code class="highlighter-rouge">--force</code> flag actual name is <code class="highlighter-rouge">--validate=false</code></p>
+  </li>
+  <li>
+    <p>Try to load our YAML file and ignore errors:</p>
+
+    <pre><code class="language-.term1">kubectl apply -f rng.yml --validate=false
+</code></pre>
+  </li>
+</ul>
+
+<p>Use the –force, Luke
+We could also tell Kubernetes to ignore these errors and try anyway</p>
+
+<p>The –force flag actual name is –validate=false</p>
+
+<p>Try to load our YAML file and ignore errors:
+kubectl apply -f rng.yml –validate=false
+🎩✨🐇</p>
+
+<p>Wait … Now, <em>can</em> it be that easy?</p>
+
+<h3 id="checking-what-weve-done">Checking what we’ve done</h3>
+
+<ul>
+  <li>
+    <p>Did we transform our <code class="highlighter-rouge">deployment</code> into a <code class="highlighter-rouge">daemonset</code>?</p>
+  </li>
+  <li>
+    <p>Look at the resources that we have now:</p>
+
+    <pre><code class="language-.term1">kubectl get all
+</code></pre>
+  </li>
+</ul>
+
+<p>We have both <code class="highlighter-rouge">deploy/rng</code> and <code class="highlighter-rouge">ds/rng</code> now!</p>
+
+<p>And one too many pods…</p>
+
+<h3 id="explanation">Explanation</h3>
+
+<ul>
+  <li>
+    <p>You can have different resource types with the same name (i.e. a <em>deployment</em> and a <em>daemonset</em> both named <code class="highlighter-rouge">rng</code>)</p>
+  </li>
+  <li>
+    <p>We still have the old <code class="highlighter-rouge">rng</code> <em>deployment</em></p>
+  </li>
+  <li>
+    <p>But now we have the new <code class="highlighter-rouge">rng</code> <em>daemonset</em> as well</p>
+  </li>
+  <li>
+    <p>If we look at the pods, we have:</p>
+
+    <ul>
+      <li><em>one pod</em> for the deployment</li>
+      <li><em>one pod per node</em> for the daemonset</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="what-are-all-these-pods-doing">What are all these pods doing?</h3>
+<ul>
+  <li>
+    <p>Let’s check the logs of all these <code class="highlighter-rouge">rng</code> pods</p>
+  </li>
+  <li>
+    <p>All these pods have a <code class="highlighter-rouge">run=rng</code> label:</p>
+
+    <ul>
+      <li>the first pod, because that’s what <code class="highlighter-rouge">kubectl run</code> does</li>
+      <li>the other ones (in the daemon set), because we <em>copied the spec from the first one</em></li>
+    </ul>
+  </li>
+  <li>
+    <p>Therefore, we can query everybody’s logs using that <code class="highlighter-rouge">run=rng</code> selector</p>
+  </li>
+  <li>
+    <p>Check the logs of all the pods having a label <code class="highlighter-rouge">run=rng</code>:</p>
+
+    <pre><code class="language-.term1">kubectl logs -l run=rng --tail 1
+</code></pre>
+  </li>
+  <li>
+    <p>It appears that <em>all the pods</em> are serving requests at the moment.</p>
+  </li>
+</ul>
+
+<h3 id="removing-the-first-pod-from-the-load-balancer">Removing the first pod from the load balancer</h3>
+
+<ul>
+  <li>
+    <p>What would happen if we removed that pod, with <code class="highlighter-rouge">kubectl delete pod ...</code>?</p>
+
+    <p>The replicaset would re-create it immediately.</p>
+  </li>
+  <li>
+    <p>What would happen if we removed the <code class="highlighter-rouge">run=rng</code> label from that pod?</p>
+
+    <p>The <code class="highlighter-rouge">replicaset</code> would re-create it immediately.</p>
+
+    <p>… Because what matters to the <code class="highlighter-rouge">replicaset</code> is the number of pods <em>matching that selector</em>.</p>
+  </li>
+  <li>
+    <p>But but but … Don’t we have more than one pod with <code class="highlighter-rouge">run=rng</code> now?</p>
+
+    <p>The answer lies in the exact selector used by the <code class="highlighter-rouge">replicaset</code> …</p>
+  </li>
+</ul>
+
+<h3 id="deep-dive-into-selectors">Deep dive into selectors</h3>
+<ul>
+  <li>
+    <p>Let’s look at the selectors for the <code class="highlighter-rouge">rng</code> <em>deployment</em> and the associated <em>replica set</em></p>
+  </li>
+  <li>
+    <p>Show detailed information about the <code class="highlighter-rouge">rng</code> deployment:</p>
+
+    <pre><code class="language-.term1">kubectl describe deploy rng
+</code></pre>
+  </li>
+  <li>
+    <p>Show detailed information about the <code class="highlighter-rouge">rng</code> replica: (The second command doesn’t require you to get the exact name of the replica set)</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe rs rng-yyyy
+kubectl describe rs -l run=rng
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>The replica set selector also has a <code class="highlighter-rouge">pod-template-hash</code>, unlike the pods in our daemon set.</p>
+  </li>
+</ul>
+
+<h2 id="updating-a-service-through-labels-and-selectors">Updating a service through labels and selectors</h2>
+
+<ul>
+  <li>
+    <p>What if we want to drop the <code class="highlighter-rouge">rng</code> deployment from the load balancer?</p>
+  </li>
+  <li>
+    <p>Option 1:</p>
+
+    <ul>
+      <li>destroy it</li>
+    </ul>
+  </li>
+  <li>
+    <p>Option 2:</p>
+
+    <ul>
+      <li>add an extra <em>label</em> to the daemon set</li>
+      <li>update the service <em>selector</em> to refer to that <em>label</em></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Of course, option 2 offers more learning opportunities. Right?</p>
+
+<h3 id="add-an-extra-label-to-the-daemon-set">Add an extra label to the daemon set</h3>
+
+<ul>
+  <li>
+    <p>We will update the daemon set “spec”</p>
+  </li>
+  <li>
+    <p>Option 1:</p>
+
+    <ul>
+      <li>edit the <code class="highlighter-rouge">rng.yml</code> file that we used earlier</li>
+      <li>load the new definition with <code class="highlighter-rouge">kubectl apply</code></li>
+    </ul>
+  </li>
+  <li>
+    <p>Option 2:</p>
+
+    <ul>
+      <li>use <code class="highlighter-rouge">kubectl edit</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>If you feel like you got this, feel free to try directly. We’ve included a few hints on the next slides for your convenience!</em></p>
+
+<h3 id="weve-put-resources-in-your-resources">We’ve put resources in your resources</h3>
+<ul>
+  <li>
+    <p>Reminder: a daemon set is a resource that creates more resources!</p>
+  </li>
+  <li>
+    <p>There is a difference between:</p>
+
+    <ul>
+      <li>the label(s) of a resource (in the <code class="highlighter-rouge">metadata</code> block in the beginning)</li>
+      <li>the selector of a resource (in the <code class="highlighter-rouge">spec</code> block)</li>
+      <li>the label(s) of the resource(s) created by the first resource (in the <code class="highlighter-rouge">template</code> block)</li>
+    </ul>
+  </li>
+  <li>
+    <p>You need to update the selector and the template (metadata labels are not mandatory)</p>
+  </li>
+  <li>
+    <p>The template must match the selector (i.e. the resource will refuse to create resources that it will not select)</p>
+  </li>
+</ul>
+
+<h3 id="adding-our-label">Adding our label</h3>
+<p>Let’s add a label <code class="highlighter-rouge">isactive: yes</code></p>
+
+<p>In YAML, yes should be quoted; i.e. <code class="highlighter-rouge">isactive: "yes"</code></p>
+
+<ul>
+  <li>
+    <p>Update the daemon set to add <code class="highlighter-rouge">isactive: "yes"</code> to the selector and template label:</p>
+
+    <pre><code class="language-.term1">kubectl edit daemonset rng
+</code></pre>
+  </li>
+  <li>
+    <p>Update the service to add <code class="highlighter-rouge">isactive: "yes"</code> to its selector:</p>
+
+    <pre><code class="language-.term1">kubectl edit service rng
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="checking-what-weve-done-1">Checking what we’ve done</h3>
+<ul>
+  <li>
+    <p>Check the logs of all <code class="highlighter-rouge">run=rng</code> pods to confirm that only 2 of them are now active:</p>
+
+    <pre><code class="language-.term1">kubectl logs -l run=rng
+</code></pre>
+  </li>
+  <li>
+    <p>The timestamps should give us a hint about how many pods are currently receiving traffic.</p>
+  </li>
+  <li>
+    <p>Look at the pods that we have right now:</p>
+
+    <pre><code class="language-.term1">kubectl get pods
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="more-labels-more-selectors-more-problems">More labels, more selectors, more problems?</h3>
+<ul>
+  <li>
+    <p>Bonus exercise 1: clean up the pods of the “old” daemon set</p>
+  </li>
+  <li>
+    <p>Bonus exercise 2: how could we have done this to avoid creating new pods?</p>
+  </li>
+</ul>
+
+<h2 id="rolling-updates">Rolling updates</h2>
+
+<ul>
+  <li>
+    <p>By default (without rolling updates), when a scaled resource is updated:</p>
+
+    <ul>
+      <li>new pods are created</li>
+      <li>old pods are terminated</li>
+      <li>… all at the same time</li>
+      <li>if something goes wrong, ¯_(ツ)_/¯</li>
+    </ul>
+  </li>
+  <li>
+    <p>With rolling updates, when a resource is updated, it happens progressively</p>
+  </li>
+  <li>
+    <p>Two parameters determine the pace of the rollout: <code class="highlighter-rouge">maxUnavailable</code> and <code class="highlighter-rouge">maxSurge</code></p>
+  </li>
+  <li>
+    <p>They can be specified in absolute number of pods, or percentage of the <code class="highlighter-rouge">replicas</code> count</p>
+  </li>
+  <li>
+    <p>At any given time …</p>
+
+    <ul>
+      <li>there will always be at least <code class="highlighter-rouge">replicas</code>-<code class="highlighter-rouge">maxUnavailable</code> pods available</li>
+      <li>there will never be more than <code class="highlighter-rouge">replicas</code>+<code class="highlighter-rouge">maxSurge</code> pods in total</li>
+      <li>there will therefore be up to <code class="highlighter-rouge">maxUnavailable</code>+<code class="highlighter-rouge">maxSurge</code> pods being updated</li>
+    </ul>
+  </li>
+  <li>
+    <p>We have the possibility to rollback to the previous version (if the update fails or is unsatisfactory in any way)</p>
+  </li>
+</ul>
+
+<h3 id="rolling-updates-in-practice">Rolling updates in practice</h3>
+<ul>
+  <li>
+    <p>As of Kubernetes 1.8, we can do rolling updates with:</p>
+
+    <p><code class="highlighter-rouge">deployments</code>, <code class="highlighter-rouge">daemonsets</code>, <code class="highlighter-rouge">statefulsets</code></p>
+  </li>
+  <li>
+    <p>Editing one of these resources will automatically result in a rolling update</p>
+  </li>
+  <li>
+    <p>Rolling updates can be monitored with the <code class="highlighter-rouge">kubectl rollout</code> subcommand</p>
+  </li>
+</ul>
+
+<h3 id="building-a-new-version-of-the-worker-service">Building a new version of the <code class="highlighter-rouge">worker</code> service</h3>
+
+<ul>
+  <li>
+    <p>Edit <code class="highlighter-rouge">dockercoins/worker/worker.py</code>, update the sleep line to sleep 1 second</p>
+  </li>
+  <li>
+    <p>Go to the stack directory:</p>
+
+    <pre><code class="language-.term1">cd stacks
+</code></pre>
+  </li>
+  <li>
+    <p>Build a new tag and push it to the registry:</p>
+
+    <pre><code class="language-.term1">  export TAG=v0.2
+  docker-compose -f dockercoins.yml build
+  docker-compose -f dockercoins.yml push
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="rolling-out-the-new-worker-service">Rolling out the new worker service</h3>
+
+<ul>
+  <li>
+    <p>Let’s monitor what’s going on by opening a few terminals, and run:</p>
+
+    <pre><code class="language-.term1">  kubectl get pods -w
+  kubectl get replicasets -w
+  kubectl get deployments -w
+</code></pre>
+  </li>
+  <li>
+    <p>Update worker either with kubectl edit, or by running:</p>
+
+    <pre><code class="language-.term1">kubectl set image deploy worker worker=$USERNAME/worker:$TAG
+</code></pre>
+  </li>
+  <li>
+    <p>That rollout should be pretty quick. What shows in the web UI?</p>
+  </li>
+</ul>
+
+<h3 id="rolling-out-an-error">Rolling out an error</h3>
+
+<ul>
+  <li>
+    <p>What happens if we make a mistake?</p>
+  </li>
+  <li>
+    <p>Update worker by specifying a non-existent image:</p>
+
+    <pre><code class="language-.term1">export TAG=v0.3
+kubectl set image deploy worker worker=$REGISTRY/worker:$TAG
+</code></pre>
+  </li>
+  <li>
+    <p>Check what’s going on:</p>
+
+    <pre><code class="language-.term1">kubectl rollout status deploy worker
+</code></pre>
+  </li>
+  <li>
+    <p>Our rollout is stuck. However, the app is not dead (just 10% slower).</p>
+  </li>
+</ul>
+
+<h3 id="recovering-from-a-bad-rollout">Recovering from a bad rollout</h3>
+
+<ul>
+  <li>
+    <p>We could push some v0.3 image (the pod retry logic will eventually catch it and the rollout will proceed)</p>
+  </li>
+  <li>
+    <p>Or we could invoke a manual rollback</p>
+  </li>
+  <li>
+    <p>Cancel the deployment and wait for the dust to settle down:</p>
+
+    <pre><code class="language-.term1">kubectl rollout undo deploy worker
+kubectl rollout status deploy worker
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="changing-rollout-parameters">Changing rollout parameters</h3>
+
+<ul>
+  <li>
+    <p>We want to:</p>
+
+    <ul>
+      <li>revert to <code class="highlighter-rouge">v0.1</code> (which we now realize we didn’t tag - yikes!)</li>
+      <li>be conservative on availability (always have desired number of available workers)</li>
+      <li>be aggressive on rollout speed (update more than one pod at a time)</li>
+      <li>give some time to our workers to “warm up” before starting more</li>
+    </ul>
+  </li>
+  <li>
+    <p>The corresponding changes can be expressed in the following YAML snippet:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spec:
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: $USERNAME/worker:latest
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 3
+  minReadySeconds: 10
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="applying-changes-through-a-yaml-patch">Applying changes through a YAML patch</h3>
+
+<ul>
+  <li>
+    <p>We could use <code class="highlighter-rouge">kubectl edit deployment worker</code></p>
+  </li>
+  <li>
+    <p>But we could also use <code class="highlighter-rouge">kubectl patch</code> with the exact YAML shown before</p>
+  </li>
+  <li>
+    <p>Apply all our changes and wait for them to take effect:</p>
+
+    <pre><code class="language-.term1">kubectl patch deployment worker -p "
+spec:
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: $USERNAME/worker:latest
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 3
+  minReadySeconds: 10
+"
+kubectl rollout status deployment worker
+</code></pre>
+  </li>
+</ul>
+
+<h3 id="next-steps">Next steps</h3>
+<p><em>Alright, how do I get started and containerize my apps?</em></p>
+
+<p>Suggested containerization checklist:</p>
+
+<ul>
+  <li>write a Dockerfile for one service in one app</li>
+  <li>write Dockerfiles for the other (buildable) services</li>
+  <li>write a Compose file for that whole app</li>
+  <li>make sure that devs are empowered to run the app in containers</li>
+  <li>set up automated builds of container images from the code repo</li>
+  <li>set up a CI pipeline using these container images</li>
+  <li>set up a CD pipeline (for staging/QA) using these images</li>
+</ul>
+
+<p>And <em>then</em> it is time to look at orchestration!</p>
+
+<h3 id="namespaces-1">Namespaces</h3>
+
+<ul>
+  <li>
+    <p>Namespaces let you run multiple identical stacks side by side</p>
+  </li>
+  <li>
+    <p>Two namespaces (<em>e.g.</em> <code class="highlighter-rouge">blue</code> and <code class="highlighter-rouge">green</code>) can each have their own <code class="highlighter-rouge">redis</code> service</p>
+  </li>
+  <li>
+    <p>Each of the two <code class="highlighter-rouge">redis</code> services has its own <code class="highlighter-rouge">ClusterIP</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">kube-dns</code> creates two entries, mapping to these two <code class="highlighter-rouge">ClusterIP</code> addresses:</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">redis.blue.svc.cluster.local</code> and <code class="highlighter-rouge">redis.green.svc.cluster.local</code></p>
+  </li>
+  <li>
+    <p>Pods in the <code class="highlighter-rouge">blue</code> namespace get a <em>search suffix</em> of <code class="highlighter-rouge">blue.svc.cluster.local</code></p>
+  </li>
+  <li>
+    <p>As a result, resolving <code class="highlighter-rouge">redis</code> from a pod in the <code class="highlighter-rouge">blue</code> namespace yields the “local” <code class="highlighter-rouge">redis</code></p>
+  </li>
+</ul>
+
+<p>This does not provide <em>isolation</em>! That would be the job of network policies.</p>
+
+<h3 id="stateful-services-databases-etc">Stateful services (databases etc.)</h3>
+<ul>
+  <li>
+    <p>As a first step, it is wiser to keep stateful services <em>outside</em> of the cluster</p>
+  </li>
+  <li>
+    <p>Exposing them to pods can be done with multiple solutions:</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">ExternalName</code> services (<code class="highlighter-rouge">redis.blue.svc.cluster.local</code> will be a <code class="highlighter-rouge">CNAME</code> record)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">ClusterIP</code> services with explicit <code class="highlighter-rouge">Endpoints</code> (instead of letting Kubernetes generate the endpoints from a selector)</p>
+  </li>
+  <li>
+    <p>Ambassador services (application-level proxies that can provide credentials injection and more)</p>
+  </li>
+</ul>
+
+<h3 id="stateful-services-second-take">Stateful services (second take)</h3>
+<ul>
+  <li>
+    <p>If you really want to host stateful services on Kubernetes, you can look into:</p>
+
+    <ul>
+      <li>volumes (to carry persistent data)</li>
+      <li>storage plugins</li>
+      <li>persistent volume claims (to ask for specific volume characteristics)</li>
+      <li>stateful sets (pods that are <em>not</em> ephemeral)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="http-traffic-handling">HTTP traffic handling</h3>
+
+<ul>
+  <li>
+    <p><em>Services</em> are layer 4 constructs</p>
+  </li>
+  <li>
+    <p>HTTP is a layer 7 protocol</p>
+  </li>
+  <li>
+    <p>It is handled by <em>ingresses</em> (a different resource kind)</p>
+  </li>
+  <li>
+    <p>Ingresses allow:</p>
+
+    <ul>
+      <li>virtual host routing</li>
+      <li>session stickiness</li>
+      <li>URI mapping</li>
+      <li>and much more!</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="logging-and-metrics">Logging and metrics</h3>
+
+<ul>
+  <li>
+    <p>Logging is delegated to the container engine</p>
+  </li>
+  <li>
+    <p>Metrics are typically handled with Prometheus</p>
+  </li>
+</ul>
+
+<h3 id="managing-the-configuration-of-our-applications">Managing the configuration of our applications</h3>
+
+<ul>
+  <li>
+    <p>Two constructs are particularly useful: secrets and config maps</p>
+  </li>
+  <li>
+    <p>They allow to expose arbitrary information to our containers</p>
+  </li>
+  <li>
+    <p><strong>Avoid</strong> storing configuration in container images (There are some exceptions to that rule, but it’s generally a Bad Idea)</p>
+  </li>
+  <li>
+    <p><strong>Never</strong> store sensitive information in container images (It’s the container equivalent of the password on a post-it note on your screen)</p>
+  </li>
+</ul>
+
+<!--TODO check slide 267, managing stacks. Docker EE handles that, should we mention other things? -->
+
+<h3 id="cluster-federation">Cluster federation</h3>
+<!--TODO: should we include? Docker EE doesn't do Cluster Federation -->
+<ul>
+  <li>
+    <p>Kubernetes master operation relies on etcd</p>
+  </li>
+  <li>
+    <p>etcd uses the Raft protocol</p>
+  </li>
+  <li>
+    <p>Raft recommends low latency between nodes</p>
+  </li>
+  <li>
+    <p>What if our cluster spreads to multiple regions?</p>
+  </li>
+  <li>
+    <p>Break it down in local clusters</p>
+  </li>
+  <li>
+    <p>Regroup them in a cluster <em>federation</em></p>
+  </li>
+  <li>
+    <p>Synchronize resources across clusters</p>
+  </li>
+  <li>
+    <p>Discover resources across clusters</p>
+  </li>
+</ul>
+
+<h3 id="developer-experience">Developer experience</h3>
+
+<ul>
+  <li>
+    <p>I’ve put this last, but it’s pretty important!</p>
+  </li>
+  <li>
+    <p>How do you on-board a new developer?</p>
+
+    <ul>
+      <li>What do they need to install to get a dev stack?</li>
+      <li>How does a code change make it from dev to prod?</li>
+      <li>How does someone add a component to a stack?</li>
+    </ul>
+  </li>
+</ul>
+
+
+            </div>
+        </article>
+    </div>
+
+    
+    <div class="splitter">
+    </div>
+
+    <div class="panel-right">
+        <span class="resize-warning">If the commandline doesn't appear in the terminal, make sure popups are enabled or try resizing the browser window.</span>
+        
+        <div class="term1"></div>
+        
+        <div class="term2"></div>
+        
+    </div>
+    
+
+</div>
+
+<script>
+    (function() {
+        var font3 = document.createElement('link');
+        font3.type = 'text/css';
+        font3.rel = 'stylesheet';
+        font3.href = '/css/syntax-highlighting.css';
+        var q = document.getElementsByTagName('link')[0];
+        q.parentNode.insertBefore(font3, q);
+    })();
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://rawgit.com/RickStrahl/jquery-resizable/master/dist/jquery-resizable.min.js"></script>
+<script src="https://cdn.rawgit.com/play-with-docker/sdk/master/dist/pwd.js"></script>
+<script src="/js/quiz.js"></script>
+<script>
+    var siteUrl = "http://0.0.0.0:4000"
+      
+    pwd.newSession([{selector: '.term1'}, {selector: '.term2'}, {selector: '.term3'}], {baseUrl: 'https://labs.play-with-k8s.com', ImageName: ''});
+    $(".panel-left").resizable({
+        handleSelector: ".splitter",
+        resizeHeight: false,
+        onDragEnd: pwd.resize.bind(pwd)
+    });
+    window.onbeforeunload = function(e) {
+        pwd.closeSession(function(){});
+        return;
+    }
+
+</script>
+<script>
+    var pageTime = 26
+        console.log(pageTime);
+        var panelLeft = document.getElementsByClassName("panel-left")[0];
+        panelLeft.addEventListener('scroll', function(event){
+          console.log( 
+8031 
+);
+          var element = event.target;
+          console.log("height: " + element.scrollHeight + " top: " + element.scrollTop + " clientHeight: " + ((element.clientHeight)+(element.clientHeight*.25)));
+          if ((element.scrollHeight - element.scrollTop) <= ((element.clientHeight)+(element.clientHeight*.25)))
+          {
+              console.log('scrolled');
+              panelLeft.removeEventListener('scroll');
+          }
+        });
+      </script>
+
+       <footer>
+     <div class="mt10 social-share">
+  Share this on &rarr;
+    <a href="https://twitter.com/intent/tweet?text=Kubernetes for Beginners&url=http://0.0.0.0:4000/kubernetes-workshop/&via=docker&related=docker" rel="nofollow" target="_blank" title="Share on Twitter"><img src="/images/twitter.svg" alt="https://twitter.com/docker" style="width:48px;display:inline;"></a> Twitter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://facebook.com/sharer.php?u=http://0.0.0.0:4000/kubernetes-workshop/" rel="nofollow" target="_blank" title="Share on Facebook"><img src="/images/facebook.svg" style="width:48px;display:inline;" alt="https://www.facebook.com/docker.run"></a> Facebook&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://plus.google.com/share?url=http://0.0.0.0:4000/kubernetes-workshop/" rel="nofollow" target="_blank" title="Share on Google+"><img src="https://www.gstatic.com/images/icons/gplus-64.png" alt="Share on Google+" style="width:48px;display:inline;"/></a> Google+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=<URL>&title=<TITILE>&summary=<DESCRIPTION>&source=<DOMAIN>" rel="nofollow" target="_blank" title="Share on LinkedIn"><img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" style="width:48px;display:inline;" /></a> LinkedIn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </div>
+    <div class="container">
+
+      <div class="row mt10 mb10">
+       
+        
+
+      <div class="col-md-4 text-center">Site provided by <a target="_blank" href="https://docker.com">Docker, Inc.</a>, created by Tutorius</div>
+        
+        
+      <div class="col-md-4 text-center" >
+      
+      <a target="_blank" href="https://www.docker.com"><img src="https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg" alt="Docker"></a>
+      
+      </div>
+      <div class="col-md-4 text-center">
+        <a target="_blank" href="https://www.facebook.com/docker.run"><li class="social facebook"><img src="/images/facebook.svg" alt="https://www.facebook.com/docker.run"></li></a> 
+          <a target="_blank" href="https://twitter.com/docker"><li class="social twitter"><img src="/images/twitter.svg" alt="https://twitter.com/docker"></li></a>      
+          <a target="_blank" href="https://www.github.com/play-with-docker/play-with-docker.github.io"><li class="social github"><img src="/images/github.svg" alt="https://www.github.com/play-with-docker/play-with-docker.github.io"></li></a>
+      </div>
+    </div>
+  </div> 
+  
+</footer>
+
+
+    
+<script async>
+    (function() {
+        var font = document.createElement('link'); 
+        font.type = 'text/css'; 
+        font.rel = 'stylesheet';
+        font.href = '//fonts.googleapis.com/css?family=Raleway:400,700';
+        var s = document.getElementsByTagName('link')[0]; 
+        s.parentNode.insertBefore(font, s);
+      })();
+</script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- Google Analytics Tracking code -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-89019737-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+
+
+</html>
