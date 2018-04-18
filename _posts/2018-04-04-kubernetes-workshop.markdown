@@ -8,6 +8,8 @@ categories: beginner
 terms: 2
 ---
 
+*Based on a workshop originally written by [Jérôme Petazzoni](http://container.training/) with contributions from [many others](https://github.com/jpetazzo/container.training/graphs/contributors)*
+
 ## Introduction
 
 In this hands-on workshop, you will learn the basic concepts of Kubernetes. You will do that through interacting with Kubernetes through the command line terminals on the right. Ultimately you will deploy the sample applications [Dockercoins](https://github.com/dockersamples/dockercoins) on both worker nodes.
