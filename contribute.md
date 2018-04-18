@@ -1,10 +1,10 @@
 ## Contributing to Tutorials ##
 
-Thank you so much for your interest in contributing to [Play with Docker](http://play-with-docker.com) tutorials. Docker has open source in its DNA, and has always worked closely with the community.
+Thank you so much for your interest in contributing to [Play with Kubernetes](http://play-with-docker.com) tutorials. Docker has open source in its DNA, and has always worked closely with the community.
 
 Just a few quick things to be aware of before you get started.
 
-We welcome issues and pull requests for either adding a new tutorial, or fixing a problem with an existing tutorial. This is a repository for tutorials that use Docker based projects as much as possible. So if there’s a Docker tool for what you’re describing, please use that.
+We welcome issues and pull requests for either adding a new tutorial, or fixing a problem with an existing tutorial. This is a repository for tutorials that use Kubernetes on Docker. So if there’s a Docker tool for what you’re describing, please use that.
 
 Anything you contribute will be under an Apache license. Docker will choose which tutorials to accept and reject, and will be able to take any tutorials here and put them in Docker documentation. Likewise, anything posted here may be forked by anyone on GitHub.
 

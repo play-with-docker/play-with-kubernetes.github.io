@@ -1,5 +1,5 @@
 # Writing Tutorials
-This document shows you how to write a tutorial for the [Play with Docker](http://training.play-with-docker.com/) training site. For more information about Play with Docker, check out our [about page](./about.md).
+Thank you for contributing to the Play with Kubernetes Classroom! This document shows you how to write a tutorial for the [Play with Kubernetes](http://training.play-with-kubernetes.com/) training site. For more information about Play with Kubernetes, check out our [about page](./about.md).
 
 ## Contributing Overview
 
