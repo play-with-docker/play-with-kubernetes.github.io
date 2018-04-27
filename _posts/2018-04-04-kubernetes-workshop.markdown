@@ -1041,7 +1041,7 @@ services:
 * Create a `NodePort` service for the Web UI:
 
   ```.term1
-  kubectl create service nodeport webui --tcp=80:80 --node-port=30001
+  kubectl create service nodeport webui --tcp=8080:8080 --node-port=30001
   ```
 
 * Check the port that was allocated:
