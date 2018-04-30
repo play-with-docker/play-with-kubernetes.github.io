@@ -981,7 +981,7 @@ services:
 
   ```.term1
   for SERVICE in hasher rng webui worker; do
-    kubectl run $SERVICE --image=$USERNAME/$SERVICE
+    kubectl run $SERVICE --image=$USERNAME/$SERVICE -l app=$SERVICE
   done
 ```
 
@@ -1041,7 +1041,7 @@ services:
 * Create a `NodePort` service for the Web UI:
 
   ```.term1
-  kubectl expose deploy/webui --type=NodePort --port=8080
+  kubectl create service nodeport webui --tcp=80 --node-port=30001
   ```
 
 * Check the port that was allocated:
@@ -1054,7 +1054,7 @@ services:
 
 * We can now connect to *any node*, on the allocated node port, to view the web UI
 
-Click on [this link](/){:data-term=".term2"}{:data-port="8080"}
+Click on [this link](/){:data-term=".term2"}{:data-port="30001"}
 
 *Alright, we're back to where we started, when we were running on a single node!*
 
