@@ -890,7 +890,7 @@ In this part, we will:
 
 ### Setup
 
-* In the first terminal, set an environment variable for your Docker Hub user name. It can be the same user name that you used to log in to the terminals on this site.
+* In the first terminal, set an environment variable for your [Docker Hub](https://hub.docker.com) user name. It can be the same [Docker Hub](https://hub.docker.com) user name that you used to log in to the terminals on this site.
 
   ```
   export USERNAME=YourUserName
@@ -1094,9 +1094,9 @@ Click on [this link](/){:data-term=".term2"}{:data-port="30001"}
 * We will start with an easy one: the `worker` deployment
 
   ```.term1
-  kubectl get pods -w
+  kubectl get pods
 
-  kubectl get deployments -w
+  kubectl get deployments
   ```
 
 * Now, create more `worker` replicas:
@@ -1290,11 +1290,10 @@ And one too many pods...
   kubectl describe deploy rng
   ```
 
-* Show detailed information about the `rng` replica: (The second command doesn't require you to get the exact name of the replica set)
+* Show detailed information about the `rng` replica:
 
   ```
   kubectl describe rs rng-yyyy
-  kubectl describe rs -l run=rng
   ```
 
 * The replica set selector also has a `pod-template-hash`, unlike the pods in our daemon set.
@@ -1351,6 +1350,21 @@ In YAML, yes should be quoted; i.e. `isactive: "yes"`
 
   ```.term1
   kubectl edit daemonset rng
+  ```
+
+  ```
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: rng      
+        isactive: "yes"
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: rng      
+          isactive: "yes"
   ```
 
 * Update the service to add `isactive: "yes"` to its selector:
