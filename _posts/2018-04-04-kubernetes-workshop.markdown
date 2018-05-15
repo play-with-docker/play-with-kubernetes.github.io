@@ -981,7 +981,7 @@ services:
 
   ```.term1
   for SERVICE in hasher rng webui worker; do
-    kubectl run $SERVICE --image=$USERNAME/$SERVICE
+    kubectl run $SERVICE --image=$USERNAME/$SERVICE -l app=$SERVICE
   done
 ```
 
@@ -1042,6 +1042,7 @@ services:
 
   ```.term1
   kubectl create service nodeport webui --tcp=8080:8080 --node-port=30001
+
   ```
 
 * Check the port that was allocated:
