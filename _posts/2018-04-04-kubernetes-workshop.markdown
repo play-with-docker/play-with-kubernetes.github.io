@@ -154,7 +154,7 @@ there is a Compose file `docker-compose.yml` ...
 * Use Compose to build and run all containers:
 
   ```.term1
-  docker-compose up -d
+  docker-compose up
   ```
 
 Compose tells Docker to build all container images (pulling the corresponding base images), then starts all containers, and displays aggregated logs.
