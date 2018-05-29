@@ -175,11 +175,7 @@ Compose tells Docker to build all container images (pulling the corresponding ba
 
 ### Clean up
 
-* Before moving on, let's remove those containers. Tell Compose to remove everything:
-
-  ```.term1
-  docker-compose down
-  ```
+Before moving on, let's turn everything off by typing `Ctrl-C`.
 
 ## Kubernetes concepts
 
