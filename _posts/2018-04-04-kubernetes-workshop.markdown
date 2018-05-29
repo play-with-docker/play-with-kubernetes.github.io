@@ -35,7 +35,7 @@ That will take a couple of minutes, during which time you'll see a lot of activi
 
 You will see something like this at the end:
 
-our Kubernetes master has initialized successfully!
+Your Kubernetes master has initialized successfully!
 
 To start using your cluster, you need to run (as a regular user):
 
