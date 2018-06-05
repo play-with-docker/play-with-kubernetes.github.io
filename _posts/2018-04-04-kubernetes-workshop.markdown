@@ -34,23 +34,22 @@ First step is to initialize the cluster in the first terminal:
 That will take a couple of minutes, during which time you'll see a lot of activity in the terminal.
 
 You will see something like this at the end:
-
-Your Kubernetes master has initialized successfully!
-
-To start using your cluster, you need to run (as a regular user):
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  http://kubernetes.io/docs/admin/addons/
-
-You can now join any number of machines by running the following on each node
-as root:
-
   ```
+  Your Kubernetes master has initialized successfully!
+
+  To start using your cluster, you need to run (as a regular user):
+
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  You should now deploy a pod network to the cluster.
+  Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+    http://kubernetes.io/docs/admin/addons/
+
+  You can now join any number of machines by running the following on each node
+  as root:
+
   kubeadm join --token SOMETOKEN SOMEIPADDRESS --discovery-token-ca-cert-hash SOMESHAHASH
   ```
 
