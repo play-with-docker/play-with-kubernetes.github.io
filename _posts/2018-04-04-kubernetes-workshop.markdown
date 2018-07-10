@@ -95,7 +95,7 @@ You'll see an output like this:
   rolebinding "weave-net" created
   daemonset "weave-net" created
   ```
-You cluster is set-up!
+Your cluster is set up!
 
 ### What's this application?
 * It is a DockerCoin miner! 💰🐳📦🚢
@@ -115,7 +115,7 @@ You cluster is set-up!
   * `webui` queries `redis`, and computes and exposes "hashing speed" in your browser
 
 ### Getting the application source code
-We've created a sample appliation to run for parts of the workshop. The application is in the [dockercoins](https://github.com/dockersamples/dockercoins) repository.
+We've created a sample application to run for parts of the workshop. The application is in the [dockercoins](https://github.com/dockersamples/dockercoins) repository.
 
 Let's look at the general layout of the source code:
 
@@ -440,7 +440,7 @@ Before moving on, let's turn everything off by typing `Ctrl-C`.
 
 * Show the capacity of all our nodes as a stream of JSON objects:
   ```.term1
-  kubectl get nodes -o json | 
+  kubectl get nodes -o json |
         jq ".items[] | {name:.metadata.name} + .status.capacity"
   ```
 
@@ -487,7 +487,7 @@ There is already one service on our cluster: the Kubernetes API itself.
 
 * This is useful for introspection from within containers
 
-* Try to connect to the API. 
+* Try to connect to the API.
   * `-k` is used to skip certificate verification
   * Make sure to replace 10.96.0.1 with the CLUSTER-IP shown by `$ kubectl get svc`
 
@@ -576,7 +576,7 @@ The error that we see is expected: the Kubernetes API requires authentication.
 
 * We need to specify at least a name and the image we want to use
 
-* Let's ping `8.8.8.8`, Google's public DNS 
+* Let's ping `8.8.8.8`, Google's public DNS
 
   ```.term1
   kubectl run pingpong --image alpine ping 8.8.8.8
@@ -708,7 +708,7 @@ kubectl delete pod pingpong-yyyy
 
 * Under the hood, `kubectl run` invokes "generators" to create resource descriptions
 
-* We could also write these resource descriptions ourselves (typically in YAML), 
+* We could also write these resource descriptions ourselves (typically in YAML),
 and create them on the cluster with `kubectl apply -f` (discussed later)
 
 * With `kubectl run --schedule=`..., we can also create *cronjobs*
@@ -907,7 +907,7 @@ In this part, we will:
 
 ### Docker Hub
 
-* [Docker Hub](https://hub.docker.com) is the default registry for Docker. 
+* [Docker Hub](https://hub.docker.com) is the default registry for Docker.
 
   * Image names on Hub are just `$USERNAME/$IMAGENAME` or `$ORGANIZATIONNAME/$IMAGENAME`.
 
@@ -1650,4 +1650,3 @@ This does not provide *isolation*! That would be the job of network policies.
   * What do they need to install to get a dev stack?
   * How does a code change make it from dev to prod?
   * How does someone add a component to a stack?
-  
