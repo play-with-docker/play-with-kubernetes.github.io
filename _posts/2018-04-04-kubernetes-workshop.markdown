@@ -721,7 +721,7 @@ and create them on the cluster with `kubectl apply -f` (discussed later)
 
 * A selector is a logic expression using *labels*
 
-* Conveniently, when `you kubectl run somename`, the associated objects have a `run=somename` label
+* Conveniently, when you `kubectl run somename`, the associated objects have a `run=somename` label
 
 * View the last line of log from all pods with the `run=pingpong` label:
 
