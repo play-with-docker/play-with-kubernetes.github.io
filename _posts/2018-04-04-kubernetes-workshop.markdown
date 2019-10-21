@@ -780,7 +780,7 @@ Under the hood: `kube-proxy` is using a userland proxy and a bunch of `iptables`
 * `ExternalName`
 
   * the DNS entry managed by `kube-dns` will just be a `CNAME` to a provided record
-  * no port, no IP address, no nothing else is allocated
+  * no port, no IP address, nothing else is allocated
 
 ### Running containers with open ports
 
