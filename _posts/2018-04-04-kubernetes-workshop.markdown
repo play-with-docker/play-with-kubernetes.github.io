@@ -448,7 +448,7 @@ Before moving on, let's turn everything off by typing `Ctrl-C`.
 
 * `kubectl` has pretty good introspection facilities
 
-* We can list all available resource types by running `kubectl get`
+* We can list all available resource types by running `kubectl api-resources`
 
 * We can view details about a resource with:
   ```
