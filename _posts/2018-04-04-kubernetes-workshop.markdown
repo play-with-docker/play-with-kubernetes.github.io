@@ -579,7 +579,7 @@ The error that we see is expected: the Kubernetes API requires authentication.
 * Let's ping `8.8.8.8`, Google's public DNS
 
   ```.term1
-  kubectl run pingpong --image alpine ping 8.8.8.8
+  kubectl create deployment pingpong --image alpine -- ping 8.8.8.8
   ```
 
 * OK, what just happened?
