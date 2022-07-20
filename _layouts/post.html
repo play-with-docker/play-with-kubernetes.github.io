@@ -79,6 +79,7 @@ layout: default
           console.log('In _config.yml, the site url does not match the url you are serving from, so no analytics were pushed.')
       }
     {% endif %}
+    pwd = new PWD();
     pwd.newSession([{selector: '.term1'}, {selector: '.term2'}, {selector: '.term3'}], {baseUrl: '{{site.pwkurl}}', ImageName: '{{page.image}}'});
     $(".panel-left").resizable({
         handleSelector: ".splitter",
